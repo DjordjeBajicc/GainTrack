@@ -1,0 +1,28 @@
+﻿<Window x:Class="GainTrack.TraineeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:GainTrack"
+        mc:Ignorable="d"
+        Title="TraineeWindow" Height="450" Width="1000">
+
+    <DockPanel Margin="20">
+        <!-- Gornji panel sa dugmadi -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,10">
+            <!-- Dugme za prikaz istorije treninga -->
+            <Button Content="Istorija Treninga" HorizontalAlignment="Stretch" Margin="0,10" Width="200"/>
+
+            <!-- Dugme za prikaz rekorda -->
+            <Button Content="Prikaz Progresa" HorizontalAlignment="Stretch" Margin="0,10" Width="200"/>
+
+            <!-- Dugme za unos mjera -->
+            <Button Content="Unos Mjera" HorizontalAlignment="Stretch" Margin="0,10" Width="200"/>
+        </StackPanel>
+
+        <!-- ContentControl za prikaz različitih panela -->
+        <ContentControl Name="ContentDisplay" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </DockPanel>
+</Window>
