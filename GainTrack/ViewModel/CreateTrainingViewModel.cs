@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,8 +19,9 @@ namespace GainTrack.ViewModel
         private readonly IWeigthExerciseService _WeigthExerciseService;
         private readonly ICardioExerciseService _CardioExerciseService;
         private readonly ITrainingHasExerciseService _TrainingHasExerciseService;
+        public User SelectedUser { get; set; }  
 
-        private User _selectedUser;
+        
 
 
 
@@ -32,17 +34,6 @@ namespace GainTrack.ViewModel
             {
                 _trainingName = value;
                 OnPropertyChanged(nameof(TrainingName));
-            }
-        }
-
-        private string _trainingDescription;
-        public string TrainingDescription
-        {
-            get => _trainingDescription;
-            set
-            {
-                _trainingDescription = value;
-                OnPropertyChanged(nameof(TrainingDescription));
             }
         }
 
@@ -102,16 +93,25 @@ namespace GainTrack.ViewModel
             }
         }
 
-        public string SeriesCount { get; set; }
+        private int _seriesCount;
+        public int SeriesCount
+        {
+            get => _seriesCount;
+            set
+            {
+                _seriesCount = value;
+                OnPropertyChanged(nameof(SeriesCount));
+            }
+        }
 
         // Commands
         public ICommand SaveTrainingCommand { get; }
-        public ICommand CancelCommand { get; }
+        public ICommand RemoveExerciseCommand { get; }
         public ICommand AddExerciseCommand { get; }
         public ICommand CreateNewExerciseCommand { get; }
 
         // Constructor
-        public CreateTrainingViewModel(IExerciseService exerciseService, ITraningService traningService,  User user, IWeigthExerciseService weigthExerciseService, ICardioExerciseService cardioExerciseService, ITrainingHasExerciseService trainingHasExerciseService)
+        public CreateTrainingViewModel(IExerciseService exerciseService, ITraningService traningService, IWeigthExerciseService weigthExerciseService, ICardioExerciseService cardioExerciseService, ITrainingHasExerciseService trainingHasExerciseService)
         {
             _exerciseService = exerciseService;
             _TraningService = traningService;
@@ -125,126 +125,138 @@ namespace GainTrack.ViewModel
 
             // Initialize commands
             SaveTrainingCommand = new RelayCommand(SaveTraining);
-            CancelCommand = new RelayCommand(Cancel);
+            RemoveExerciseCommand = new RelayCommand(RemoveExercise);
             AddExerciseCommand = new RelayCommand(AddExercise);
             CreateNewExerciseCommand = new RelayCommand(CreateNewExercise);
 
             // Load exercises from the database
             LoadExercisesAsync();
-            _selectedUser = user;
+            //_selectedUser = user;
             _WeigthExerciseService = weigthExerciseService;
             _CardioExerciseService = cardioExerciseService;
             _TrainingHasExerciseService = trainingHasExerciseService;
         }
 
-        private async Task LoadExercisesAsync()
+        public async Task LoadExercisesAsync()
         {
             var exercisesFromDb = await _exerciseService.GetAllExercisesAsync();
             Exercises = new ObservableCollection<Exercise>(exercisesFromDb);
-            FilterExercises(); // Initial filtering based on default type
+           
+            //FilterExercises(); 
         }
 
         private async void FilterExercises()
         {
-            if (string.IsNullOrEmpty(SelectedExerciseType))
+            FilteredExercises.Clear();
+            await LoadExercisesAsync();
+            //MessageBox.Show(Exercises.Count().ToString());
+            if (string.IsNullOrEmpty(SelectedExerciseType) || SelectedExerciseType.Equals("All"))
             {
+                
                 FilteredExercises = new ObservableCollection<Exercise>(Exercises);
+                //MessageBox.Show(FilteredExercises.Count().ToString());
+            }
+            else if (SelectedExerciseType.Equals("Weight"))
+            {
+                var weightExercises = await _WeigthExerciseService.GetAllWeightExercisesAsync();
+                var filteredWeightExercises = Exercises.Where(e => weightExercises.Any(w => w.ExerciseId == e.Id)).ToList();
+                FilteredExercises = new ObservableCollection<Exercise>(filteredWeightExercises);
+                //MessageBox.Show(FilteredExercises.Count().ToString());
+            }
+            else if (SelectedExerciseType.Equals("Cardio"))
+            {
+                var cardioExercises = await _CardioExerciseService.GetAllCardioExercisesAsync();
+                var filteredCardioExercises = Exercises.Where(e => cardioExercises.Any(c => c.ExerciseId == e.Id)).ToList();
+                FilteredExercises = new ObservableCollection<Exercise>(filteredCardioExercises);
+                //MessageBox.Show(FilteredExercises.Count().ToString());
+            }
+        }
+
+
+        private async void AddExercise(object? obj)
+        {
+            if (SelectedExercise != null)
+            {
+                Exercise exercise = await _exerciseService.GetExerciseByIdAsync(SelectedExercise.Id);
+                
+                bool flag = true;
+                foreach(TrainingHasExercise trainingHasExercise in SelectedExercises)
+                {
+                    if(trainingHasExercise.ExerciseId == exercise.Id)
+                    {
+                        
+                        trainingHasExercise.NumberOfSeries += _seriesCount;
+                        flag = false;
+                        
+                        break;
+                    }
+                }
+                if (flag && _seriesCount > 0)
+                {
+                    TrainingHasExercise exerciseWithSeries = new TrainingHasExercise
+                    {
+                        ExerciseId = SelectedExercise.Id,
+                        NumberOfSeries = _seriesCount,
+                        Exercise = exercise
+                    };
+                    SelectedExercises.Add(exerciseWithSeries);
+                }
+            }
+        }
+
+        private async void SaveTraining(object? obj)
+        {
+            if(string.IsNullOrEmpty(_trainingName))
+            {
+                MessageBox.Show("Popunite sva polja");
             }
             else
             {
-                var WeightExercises = await _WeigthExerciseService.GetAllWeightExercisesAsync();
-                ObservableCollection<WeightExercise> _weightExercises = new ObservableCollection<WeightExercise>(WeightExercises);
-
-                var CardioExercise = await _CardioExerciseService.GetAllCardioExercisesAsync();
-                ObservableCollection<CardioExercise> _cardioExercise = new ObservableCollection<CardioExercise>(CardioExercise);
-
-                foreach(Exercise exercise in Exercises)
+                Training training = new Training
                 {
-                    if(SelectedExerciseType.Equals("Težinske"))
-                    {
-                        bool flagForWeight = false;
-                        foreach (WeightExercise weight in _weightExercises)
-                        {
-                            if (weight.ExerciseId.Equals(exercise.Id))
-                            {
-                                flagForWeight = true;
-                                break;
-                            }
-                        }
-                        if (flagForWeight)
-                            FilteredExercises.Add(exercise);
-                    }
-                    else if(SelectedExerciseType.Equals("Kardio"))
-                    {
-                        bool flagForCardio = false;
-                        foreach (CardioExercise cardio in _cardioExercise)
-                        {
-                            if (cardio.ExerciseId.Equals(exercise.Id))
-                            {
-                                flagForCardio = true;
-                                break;
-                            }
-                        }
-                        if (flagForCardio)
-                            FilteredExercises.Add(exercise);
-                    }
-                }
-               
-            }
-        }
-
-        private void AddExercise()
-        {
-            if (SelectedExercise != null && int.TryParse(SeriesCount, out int series))
-            {
-                var exerciseWithSeries = new TrainingHasExercise
-                {
-                    ExerciseId = SelectedExercise.Id,
-                    NumberOfSeries = series
+                    Name = _trainingName,
+                    UserId = SelectedUser.Id
                 };
 
-                SelectedExercises.Add(exerciseWithSeries);
+                
+                training = await _TraningService.AddTrainingAsync(training);
+
+                
+                foreach (var selectedExercise in SelectedExercises)
+                {
+                    selectedExercise.TrainingId = training.Id; 
+                    await _TrainingHasExerciseService.AddTrainignHasExerciseAsync(selectedExercise);
+                }
+
+                // Nakon što je trening sa vežbama sačuvan, možeš da očistiš selektovane vežbe
+                SelectedExercises.Clear();
+
+                // Opcionalno, možeš da obavestiš korisnika o uspehu ili grešci
+                MessageBox.Show("Trening je uspešno sačuvan!");
             }
         }
 
-        private async void SaveTraining()
+        private void RemoveExercise(object? obj)
         {
-            var training = new Training
+            if(obj is int ExerciseId)
             {
-                Name = TrainingName,
-                UserId = _selectedUser.Id // Poveži trening sa korisnikom
-            };
+                var exerciseToRemove = SelectedExercises.FirstOrDefault(e => e.ExerciseId == ExerciseId);
+                if (exerciseToRemove != null)
+                {
+                    SelectedExercises.Remove(exerciseToRemove);
+                }
 
-            // Pozovi servis za čuvanje treninga u bazi
-            await _TraningService.AddTrainingAsync(training);
-
-            // Dodaj sve odabrane vežbe (TrainingHasExercise) za ovaj trening
-            foreach (var selectedExercise in SelectedExercises)
-            {
-                selectedExercise.TrainingId = training.Id; // Poveži TrainingHasExercise sa treningom
-                await _TrainingHasExerciseService.AddTrainignHasExerciseAsync(selectedExercise);
             }
-
-            // Nakon što je trening sa vežbama sačuvan, možeš da očistiš selektovane vežbe
-            SelectedExercises.Clear();
-
-            // Opcionalno, možeš da obavestiš korisnika o uspehu ili grešci
-            MessageBox.Show("Trening je uspešno sačuvan!");
         }
 
-        private void Cancel()
-        {
-            
-        }
-
-        private void CreateNewExercise()
+        private void CreateNewExercise(object? obj)
         {
             // Logika za otvaranje prozora za kreiranje nove vežbe
         }
 
         // INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GainTrack.Services
 {
@@ -18,12 +19,14 @@ namespace GainTrack.Services
         {
             _context = context; 
         }
-        public Task AddTrainingAsync(Training training)
+        public async Task<Training> AddTrainingAsync(Training training)
         {
-            throw new NotImplementedException();
+            _context.Trainings.Add(training);
+            await _context.SaveChangesAsync();
+            return training;
         }
 
-        public Task DeleteTrainingAsync(int id)
+        public async Task DeleteTrainingAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -33,21 +36,37 @@ namespace GainTrack.Services
             throw new NotImplementedException();
         }
 
-        public Task<Training> GetTrainingByIdAsync(int id)
+        public async Task<Training> GetTrainingByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var training = await _context.Trainings.FirstOrDefaultAsync(t => t.Id == id);
+
+            if (training == null)
+            {
+                throw new KeyNotFoundException($"Training with ID {id} not found.");
+            }
+
+            return training;
         }
 
         public async Task<IEnumerable<Training>> GetTrainingsForUserAsync(int userId)
         {
+            //MessageBox.Show("sdafd");
             return await _context.Trainings
-                .Where(t => t.Id == userId)
+                .Where(t => t.UserId == userId && t.Deleted == 0)
                 .ToListAsync();
         }
 
-        public Task UpdateTrainingAsync(Training training)
+        public async Task UpdateTrainingAsync(Training training)
         {
-            throw new NotImplementedException();
+            if (training == null)
+            {
+                throw new ArgumentNullException(nameof(training));
+            }
+
+            _context.Trainings.Update(training);
+            //_context.Entry(training).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
+
     }
 }

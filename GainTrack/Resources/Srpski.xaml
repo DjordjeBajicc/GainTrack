@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="Language">Jezik</system:String>
+    <system:String x:Key="Trainee">Vježbač</system:String>
+    <system:String x:Key="Trainer">Trener</system:String>
+    <system:String x:Key="Theme">Tema</system:String>
+    <system:String x:Key="AddClient">Dodaj klijenta</system:String>
+    <system:String x:Key="Clients">Klijenti</system:String>
+    <system:String x:Key="ClientDetails">Detalji klijenta</system:String>
+    <system:String x:Key="Trainings">Treninzi</system:String>
+    <system:String x:Key="AddTraining">Dodaj trening</system:String>
+    <system:String x:Key="FirstName">Ime</system:String>
+    <system:String x:Key="LastName">Prezime</system:String>
+    <system:String x:Key="Save">Sačuvaj</system:String>
+    <system:String x:Key="Cancel">Otkaži</system:String>
+    <system:String x:Key="Name">Naziv</system:String>
+    <system:String x:Key="Details">Detalji</system:String>
+    <system:String x:Key="TrainingName">Naziv Treninga</system:String>
+    <system:String x:Key="TrainingDescription">Opis Treninga</system:String>
+    <system:String x:Key="ChooseExerciseType">Odabri tip vježbe</system:String>
+    <system:String x:Key="ChooseExercise">odaberi vejžbu</system:String>
+    <system:String x:Key="Weight">Težinska</system:String>
+    <system:String x:Key="Cardio">Kardio</system:String>
+    <system:String x:Key="NumberOfSeries">Broj serija</system:String>
+    <system:String x:Key="AddExercise">Dodaj vježbu</system:String>
+    <system:String x:Key="CreateExercise">Kreiraj vježbu</system:String>
+    <system:String x:Key="SelectedExercisesforTraining">Odabrane vježbe za trening</system:String>
+    <system:String x:Key="ListOfExercises">Lista vježbi</system:String>
+    <system:String x:Key="Exercises">Vježbe</system:String>
+    <system:String x:Key="ExerciseProgress">Progres vježbi</system:String>
+    <system:String x:Key="NewMeasurement">Nova mjera</system:String>
+    <system:String x:Key="Measurements">Mjere</system:String>
+    <system:String x:Key="MeasurementProgress">Progres mjera</system:String>
+    <system:String x:Key="TrainingHistory">Istorija Treninga</system:String>
+    <system:String x:Key="Training">Trening</system:String>
+    <system:String x:Key="Date">Datum</system:String>
+    <system:String x:Key="Exercise">Vježba</system:String>
+    <system:String x:Key="Delete">Obriši</system:String>
+    <system:String x:Key="All">Sve</system:String>
+    <system:String x:Key="Update">Uredi</system:String>
+
+
+</ResourceDictionary>

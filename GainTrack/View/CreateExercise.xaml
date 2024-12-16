@@ -16,11 +16,11 @@
         </Grid.RowDefinitions>
 
         <!-- Ime -->
-        <TextBlock Text="Naziv:" FontSize="16" Margin="10,10,10,5"/>
+        <TextBlock Text="{DynamicResource Name}" FontSize="16" Margin="10,10,10,5"/>
         <TextBox Name="FirstnameTextBox" Grid.Row="1" Margin="10,0,10,10"/>
 
         <!-- Prezime -->
-        <TextBlock Text="Detalji:" FontSize="16" Grid.Row="2" Margin="10,10,10,5"/>
+        <TextBlock Text="{DynamicResource Details}" FontSize="16" Grid.Row="2" Margin="10,10,10,5"/>
         <TextBox Name="LastnameTextBox" Grid.Row="3" Margin="10,0,10,10"/>
 
         <!-- Trener -->
@@ -28,8 +28,8 @@
 
         <!-- Dugmad -->
         <StackPanel Orientation="Horizontal" Grid.Row="6" HorizontalAlignment="Center" Margin="0,20">
-            <Button Content="Sačuvaj" Width="100" Height="30" Margin="10" Click="SaveButton_Click"/>
-            <Button Content="Otkaži" Width="100" Height="30" Margin="10" Click="CancelButton_Click"/>
+            <Button Content="{DynamicResource Save}" Width="100" Height="30" Margin="10" Click="SaveButton_Click"/>
+            <Button Content="{DynamicResource Cancel}" Width="100" Height="30" Margin="10" Click="CancelButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

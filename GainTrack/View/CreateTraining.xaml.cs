@@ -1,4 +1,6 @@
 ﻿using GainTrack.Data.Entities;
+using GainTrack.Services;
+using GainTrack.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,36 +22,16 @@ namespace GainTrack
     /// </summary>
     public partial class CreateTraining : Window
     {
-        private User _user;
-        public CreateTraining(User user)
+        
+        public CreateTraining(CreateTrainingViewModel createTrainingViewModel)
         {
             InitializeComponent();
-            _user = user;
-        }
-
-        private void ExerciseType_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void AddExerciseToTraining_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CreateNewExercise_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SaveTraining_Click(object sender, RoutedEventArgs e)
-        {
-
+            DataContext = createTrainingViewModel;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
     }
 }

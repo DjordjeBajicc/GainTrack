@@ -3,9 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:local="clr-namespace:GainTrack"
+    xmlns:converters="clr-namespace:GainTrack.Converters" 
     mc:Ignorable="d"
-    Title="CreateTraining" Height="750" Width="800">
+    Title="CreateTraining" Height="650" Width="800"
+    Background="{DynamicResource BackgroundBrush}">
+    <Window.Resources>
+        <converters:RadioButtonToStringConverter x:Key="RadioButtonToStringConverter" />
+    </Window.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,11 +22,9 @@
 
         <!-- Informacije o treningu -->
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Naziv Treninga:" FontSize="16" Margin="0,10,0,5"/>
-            <TextBox Name="TrainingName"  Margin="0,0,0,10"/>
+            <TextBlock Text="{DynamicResource TrainingName}" Style="{DynamicResource BodyTextStyle}" FontSize="16" Margin="0,10,0,5"/>
+            <TextBox Name="TrainingName" Style="{DynamicResource TextBoxStyle}" Text="{Binding TrainingName}"  Margin="0,0,0,10"/>
 
-            <TextBlock Text="Opis Treninga:" FontSize="16" Margin="0,10,0,5"/>
-            <TextBox Name="TrainingDescription"  Height="100" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
         </StackPanel>
 
         <!-- Odabir vežbe iz ComboBox -->
@@ -32,12 +36,32 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Tekst: Odaberite tip vežbe -->
-                <TextBlock Text="Odaberite tip vežbe:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,0,5"/>
+                <TextBlock Text="{DynamicResource ChooseExerciseType}" Style="{DynamicResource BodyTextStyle}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,0,5"/>
 
                 <!-- RadioButton za izbor tipa vežbe (Težinske / Kardio) -->
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,10">
-                    <RadioButton Name="WeightExerciseRadioButton" Width="100" FontSize="16" Content="Težinske" GroupName="ExerciseType" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="ExerciseType_Checked"/>
-                    <RadioButton Name="CardioExerciseRadioButton" Content="Kardio" FontSize="16" GroupName="ExerciseType" VerticalAlignment="Center" HorizontalAlignment="Right" Checked="ExerciseType_Checked"/>
+                    <RadioButton Name="AllExercisesRadioButton" 
+                         Style="{DynamicResource RadioButtonStyle}" 
+                         Content="{DynamicResource All}" 
+                         GroupName="ExerciseType" 
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Right"
+                         IsChecked="{Binding SelectedExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=All}" />
+                    <RadioButton Name="WeightExerciseRadioButton" 
+                         Style="{DynamicResource RadioButtonStyle}" 
+                         Content="{DynamicResource Weight}" 
+                         GroupName="ExerciseType" 
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Right"
+                         IsChecked="{Binding SelectedExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=Weight}" />
+                    <RadioButton Name="CardioExerciseRadioButton" 
+                         Style="{DynamicResource RadioButtonStyle}" 
+                         Content="{DynamicResource Cardio}"  
+                         GroupName="ExerciseType" 
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Right"
+                         IsChecked="{Binding SelectedExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=Cardio}" />
+
                 </StackPanel>
             </Grid>
 
@@ -45,35 +69,130 @@
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="541*"/>
+                    <ColumnDefinition Width="106*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Odaberite Vežbu:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,0,5"/>
+                <TextBlock Text="{DynamicResource ChooseExercise}" Style="{DynamicResource BodyTextStyle}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"/>
 
                 <!-- ComboBox za izbor vežbe (će biti filtrirane na osnovu tipa) -->
-                <ComboBox Name="ExerciseComboBox" Width="300" HorizontalAlignment="Right" Grid.Column="1" DisplayMemberPath="Name" Margin="10,0,0,10" VerticalAlignment="Center"/>
+                <ComboBox Name="ExerciseComboBox" 
+                      ItemsSource="{Binding FilteredExercises}" 
+                      Style="{DynamicResource ComboBoxStyle}" 
+                      Width="300" 
+                      Background="Black"
+                      HorizontalAlignment="Right" 
+                      VerticalAlignment="Top" 
+                      Grid.Column="1" 
+                      Grid.ColumnSpan="2"
+                      SelectedItem="{Binding SelectedExercise}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" Style="{DynamicResource ComboBoxItemStyle}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </Grid>
 
             <!-- Ostali kontrolni elementi (Broj serija, Dugmici) -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <TextBlock Text="Broj serija:" FontSize="15" Margin="0,5,10,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBox Name="SeriesCount" Width="50" HorizontalAlignment="Left" Margin="0,0,20,0" VerticalAlignment="Center"/>
-                <Button Content="Dodaj Vežbu" Click="AddExerciseToTraining_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button Content="Kreiraj Novu Vežbu" Click="CreateNewExercise_Click" HorizontalAlignment="Right" Margin="350,0,0,0" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="{DynamicResource NumberOfSeries}" Style="{DynamicResource BodyTextStyle}" FontSize="15" Margin="0,5,10,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <xctk:IntegerUpDown Minimum="1"  Value="{Binding SeriesCount, Mode=TwoWay}" Maximum="10" Name="SeriesCount" Width="50"  HorizontalAlignment="Left" Margin="0,0,20,0" VerticalAlignment="Center" />
+                <Button Content="{DynamicResource AddExercise}" Style="{DynamicResource ButtonStyle}"  HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding AddExerciseCommand}"/>
+                <Button Content="{DynamicResource CreateExercise}" Style="{DynamicResource ButtonStyle}"  HorizontalAlignment="Right" Margin="330,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
         </StackPanel>
 
 
         <!-- Odabrane vežbe za trening -->
-        <StackPanel Grid.Row="2" Margin="0,0,0,20">
-            <TextBlock Text="Odabrane Vežbe za Trening:" FontSize="16" Margin="0,10,0,5"/>
-            <ListBox Name="SelectedExercises"  Height="200" DisplayMemberPath="Exercise.Name" Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="2" Margin="0,0,0,20" HorizontalAlignment="Stretch" Orientation="Vertical">
+            <TextBlock Text="{DynamicResource SelectedExercisesforTraining}" Style="{DynamicResource BodyTextStyle}" FontSize="16" Margin="0,10,0,5"/>
+            <ListView Background="{DynamicResource SurfaceBrush}" 
+              BorderBrush="{DynamicResource PrimaryBrush}" 
+              Foreground="{DynamicResource TextBrush}" 
+              ItemsSource="{Binding SelectedExercises}"
+              HorizontalAlignment="Stretch"
+              Name="SelectedExercises" 
+              Height="200" >
+                <!-- Definicija kolona sa zaglavljima -->
+                <ListView.View>
+                    <GridView>
+                        <!-- Kolona za naziv vežbe -->
+                        <GridViewColumn Header="{DynamicResource Name}" Width="530">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Exercise.Name}" 
+                                       Style="{DynamicResource BodyTextStyle}" 
+                                       VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="{DynamicResource NumberOfSeries}" Width="150">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding NumberOfSeries}" 
+                                       Style="{DynamicResource BodyTextStyle}" 
+                                       VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+
+                        <GridViewColumn Header="{DynamicResource Delete}">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{DynamicResource Delete}" 
+                                        Style="{DynamicResource DeleteButtonStyle}" 
+                                        Command="{Binding DataContext.RemoveExerciseCommand, 
+                                        RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                                        CommandParameter="{Binding Exercise.Id}" 
+                                        VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <!-- Kolona za dugme za brisanje -->
+                        
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
         </StackPanel>
 
         <!-- Dugmad za akcije -->
         <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center" Margin="0,20">
-            <Button Content="Sačuvaj Trening" Width="120" Height="35" Margin="10" Click="SaveTraining_Click"/>
-            <Button Content="Otkaži" Width="120" Height="35" Margin="10" Click="Cancel_Click"/>
+            <Button Content="{DynamicResource Save}" Style="{DynamicResource ButtonStyle}" Margin="10" Command="{Binding SaveTrainingCommand}"/>
+            <Button Content="{DynamicResource Cancel}" Style="{DynamicResource ButtonStyle}"  Margin="10" Click="Cancel_Click"/>
         </StackPanel>
     </Grid>
 </Window>

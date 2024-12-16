@@ -1,6 +1,10 @@
-﻿using GainTrack.Services;
+﻿using GainTrack.Data;
+using GainTrack.Services;
+using GainTrack.Utils;
+using GainTrack.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Configuration;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,30 +23,15 @@ namespace GainTrack
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IHost _host;
-        private IUserService _userService;
-        public MainWindow(IUserService UserService, IHost host)
+        
+        public MainWindow(MainWindowViewModel mainWindowViewModel)
         {
             InitializeComponent();
-            _host = host;
-            _userService = UserService;
+            DataContext = mainWindowViewModel;
         }
 
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
 
-        private void OpenTraineeWindow_Click(object sender, RoutedEventArgs e)
-        {
-            TraineeWindow traineeWindow = new TraineeWindow();
-            traineeWindow.Show();
-        }
-
-        private void OpenTrainerWindow_Click(object sender, RoutedEventArgs e)
-        {
-            var trainerWindow = _host.Services.GetRequiredService<TrainerWindow>();
-            trainerWindow.Show();
-        }
+        
+        
     }
 }

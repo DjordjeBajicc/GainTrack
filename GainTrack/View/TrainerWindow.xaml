@@ -1,63 +1,135 @@
-﻿    <Window x:Class="GainTrack.TrainerWindow"
+﻿<Window x:Class="GainTrack.TrainerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GainTrack"
-        mc:Ignorable="d"
-        Title="TrainerWindow" Height="450" Width="800">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="TrainerWindow" Height="520" Width="900"
+        Background="{DynamicResource BackgroundBrush}">
 
-            <!-- Sekcija za listu klijenata -->
-            <StackPanel Grid.Column="0" Background="#EEEEEE" >
-                <TextBlock Text="Klijenti" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
-                <ListBox Name="ClientsList" ItemsSource="{Binding Users}" Margin="0,10,0,10" SelectionChanged="ClientsList_SelectionChanged">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Margin="5">
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Lijevi panel sa listom klijenata -->
+        <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,0" Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Gornji dio sa dugmadima -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="10">
+                    <Button Name="LanguageButton"  Style="{DynamicResource ButtonStyle}" Click="LanguageButton_Click" HorizontalAlignment="Right">
+                        <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,5,0"/>
+                    </Button>
+                    <Popup x:Name="LanguagePopup" PlacementTarget="{Binding ElementName=LanguageButton}" StaysOpen="False">
+                        <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="5">
                             <StackPanel>
-                                <TextBlock Text="{Binding Firstname}" FontSize="16" Padding="10"/>
-                                <TextBlock Text="{Binding Lastname}" FontSize="16" Padding="10"/>
+                                <ItemsControl ItemsSource="{Binding AvailableLanguages}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{Binding Name}"  Command="{Binding DataContext.ChangeLanguageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Name}" Style="{DynamicResource ButtonStyle}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </StackPanel>
                         </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <Button Content="Dodaj Klijenta" Height="40" Margin="0,10"/>
-            </StackPanel>
+                    </Popup>
+                    <Button Style="{DynamicResource ButtonStyle}" Click="ThemeButton_Click" Name="ThemeButton" HorizontalAlignment="Right">
+                        <Image Source="Assets/theme.png" Width="26" Height="26" Margin="0,0,5,0"/>
+                    </Button>
+                    <Popup x:Name="ThemePopup" PlacementTarget="{Binding ElementName=ThemeButton}" StaysOpen="False">
+                        <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="5">
+                            <StackPanel>
+                                <ItemsControl ItemsSource="{Binding AvailableThemes}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{Binding Name}"  Command="{Binding DataContext.ChangeThemeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Name}" Style="{DynamicResource ButtonStyle}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+                </StackPanel>
 
-            <!-- Sekcija za detalje klijenta i treninge -->
-            <StackPanel Grid.Column="1" Background="#FFFFFF">
-                <TextBlock Text="Detalji Klijenta" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                <!-- Lista klijenata -->
+                <Grid Grid.Row="1" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{DynamicResource Clients}" Grid.Row="0" Style="{DynamicResource HeaderTextStyle}" VerticalAlignment="Top"/>
 
-                <!-- Detalji klijenta -->
-                <StackPanel Orientation="Vertical" Margin="10" Name="ClientDetails">
-                <TextBlock Text="Ime: ---" FontSize="16" Name="ClientNameText" Margin="0,5"/>
-            </StackPanel>
+                   
+                    <ListBox Name="ClientsList" Grid.Row="1" ItemsSource="{Binding Users}" Margin="0,5,0,0"
+                            SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                            Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}"
+                            Foreground="{DynamicResource TextBrush}" Height="253">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FullName}" Style="{DynamicResource BodyTextStyle}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    
 
-                <!-- Treninzi -->
-                <TextBlock Text="Treninzi" FontSize="16" FontWeight="Bold" Margin="10,20,0,10"/>
-                <ListBox Name="TrainingsList" Background="White" BorderThickness="1" VerticalAlignment="Stretch" Height="200">
+                    <Button Content="{DynamicResource AddClient}" Grid.Row="2" Style="{DynamicResource ButtonStyle}" Command="{Binding AddClientCommand}" Height="40" Margin="0,10" VerticalAlignment="Bottom"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Desni panel sa detaljima klijenata i treninzima -->
+        <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Grid.Column="1">
+            <StackPanel Margin="10">
+                <TextBlock Text="{DynamicResource ClientDetails}" Style="{DynamicResource HeaderTextStyle}"/>
+                <TextBlock Text="{Binding SelectedUser.FullName}" Style="{DynamicResource BodyTextStyle}" Margin="10"/>
+
+                <!-- Lista treninga -->
+                <TextBlock Text="{DynamicResource Trainings}" Style="{DynamicResource HeaderTextStyle}" Margin="10,20,0,10"/>
+                <ListBox x:Name="TrainingsList" ItemsSource="{Binding Trainings}"
+                         Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}" 
+                         Foreground="{DynamicResource TextBrush}" Height="200">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Margin="5">
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Date}" FontSize="14" Foreground="Gray"/>
-                                    <TextBlock Text="{Binding Description}" FontSize="14"/>
-                                </StackPanel>
-                            </Border>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Kolona za dugme -->
+                                    <!-- Kolona za tekst -->
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Name}" Grid.Column="0" Style="{DynamicResource BodyTextStyle}" VerticalAlignment="Center"/>
+                                <Button Content="{DynamicResource Update}" Grid.Column="1" Command="{Binding DataContext.EditTrainingCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Style="{DynamicResource ButtonStyle}" CommandParameter="{Binding Id}"/>
+                                <Button Content="{DynamicResource Delete}" Grid.Column="2" 
+                                    Style="{DynamicResource DeleteButtonStyle}" 
+                                    Command="{Binding DataContext.DeleteTrainingCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                        CommandParameter="{Binding Id}" 
+                        VerticalAlignment="Center"/>
+                            </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                <!-- Dugmadi za dodavanje treninga i brisanje -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-                    <Button Content="Dodaj Trening" Width="120" Height="30" Margin="10" Click="AddTraining_Click"/>
-                    <Button Content="Obriši Trening" Width="120" Height="30" Margin="10" Background="#FF5555" Foreground="White"/>
+                    <Button Content="{DynamicResource AddTraining}" Style="{DynamicResource ButtonStyle}" Margin="10" Command="{Binding AddTrainingCommand}"/>
+                   
                 </StackPanel>
             </StackPanel>
-        </Grid>
-    </Window>
+        </Border>
+    </Grid>
+</Window>

@@ -10,9 +10,12 @@
 
   <ItemGroup>
     <None Remove="View\Assets\background.jpg" />
+    <None Remove="View\Assets\language.png" />
+    <None Remove="View\Assets\theme.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.1" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MaterialDesignColors" Version="3.1.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
@@ -29,6 +32,8 @@
 
   <ItemGroup>
     <Resource Include="View\Assets\background.jpg" />
+    <Resource Include="View\Assets\language.png" />
+    <Resource Include="View\Assets\theme.png" />
   </ItemGroup>
 
 </Project>

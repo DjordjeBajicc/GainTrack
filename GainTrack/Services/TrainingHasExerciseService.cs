@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GainTrack.Services
 {
@@ -17,9 +18,10 @@ namespace GainTrack.Services
         {
             _context = context; 
         }
-        public Task AddTrainignHasExerciseAsync(TrainingHasExercise TrainingHasExercise)
+        public async Task AddTrainignHasExerciseAsync(TrainingHasExercise TrainingHasExercise)
         {
-            throw new NotImplementedException();
+            await _context.TrainingHasExercises.AddAsync(TrainingHasExercise);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteTrainingHasExerciseAsync(int TrainingId, int ExerciseId)
@@ -35,6 +37,11 @@ namespace GainTrack.Services
         public Task<TrainingHasExercise> GetTrainingHasExerciseByIdAsync(int TrainingId, int ExerciseId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<TrainingHasExercise>> GetTrainingHasExerciseByTrainingIdAsync(int TrainingId)
+        {
+           return await _context.TrainingHasExercises.Where(t => t.TrainingId == TrainingId).ToListAsync();
         }
 
         public Task UpdateTrainingHasExerciseAsync(TrainingHasExercise TrainingHasExercise)

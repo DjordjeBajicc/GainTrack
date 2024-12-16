@@ -22,4 +22,7 @@ public partial class User
     public virtual ICollection<Training> Training { get; set; } = new List<Training>();
 
     public virtual ICollection<UserHasMessurement> UserHasMessurements { get; set; } = new List<UserHasMessurement>();
+
+    public string FullName => $"{Firstname} {Lastname}";
+
 }

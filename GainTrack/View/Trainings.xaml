@@ -19,14 +19,14 @@
         </Grid.RowDefinitions>
 
         <!-- Tekst za prikaz istorije treninga -->
-        <TextBlock Text="Istorija Treninga" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
+        <TextBlock Text="{DynamicResource TrainingHistory}" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
 
         <!-- Lista istorije treninga -->
         <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0"  Width="300" HorizontalAlignment="Left" VerticalAlignment="Stretch">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Trening" DisplayMemberBinding="{Binding TrainingName}" Width="200"/>
-                    <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Date}" Width="150"/>
+                    <GridViewColumn Header="{DynamicResource Training}" DisplayMemberBinding="{Binding TrainingName}" Width="200"/>
+                    <GridViewColumn Header="{DynamicResource Date}" DisplayMemberBinding="{Binding Date}" Width="150"/>
                 </GridView>
             </ListView.View>
         </ListView>
@@ -43,7 +43,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- ComboBox za selektovanje treninga -->
-            <TextBox Text="Treninzi:" VerticalAlignment="Center"  FontSize="16" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Height="40" Width="80"/>
+            <TextBox Text="{DynamicResource Trainings}" VerticalAlignment="Center"  FontSize="16" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Height="40" Width="80"/>
             <ComboBox Name="TrainingComboBox" Width="250" HorizontalAlignment="Right" VerticalAlignment="Center"
                     DisplayMemberPath="Name" Height="40" Margin="0,0,10,0" Grid.ColumnSpan="2" Grid.Row="0"
                     SelectedValuePath="Id">
@@ -52,8 +52,7 @@
             <DataGrid Name="ExercisesDataGrid" Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="0,10,0,0"
           HeadersVisibility="Column" CanUserAddRows="False" IsReadOnly="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Vežba" Binding="{Binding ExerciseName}" Width="*"/>
-                    
+                    <DataGridTextColumn Header="{DynamicResource Exercise}" Binding="{Binding ExerciseName}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 

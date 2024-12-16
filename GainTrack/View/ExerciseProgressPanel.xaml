@@ -17,14 +17,14 @@
 
         <!-- Leva kolona - Lista vežbi sa filtrima -->
         <StackPanel Grid.Column="0" Margin="10">
-            <TextBlock Text="Lista Vježbi" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
-            <RadioButton GroupName="Filter" Content="Težinske" />
-            <RadioButton GroupName="Filter" Content="Kardio"/>
+            <TextBlock Text="{DynamicResource ListOfExercises}" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+            <RadioButton GroupName="Filter" Content="{DynamicResource Weight}" />
+            <RadioButton GroupName="Filter" Content="{DynamicResource Cardio}"/>
 
             <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0"  Width="200" HorizontalAlignment="Left" VerticalAlignment="Stretch">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Vježbe" DisplayMemberBinding="{Binding TrainingName}" Width="200"/>
+                        <GridViewColumn Header="{DynamicResource Exercises}" DisplayMemberBinding="{Binding TrainingName}" Width="200"/>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -32,7 +32,7 @@
 
         <!-- Desna kolona - Grafikon -->
         <Grid Grid.Column="1" Margin="10">
-            <TextBlock Text="Progres Vježbe" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <TextBlock Text="{DynamicResource ExerciseProgress}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
             <lvc:CartesianChart Name="ExerciseChart" LegendLocation="Right" Margin="20">
                 
             </lvc:CartesianChart>

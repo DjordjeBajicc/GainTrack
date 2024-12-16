@@ -21,21 +21,24 @@ namespace GainTrack.ViewModel
 
         public ICommand SaveCommand { get; }
 
+
         public event EventHandler UserSaved;
 
         public CreateClientViewModel(IUserService userService)
         {
             _userService = userService;
-            SaveCommand = new RelayCommand(async () => await SaveUserAsync(), CanSaveUser);
+            SaveCommand = new RelayCommand(SaveUserAsync, CanSaveUser);
         }
 
-        private bool CanSaveUser()
+        private bool CanSaveUser(object? obj)
         {
             return !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Lastname);
         }
+        
 
-        private async Task SaveUserAsync()
+        private async void SaveUserAsync(object? obj)
         {
+           
             var user = new User
             {
                 Firstname = Firstname,
@@ -55,6 +58,7 @@ namespace GainTrack.ViewModel
             {
                 MessageBox.Show(ex.Message);
             }
+            
         }
     }
 }

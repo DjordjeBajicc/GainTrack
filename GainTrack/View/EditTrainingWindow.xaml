@@ -1,0 +1,170 @@
+﻿<Window x:Class="GainTrack.View.EditTrainingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:GainTrack.View"
+        xmlns:converters="clr-namespace:GainTrack.Converters" 
+        mc:Ignorable="d"
+        Title="EditTrainingWindow" Height="480" Width="800"
+        Background="{DynamicResource BackgroundBrush}">
+    <Window.Resources>
+        <converters:RadioButtonToStringConverter x:Key="RadioButtonToStringConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0,0,0">
+                    <RadioButton Name="AllExercisesRadioButton" 
+                         Style="{DynamicResource RadioButtonStyle}" 
+                         Content="{DynamicResource All}" 
+                         GroupName="ExerciseType" 
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Left"
+                         IsChecked="{Binding SelectedExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=All}" />
+                    <RadioButton Name="WeightExerciseRadioButton" 
+                         Style="{DynamicResource RadioButtonStyle}" 
+                         Content="{DynamicResource Weight}" 
+                         GroupName="ExerciseType" 
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Center"
+                         IsChecked="{Binding SelectedExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=Weight}" />
+                    <RadioButton Name="CardioExerciseRadioButton" 
+                         Style="{DynamicResource RadioButtonStyle}" 
+                         Content="{DynamicResource Cardio}"  
+                         GroupName="ExerciseType" 
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Right"
+                         IsChecked="{Binding SelectedExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=Cardio}" />
+
+                </StackPanel>
+                <ComboBox Name="ExerciseComboBox" 
+                    ItemsSource="{Binding FilteredExercises}" 
+                    Style="{DynamicResource ComboBoxStyle}" 
+                    Background="Black"
+                    HorizontalAlignment="Stretch"
+                    SelectedItem="{Binding SelectedExercise}"
+                    Margin="5,0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" Style="{DynamicResource ComboBoxItemStyle}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            
+                
+            
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBlock Text="{DynamicResource NumberOfSeries}" VerticalAlignment="Center" Style="{DynamicResource BodyTextStyle}"/>
+                <xctk:IntegerUpDown Minimum="1"  Value="{Binding SeriesCount, Mode=TwoWay}" Maximum="10" Name="SeriesCount" Width="50"  HorizontalAlignment="Left" Margin="0,0,20,0" VerticalAlignment="Center" />
+                <Button Content="{DynamicResource AddExercise}" Style="{DynamicResource ButtonStyle}" Command="{Binding AddExerciseCommand}"/>
+            </StackPanel>
+            <StackPanel Margin="0,170,0,0" Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Stretch">
+                <TextBlock Text="{DynamicResource Name}" Style="{DynamicResource BodyTextStyle}"/>
+                <TextBox Style="{DynamicResource TextBoxStyle}"/>
+                <TextBlock Margin="5,0,0,0" Text="{DynamicResource Details}" Style="{DynamicResource BodyTextStyle}"/>
+                <TextBox Style="{DynamicResource TextBoxStyle}"/>
+                <Button Content="{DynamicResource CreateExercise}" Style="{DynamicResource ButtonStyle}"/>
+            </StackPanel>
+            
+        </Grid>
+
+        <StackPanel Grid.Column="1" Margin="5,0,0,5" HorizontalAlignment="Stretch">
+            
+            <TextBlock Grid.Row="0" Text="{DynamicResource Exercises}" Style="{DynamicResource BodyTextStyle}" FontSize="16"/>
+            <ListView Grid.Row="1" Background="{DynamicResource SurfaceBrush}" 
+               BorderBrush="{DynamicResource PrimaryBrush}" 
+               Foreground="{DynamicResource TextBrush}" 
+               ItemsSource="{Binding ExercisesOnTraining}"
+               HorizontalAlignment="Stretch"
+               Name="SelectedExercises"
+               Margin="5,0,5,0"
+               Width="454">
+                <!-- Definicija kolona sa zaglavljima -->
+                <ListView.View>
+                    <GridView>
+                        <!-- Kolona za naziv vežbe -->
+                        <GridViewColumn Header="{DynamicResource Name}" Width="250">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Exercise.Name}" 
+                                Style="{DynamicResource BodyTextStyle}" 
+                                VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="{DynamicResource NumberOfSeries}" Width="150">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <xctk:IntegerUpDown Minimum="1"  Value="{Binding NumberOfSeries, Mode=TwoWay}" Maximum="10" Name="SeriesCountOfTrainingExercises"   VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+
+                        <GridViewColumn Header="{DynamicResource Delete}" Width="54">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{DynamicResource Delete}" 
+                                 Style="{DynamicResource DeleteButtonStyle}" 
+                                 Command="{Binding DataContext.RemoveExerciseCommand, 
+                                 RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                                 CommandParameter="{Binding Exercise.Id}" 
+                                 VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <!-- Kolona za dugme za brisanje -->
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Content="{DynamicResource Save}" Margin="0,0,15,0" VerticalAlignment="Bottom" Style="{DynamicResource ButtonStyle}" Grid.Row="2" HorizontalAlignment="Right" Command="{Binding SaveCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,5 +1,6 @@
 ﻿using GainTrack.Data;
 using GainTrack.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,14 @@ namespace GainTrack.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Exercise>> GetAllExercisesAsync()
+        public async Task<IEnumerable<Exercise>> GetAllExercisesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Exercises.ToListAsync();
         }
 
-        public Task<Exercise> GetExerciseByIdAsync(int id)
+        public async Task<Exercise> GetExerciseByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Exercises.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public Task UpdateExerciseAsync(Exercise Exercise)

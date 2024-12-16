@@ -21,14 +21,14 @@
 
         <!-- Leva kolona - Lista vežbi sa filtrima -->
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
-            <Button Content="Nova mjera"  HorizontalAlignment="Stretch"/>
+            <Button Content="{DynamicResource NewMeasurement}"  HorizontalAlignment="Stretch"/>
 
            
         </StackPanel>
         <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0"  Width="200" HorizontalAlignment="Left" VerticalAlignment="Stretch">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Mjere" DisplayMemberBinding="{Binding TrainingName}" Width="200"/>
+                    <GridViewColumn Header="{DynamicResource Measurements}" DisplayMemberBinding="{Binding TrainingName}" Width="200"/>
                 </GridView>
             </ListView.View>
         </ListView>
@@ -37,7 +37,7 @@
 
         <!-- Desna kolona - Grafikon -->
         <Grid Grid.Column="1" Grid.RowSpan="2" Margin="10">
-            <TextBlock Text="Progres Vježbe" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <TextBlock Text="{DynamicResource MeasurementProgress}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
             <lvc:CartesianChart Name="ExerciseChart" LegendLocation="Right" Margin="20">
 
             </lvc:CartesianChart>

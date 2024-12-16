@@ -7,6 +7,8 @@ using GainTrack.Data;
 using GainTrack.Services;
 using GainTrack.ViewModel;
 using GainTrack.ViewModels;
+using GainTrack.Utils;
+using GainTrack.View;
 
 namespace GainTrack
 {
@@ -20,25 +22,30 @@ namespace GainTrack
             _host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    // Dobavljanje konekcijskog stringa iz App.config
+                // Dobavljanje konekcijskog stringa iz App.config
                     string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
                     // Dodavanje DbContext-a
                     services.AddDbContext<GainTrackContext>(options =>
                         options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21))));
 
-                    // Registracija servisa
+
                     services.AddScoped<IUserService, UserService>();
                     services.AddScoped<ICardioExerciseService, CardioExerciseService>();
                     services.AddScoped<IWeigthExerciseService, WeigthExerciseService>();
                     services.AddScoped<ITrainingHasExerciseService, TrainingHasExerciseService>();
                     services.AddScoped<IExerciseService, ExerciseService>();
                     services.AddScoped<ITraningService, TrainingService>();
-                    services.AddScoped<MainWindow>();
-
-                    services.AddScoped<TrainerWindow>();
                     // Registracija ViewModel-a
                     services.AddScoped<TrainerWindowViewModel>();
+                    services.AddScoped<MainWindowViewModel>();
+                    services.AddScoped<CreateClientViewModel>();
+                    services.AddScoped<TrainerWindow>();
+                    services.AddScoped<MainWindow>();
+                    services.AddScoped<CreateClient>();
+                    services.AddScoped<CreateTraining>();
+
+                    services.AddScoped<CreateTrainingViewModel>();
 
                     // Registracija prozora
                 })
@@ -47,12 +54,13 @@ namespace GainTrack
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+            await _host.StartAsync();
             // Pokretanje servisa i otvaranje glavnog prozora
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
 
             // Čekanje na startovanje hosta
-            await _host.StartAsync();
+            
 
             // Dozvoljava automatsko upravljanje DbContext instancama preko DI
             DbContext = _host.Services.GetRequiredService<GainTrackContext>();
@@ -70,5 +78,7 @@ namespace GainTrack
             DbContext.Dispose();
             base.OnExit(e);
         }
+
+        
     }
 }

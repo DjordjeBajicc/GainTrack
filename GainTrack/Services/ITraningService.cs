@@ -9,7 +9,7 @@ namespace GainTrack.Services
 {
     public interface ITraningService
     {
-        Task AddTrainingAsync(Training training);
+        Task<Training> AddTrainingAsync(Training training);
         Task<Training> GetTrainingByIdAsync(int id);
         Task<IEnumerable<Training>> GetAllTrainingsAsync();
         Task UpdateTrainingAsync(Training training);

@@ -1,6 +1,4 @@
-﻿using GainTrack.Data.Entities;
-using GainTrack.Services;
-using GainTrack.ViewModel;
+﻿using GainTrack.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,23 +13,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GainTrack
+namespace GainTrack.View
 {
     /// <summary>
-    /// Interaction logic for CreateClient.xaml
+    /// Interaction logic for EditTrainingWindow.xaml
     /// </summary>
-    public partial class CreateClient : Window
+    public partial class EditTrainingWindow : Window
     {
-        public CreateClient(CreateClientViewModel createClientViewModel)
+        public EditTrainingWindow(EditTrainingWindowViewModel editTrainingWindowViewModel)
         {
             InitializeComponent();
-            DataContext = createClientViewModel;
+            DataContext = editTrainingWindowViewModel;
         }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
     }
 }

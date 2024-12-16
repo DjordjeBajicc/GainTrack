@@ -1,10 +1,12 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
+using GainTrack.Utils;
 using GainTrack.ViewModel;
 using GainTrack.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,23 +30,52 @@ namespace GainTrack
         {
             InitializeComponent();
             DataContext = trainerWindowViewModel;
+            string trainerTheme = ConfigurationManager.AppSettings["TrainerTheme"];
+            string trainerLanguage = ConfigurationManager.AppSettings["TrainerLanguage"];
+
+            // Promeni temu
+            if (!string.IsNullOrWhiteSpace(trainerTheme))
+            {
+                LanguageAndThemeUtil.ChangeTheme(trainerTheme);
+            }
+
+            // Promeni jezik
+            if (!string.IsNullOrWhiteSpace(trainerLanguage))
+            {
+                LanguageAndThemeUtil.ChangeLanguage(trainerLanguage);
+            }
 
         }
 
-        private void ClientsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        
+
+        private void LanguageButton_Click(object sender, RoutedEventArgs e)
         {
-                
+            LanguagePopup.IsOpen = true;
         }
 
-        //private void AddClient_Click(object sender, RoutedEventArgs e)
-        //{
-        //    CreateClient createClient = new CreateClient(_userService);
-        //    createClient.Show();
-        //}
-
-        private void AddTraining_Click(object sender, RoutedEventArgs e)
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ThemePopup.IsOpen = true;
         }
-    }
+
+        
+        private void OnTrainingDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Proverite da li je dvokliknut pravi ListBoxItem
+            if (sender is ListBoxItem listBoxItem && listBoxItem.DataContext is Training training)
+            {
+                // Pozovite komandu iz ViewModel-a, ako postoji
+                if (DataContext is TrainerWindowViewModel viewModel)
+                {
+                    viewModel.EditTrainingCommand.Execute(training.Id);
+                    //MessageBox.Show("1");
+                }
+                //MessageBox.Show("2");
+            }
+            
+        }
+
+    
+}
 }
