@@ -99,7 +99,7 @@
                 <TextBlock Text="{DynamicResource NumberOfSeries}" Style="{DynamicResource BodyTextStyle}" FontSize="15" Margin="0,5,10,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <xctk:IntegerUpDown Minimum="1"  Value="{Binding SeriesCount, Mode=TwoWay}" Maximum="10" Name="SeriesCount" Width="50"  HorizontalAlignment="Left" Margin="0,0,20,0" VerticalAlignment="Center" />
                 <Button Content="{DynamicResource AddExercise}" Style="{DynamicResource ButtonStyle}"  HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding AddExerciseCommand}"/>
-                <Button Content="{DynamicResource CreateExercise}" Style="{DynamicResource ButtonStyle}"  HorizontalAlignment="Right" Margin="330,0,0,0" VerticalAlignment="Center"/>
+                <Button Content="{DynamicResource CreateExercise}" Style="{DynamicResource ButtonStyle}"  HorizontalAlignment="Right" Margin="330,0,0,0" VerticalAlignment="Center" Command="{Binding CreateNewExerciseCommand}"/>
             </StackPanel>
         </StackPanel>
 
@@ -113,12 +113,15 @@
               ItemsSource="{Binding SelectedExercises}"
               HorizontalAlignment="Stretch"
               Name="SelectedExercises" 
-              Height="200" >
+              Height="200"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+          ScrollViewer.VerticalScrollBarVisibility="Auto"
+              >
                 <!-- Definicija kolona sa zaglavljima -->
                 <ListView.View>
                     <GridView>
                         <!-- Kolona za naziv vežbe -->
-                        <GridViewColumn Header="{DynamicResource Name}" Width="530">
+                        <GridViewColumn Header="{DynamicResource Name}" Width="485">
                             <GridViewColumn.HeaderContainerStyle>
                                 <Style TargetType="GridViewColumnHeader">
                                     <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
@@ -159,7 +162,7 @@
                         </GridViewColumn>
 
 
-                        <GridViewColumn Header="{DynamicResource Delete}">
+                        <GridViewColumn Header="{DynamicResource Delete}" Width="110">
                             <GridViewColumn.HeaderContainerStyle>
                                 <Style TargetType="GridViewColumnHeader">
                                     <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>

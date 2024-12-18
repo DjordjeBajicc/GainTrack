@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GainTrack.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,22 +20,19 @@ namespace GainTrack
     /// </summary>
     public partial class CreateExercise : Window
     {
-        public CreateExercise()
+        public CreateExercise(CreateExerciseViewModel createExerciseViewModel)
         {
             InitializeComponent();
+            DataContext = createExerciseViewModel;
         }
 
         
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

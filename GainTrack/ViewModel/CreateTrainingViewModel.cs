@@ -19,11 +19,11 @@ namespace GainTrack.ViewModel
         private readonly IWeigthExerciseService _WeigthExerciseService;
         private readonly ICardioExerciseService _CardioExerciseService;
         private readonly ITrainingHasExerciseService _TrainingHasExerciseService;
-        public User SelectedUser { get; set; }  
-
-        
+        public User SelectedUser { get; set; }
 
 
+
+        public event EventHandler TrainingAdded;    
 
         // Properties for binding
         private string _trainingName;
@@ -177,6 +177,7 @@ namespace GainTrack.ViewModel
         {
             if (SelectedExercise != null)
             {
+                
                 Exercise exercise = await _exerciseService.GetExerciseByIdAsync(SelectedExercise.Id);
                 
                 bool flag = true;
@@ -193,12 +194,14 @@ namespace GainTrack.ViewModel
                 }
                 if (flag && _seriesCount > 0)
                 {
+                    //MessageBox.Show(SelectedExercise.Id.ToString());
                     TrainingHasExercise exerciseWithSeries = new TrainingHasExercise
                     {
                         ExerciseId = SelectedExercise.Id,
                         NumberOfSeries = _seriesCount,
                         Exercise = exercise
                     };
+                    //MessageBox.Show(exerciseWithSeries.ExerciseId.ToString());
                     SelectedExercises.Add(exerciseWithSeries);
                 }
             }
@@ -208,7 +211,7 @@ namespace GainTrack.ViewModel
         {
             if(string.IsNullOrEmpty(_trainingName))
             {
-                MessageBox.Show("Popunite sva polja");
+                MessageBox.Show(App.Current.Resources["FillAllFields"].ToString());
             }
             else
             {
@@ -224,15 +227,17 @@ namespace GainTrack.ViewModel
                 
                 foreach (var selectedExercise in SelectedExercises)
                 {
+                    //MessageBox.Show(selectedExercise.ExerciseId.ToString());
                     selectedExercise.TrainingId = training.Id; 
-                    await _TrainingHasExerciseService.AddTrainignHasExerciseAsync(selectedExercise);
+                    await _TrainingHasExerciseService.AddTrainingHasExerciseAsync(training.Id, selectedExercise.Exercise.Id, selectedExercise.NumberOfSeries);
                 }
 
                 // Nakon što je trening sa vežbama sačuvan, možeš da očistiš selektovane vežbe
                 SelectedExercises.Clear();
 
                 // Opcionalno, možeš da obavestiš korisnika o uspehu ili grešci
-                MessageBox.Show("Trening je uspešno sačuvan!");
+                MessageBox.Show(App.Current.Resources["TheTrainingWasSuccessfullySaved"].ToString());
+                TrainingAdded?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -251,7 +256,9 @@ namespace GainTrack.ViewModel
 
         private void CreateNewExercise(object? obj)
         {
-            // Logika za otvaranje prozora za kreiranje nove vežbe
+            CreateExerciseViewModel createExerciseViewModel = new CreateExerciseViewModel(_exerciseService, _WeigthExerciseService, _CardioExerciseService);
+            CreateExercise createExercise = new CreateExercise(createExerciseViewModel);
+            createExercise.Show();
         }
 
         // INotifyPropertyChanged implementation

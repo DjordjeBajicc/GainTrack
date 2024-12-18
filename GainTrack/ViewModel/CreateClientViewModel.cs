@@ -50,7 +50,7 @@ namespace GainTrack.ViewModel
             {
                 await _userService.AddUserAsync(user);
                 UserSaved?.Invoke(this, EventArgs.Empty);
-                MessageBox.Show("Vjezbac je sacuvan.");
+                MessageBox.Show(App.Current.Resources["TheTraineeWasSaved"].ToString());
                 Firstname = string.Empty;
                 Lastname = string.Empty;
             }

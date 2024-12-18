@@ -39,6 +39,11 @@
     <system:String x:Key="Delete">Delete</system:String>
     <system:String x:Key="All">All</system:String>
     <system:String x:Key="Update">Update</system:String>
+    <system:String x:Key="FillAllFields">Fill in all the fields</system:String>
+    <system:String x:Key="TheTrainingWasSuccessfullySaved">The training was successfully saved</system:String>
+    <system:String x:Key="TheExercisWasSuccessfullyCreated">The exercise was successfully created</system:String>
+    <system:String x:Key="EnterTheNameOfTheExerciseAndSelectTheType">Enter the name of the exercise and select the type</system:String>
+    <system:String x:Key="TheTraineeWasSaved">The trainee was saved</system:String>
     
 
 

@@ -1,6 +1,7 @@
 ﻿using GainTrack.Data;
 using GainTrack.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,22 @@ namespace GainTrack.Services
 {
     public class CardioExerciseService : ICardioExerciseService
     {
-        private GainTrackContext _context;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public CardioExerciseService(GainTrackContext context)
+        public CardioExerciseService(IServiceScopeFactory scopeFactory)
         {
-            _context = context;
+            _scopeFactory = scopeFactory;
         }
         public async Task AddCardioExerciseAsync(CardioExercise CardioExercise)
         {
-            _context.CardioExercises.Add(CardioExercise);
-            await _context.SaveChangesAsync();
+            using(var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                await context.CardioExercises.AddAsync(CardioExercise);
+                await context.SaveChangesAsync();
+            }
+            
+            
         }
 
         public Task DeleteCardioExerciseAsync(int id)
@@ -30,7 +37,12 @@ namespace GainTrack.Services
 
         public async Task<IEnumerable<CardioExercise>> GetAllCardioExercisesAsync()
         {
-            return await _context.CardioExercises.ToListAsync();
+            using( var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await context.CardioExercises.ToListAsync();
+            }
+            
         }
 
         public Task<Training> GetCardioExerciseByIdAsync(int id)

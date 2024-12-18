@@ -39,6 +39,11 @@
     <system:String x:Key="Delete">Obriši</system:String>
     <system:String x:Key="All">Sve</system:String>
     <system:String x:Key="Update">Uredi</system:String>
+    <system:String x:Key="FillAllFields">Popunite sva polja</system:String>
+    <system:String x:Key="TheTrainingWasSuccessfullySaved">Trening je uspješno sačuvan</system:String>
+    <system:String x:Key="TheExercisWasSuccessfullyCreated">Вјеžba je uspješno kreirana</system:String>
+    <system:String x:Key="EnterTheNameOfTheExerciseAndSelectTheType">Unesite naziv vježbe i izaberite tip</system:String>
+    <system:String x:Key="TheTraineeWasSaved">Vježbač je uspješno sačuvan</system:String>
 
 
 </ResourceDictionary>

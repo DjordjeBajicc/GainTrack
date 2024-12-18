@@ -105,8 +105,10 @@ namespace GainTrack.ViewModels
             _createClientViewModel.UserSaved += (sender, e) => LoadUsers();
             
             _createTrainingViewModel = _serviceProvider.GetRequiredService<CreateTrainingViewModel>();
+            _createTrainingViewModel.TrainingAdded += (sender, e) => LoadTrainingsForUser();
 
-            
+
+
         }
 
         private async void EditTraining(object? obj)
@@ -115,15 +117,15 @@ namespace GainTrack.ViewModels
             {
                 // Kreiranje ViewModel-a preko DI i postavljanje ID-a
                 EditTrainingWindowViewModel viewModel = new EditTrainingWindowViewModel(_trainingHasExerciseService, _exerciseService, _trainingService, _weigthExerciseService, _cardioExerciseService, id );
-               
 
+                await viewModel.LoadExercisesForTraining();
                 // Kreiranje prozora preko DI
                 var editTrainingWindow = new EditTrainingWindow(viewModel);
 
                 // Učitavanje podataka pre prikazivanja prozora
-                await viewModel.LoadExercisesForTraining();
-                await viewModel.LoadExercises();
-
+                
+                //await viewModel.LoadExercises();
+                Thread.Sleep(100);
                 // Prikaz prozora
                 editTrainingWindow.Show();
             }

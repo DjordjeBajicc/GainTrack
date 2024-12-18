@@ -1,6 +1,7 @@
 ﻿using GainTrack.Data;
 using GainTrack.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +12,22 @@ namespace GainTrack.Services
 {
     class ExerciseService : IExerciseService
     {
-        private GainTrackContext _context;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public ExerciseService(GainTrackContext context)
+        public ExerciseService(IServiceScopeFactory scopeFactory)
         {
-            _context = context;
+            _scopeFactory = scopeFactory;
         }
-        public Task AddExerciseAsync(Exercise Exercise)
+        public async Task<Exercise> AddExerciseAsync(Exercise Exercise)
         {
-            throw new NotImplementedException();
+            using(var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                await context.Exercises.AddAsync(Exercise);
+                await context.SaveChangesAsync();
+
+                return Exercise;
+            }
         }
 
         public Task DeleteExerciserAsync(int id)
@@ -29,12 +37,21 @@ namespace GainTrack.Services
 
         public async Task<IEnumerable<Exercise>> GetAllExercisesAsync()
         {
-            return await _context.Exercises.ToListAsync();
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await context.Exercises.ToListAsync();
+            }
         }
 
         public async Task<Exercise> GetExerciseByIdAsync(int id)
         {
-            return await _context.Exercises.FirstOrDefaultAsync(e => e.Id == id);
+            using(var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await context.Exercises.FirstOrDefaultAsync(e => e.Id == id);
+            }
+            
         }
 
         public Task UpdateExerciseAsync(Exercise Exercise)

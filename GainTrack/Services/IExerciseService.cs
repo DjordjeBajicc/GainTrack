@@ -9,7 +9,7 @@ namespace GainTrack.Services
 {
     public interface IExerciseService
     {
-        Task AddExerciseAsync(Exercise Exercise);
+        Task<Exercise> AddExerciseAsync(Exercise Exercise);
         Task<Exercise> GetExerciseByIdAsync(int id);
         Task<IEnumerable<Exercise>> GetAllExercisesAsync();
         Task UpdateExerciseAsync(Exercise Exercise);

@@ -46,25 +46,31 @@
                     .OnDelete(DeleteBehavior.NoAction);
                 modelBuilder.Entity<Training>().ToTable("Training");
 
-                // Konfiguracija za tabelu Training_has_Exercise
-                modelBuilder.Entity<TrainingHasExercise>()
-                    .HasKey(t => t.Id);
-                modelBuilder.Entity<TrainingHasExercise>()
-                    .HasOne(t => t.Training)
-                    .WithMany()
-                    .HasForeignKey(t => t.TrainingId)
-                    .OnDelete(DeleteBehavior.NoAction);
-                modelBuilder.Entity<TrainingHasExercise>()
-                    .HasOne(t => t.Exercise)
-                    .WithMany(e => e.TrainingHasExercises)
-                    .HasForeignKey(t => t.ExerciseId)
-                    .OnDelete(DeleteBehavior.NoAction);
-                modelBuilder.Entity<TrainingHasExercise>()
-                    .HasOne(t => t.Training)
-                    .WithMany(e => e.TrainingHasExercises)
-                    .HasForeignKey(t => t.TrainingId)
-                    .OnDelete(DeleteBehavior.NoAction);
-                modelBuilder.Entity<TrainingHasExercise>().ToTable("Training_Has_Exercise");
+            // Konfiguracija za tabelu Training_has_Exercise
+            modelBuilder.Entity<TrainingHasExercise>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.TrainingId)
+                      .HasColumnName("Training_Id");
+
+                entity.Property(e => e.ExerciseId)
+                      .HasColumnName("Exercise_Id");
+
+                entity.Property(e => e.NumberOfSeries)
+                      .HasColumnName("Number_Of_Series");
+                // Konfiguracija stranih ključeva
+                entity.HasOne(e => e.Training)
+                      .WithMany(t => t.TrainingHasExercises)
+                      .HasForeignKey(e => e.TrainingId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Exercise)
+                      .WithMany(t => t.TrainingHasExercises)
+                      .HasForeignKey(e => e.ExerciseId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<TrainingHasExercise>().ToTable("Training_has_Exercise");
 
             // Konfiguracija za tabelu Concrete_Exercise_On_Training
             modelBuilder.Entity<ConcreteExerciseOnTraining>()
@@ -74,7 +80,7 @@
                     .WithMany()
                     .HasForeignKey(c => c.TrainingHasExerciseId)
                     .OnDelete(DeleteBehavior.NoAction);
-
+            modelBuilder.Entity<ConcreteExerciseOnTraining>().ToTable("Concrete_Exercise_on_Training");
                 // Konfiguracija za tabelu Serie
                 modelBuilder.Entity<Serie>()
                     .HasKey(s => new { s.SerialNumber, s.ConcreteExerciseOnTrainingDate, s.ConcreteExerciseOnTrainingTrainingHasExerciseId });
@@ -92,7 +98,7 @@
                     .WithMany()
                     .HasForeignKey(w => new { w.SerieSerialNumber, w.SerieConcreteExerciseOnTrainingDate, w.SerieConcreteExerciseOnTrainingTrainingHasExerciseId })
                     .OnDelete(DeleteBehavior.NoAction);
-
+            modelBuilder.Entity<WeighSerie>().ToTable("Weight_Serie");
                 // Konfiguracija za tabelu Cardio_Serie
                 modelBuilder.Entity<CardioSerie>()
                     .HasKey(c => new { c.SerieSerialNumber, c.SerieConcreteExerciseOnTrainingDate, c.SerieConcreteExerciseOnTrainingTrainingHasExerciseId });
@@ -101,9 +107,9 @@
                     .WithMany()
                     .HasForeignKey(c => new { c.SerieSerialNumber, c.SerieConcreteExerciseOnTrainingDate, c.SerieConcreteExerciseOnTrainingTrainingHasExerciseId })
                     .OnDelete(DeleteBehavior.NoAction);
-
-                // Konfiguracija za tabelu User_has_Messurement
-                modelBuilder.Entity<UserHasMessurement>()
+            modelBuilder.Entity<WeighSerie>().ToTable("Cardio_Serie");
+            // Konfiguracija za tabelu User_has_Messurement
+            modelBuilder.Entity<UserHasMessurement>()
                     .HasKey(uhm => new { uhm.UserId, uhm.MessurementName, uhm.Date }); // Definisanje primarnog ključa
 
                 modelBuilder.Entity<UserHasMessurement>()
@@ -117,8 +123,9 @@
                     .WithMany() // Messurement ne mora imati kolekciju UserHasMessurements
                     .HasForeignKey(uhm => uhm.MessurementName) // Strani ključ za MessurementName
                     .OnDelete(DeleteBehavior.NoAction);
-                // Konfiguracija za tabelu Weight_Exercise
-                modelBuilder.Entity<WeightExercise>()
+            modelBuilder.Entity<WeighSerie>().ToTable("User_Has_Messurement");
+            // Konfiguracija za tabelu Weight_Exercise
+            modelBuilder.Entity<WeightExercise>()
                     .HasKey(w => w.ExerciseId);
                 modelBuilder.Entity<WeightExercise>()
                     .HasOne(w => w.Exercise)

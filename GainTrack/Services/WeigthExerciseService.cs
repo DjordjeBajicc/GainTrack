@@ -1,6 +1,7 @@
 ﻿using GainTrack.Data;
 using GainTrack.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,21 @@ namespace GainTrack.Services
 {
     public class WeigthExerciseService : IWeigthExerciseService
     {
-        private GainTrackContext _context;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public WeigthExerciseService(GainTrackContext context)
+        public WeigthExerciseService(IServiceScopeFactory scopeFactory)
         {
-            _context = context;
+            _scopeFactory = scopeFactory;
         }
         public async Task AddWeightExerciseAsync(WeightExercise weightExercise)
         {
-            _context.WeightExercises.Add(weightExercise);
-            await _context.SaveChangesAsync();
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                await context.WeightExercises.AddAsync(weightExercise);
+                await context.SaveChangesAsync();
+            }
+            
         }
 
         public Task DeleteWeightExerciseAsync(int id)
@@ -30,7 +36,12 @@ namespace GainTrack.Services
 
         public async Task<IEnumerable<WeightExercise>> GetAllWeightExercisesAsync()
         {
-            return await _context.WeightExercises.ToListAsync();
+            using(var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await context.WeightExercises.ToListAsync();
+            }
+            
         }
 
         public Task<Training> GetWeightExerciseByIdAsync(int id)

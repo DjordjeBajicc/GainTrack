@@ -113,7 +113,7 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding Name}" Grid.Column="0" Style="{DynamicResource BodyTextStyle}" VerticalAlignment="Center"/>
-                                <Button Content="{DynamicResource Update}" Grid.Column="1" Command="{Binding DataContext.EditTrainingCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Style="{DynamicResource ButtonStyle}" CommandParameter="{Binding Id}"/>
+                                <Button Content="{DynamicResource Details}" Grid.Column="1" Command="{Binding DataContext.EditTrainingCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Style="{DynamicResource ButtonStyle}" CommandParameter="{Binding Id}"/>
                                 <Button Content="{DynamicResource Delete}" Grid.Column="2" 
                                     Style="{DynamicResource DeleteButtonStyle}" 
                                     Command="{Binding DataContext.DeleteTrainingCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 

@@ -4,32 +4,46 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:GainTrack"
+    xmlns:converters="clr-namespace:GainTrack.Converters" 
     mc:Ignorable="d"
-    Title="CreateExercise" Height="240" Width="500">
+    Title="CreateExercise" Height="300" Width="500"
+    Background="{DynamicResource BackgroundBrush}">
+    <Window.Resources>
+        <converters:RadioButtonToStringConverter x:Key="RadioButtonToStringConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+            <RadioButton Content="{DynamicResource Weight}" Style="{DynamicResource RadioButtonStyle}"
+                         IsChecked="{Binding ExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=Weight}" />
+            <RadioButton Content="{DynamicResource Cardio}" Style="{DynamicResource RadioButtonStyle}"
+                         IsChecked="{Binding ExerciseType, Converter={StaticResource RadioButtonToStringConverter}, ConverterParameter=Cardio}"/>
+        </StackPanel>
+        
+
         <!-- Ime -->
-        <TextBlock Text="{DynamicResource Name}" FontSize="16" Margin="10,10,10,5"/>
-        <TextBox Name="FirstnameTextBox" Grid.Row="1" Margin="10,0,10,10"/>
+        <TextBlock Grid.Row="1" Style="{DynamicResource BodyTextStyle}" Text="{DynamicResource Name}" FontSize="16" Margin="10,10,10,5"/>
+        <TextBox Style="{DynamicResource TextBoxStyle}" Text="{Binding Name, Mode=TwoWay}" Name="FirstnameTextBox" Grid.Row="2" Margin="10,0,10,10"/>
 
         <!-- Prezime -->
-        <TextBlock Text="{DynamicResource Details}" FontSize="16" Grid.Row="2" Margin="10,10,10,5"/>
-        <TextBox Name="LastnameTextBox" Grid.Row="3" Margin="10,0,10,10"/>
+        <TextBlock Style="{DynamicResource BodyTextStyle}" Text="{DynamicResource Details}" FontSize="16" Grid.Row="3" Margin="10,10,10,5"/>
+        <TextBox Style="{DynamicResource TextBoxStyle}" Text="{Binding Description, Mode=TwoWay}" Name="LastnameTextBox" Grid.Row="4" Margin="10,0,10,10"/>
 
         <!-- Trener -->
 
 
         <!-- Dugmad -->
-        <StackPanel Orientation="Horizontal" Grid.Row="6" HorizontalAlignment="Center" Margin="0,20">
-            <Button Content="{DynamicResource Save}" Width="100" Height="30" Margin="10" Click="SaveButton_Click"/>
-            <Button Content="{DynamicResource Cancel}" Width="100" Height="30" Margin="10" Click="CancelButton_Click"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Center" Margin="0,20">
+            <Button Style="{DynamicResource ButtonStyle}" Content="{DynamicResource Save}"  Command="{Binding saveCommand}" Margin="10"/>
+            <Button Style="{DynamicResource ButtonStyle}" Content="{DynamicResource Cancel}" Margin="10" Click="CancelButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>
