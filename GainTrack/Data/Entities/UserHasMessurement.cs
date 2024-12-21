@@ -11,7 +11,7 @@ public partial class UserHasMessurement
 
     public DateOnly Date { get; set; }
 
-    public virtual Messurement MessurementNameNavigation { get; set; } = null!;
+    public virtual Messurement Messurement { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }

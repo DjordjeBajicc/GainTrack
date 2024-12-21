@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GainTrack.Migrations
 {
     [DbContext(typeof(GainTrackContext))]
-    [Migration("20241217125837_InitialMigration")]
+    [Migration("20241220173517_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -36,25 +36,6 @@ namespace GainTrack.Migrations
                     b.ToTable("Cardio_Exercise", (string)null);
                 });
 
-            modelBuilder.Entity("GainTrack.Data.Entities.CardioSerie", b =>
-                {
-                    b.Property<int>("SerieSerialNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("SerieConcreteExerciseOnTrainingDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("SerieConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeOnly?>("Time")
-                        .HasColumnType("time(6)");
-
-                    b.HasKey("SerieSerialNumber", "SerieConcreteExerciseOnTrainingDate", "SerieConcreteExerciseOnTrainingTrainingHasExerciseId");
-
-                    b.ToTable("CardioSeries");
-                });
-
             modelBuilder.Entity("GainTrack.Data.Entities.ConcreteExerciseOnTraining", b =>
                 {
                     b.Property<DateOnly>("Date")
@@ -63,14 +44,9 @@ namespace GainTrack.Migrations
                     b.Property<int>("TrainingHasExerciseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrainingHasExerciseId1")
-                        .HasColumnType("int");
-
                     b.HasKey("Date", "TrainingHasExerciseId");
 
                     b.HasIndex("TrainingHasExerciseId");
-
-                    b.HasIndex("TrainingHasExerciseId1");
 
                     b.ToTable("Concrete_Exercise_on_Training", (string)null);
                 });
@@ -109,54 +85,6 @@ namespace GainTrack.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("Messurements");
-                });
-
-            modelBuilder.Entity("GainTrack.Data.Entities.Serie", b =>
-                {
-                    b.Property<int>("SerialNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("ConcreteExerciseOnTrainingDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("ConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly?>("CardioSerieSerieConcreteExerciseOnTrainingDate")
-                        .HasColumnType("date");
-
-                    b.Property<int?>("CardioSerieSerieConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CardioSerieSerieSerialNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly?>("ConcreteExerciseOnTrainingDate1")
-                        .HasColumnType("date");
-
-                    b.Property<int?>("ConcreteExerciseOnTrainingTrainingHasExerciseId1")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly?>("WeighSerieSerieConcreteExerciseOnTrainingDate")
-                        .HasColumnType("date");
-
-                    b.Property<int?>("WeighSerieSerieConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WeighSerieSerieSerialNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("SerialNumber", "ConcreteExerciseOnTrainingDate", "ConcreteExerciseOnTrainingTrainingHasExerciseId");
-
-                    b.HasIndex("ConcreteExerciseOnTrainingDate", "ConcreteExerciseOnTrainingTrainingHasExerciseId");
-
-                    b.HasIndex("ConcreteExerciseOnTrainingDate1", "ConcreteExerciseOnTrainingTrainingHasExerciseId1");
-
-                    b.HasIndex("CardioSerieSerieSerialNumber", "CardioSerieSerieConcreteExerciseOnTrainingDate", "CardioSerieSerieConcreteExerciseOnTrainingTrainingHasExerciseId");
-
-                    b.HasIndex("WeighSerieSerieSerialNumber", "WeighSerieSerieConcreteExerciseOnTrainingDate", "WeighSerieSerieConcreteExerciseOnTrainingTrainingHasExerciseId");
-
-                    b.ToTable("Series");
                 });
 
             modelBuilder.Entity("GainTrack.Data.Entities.Training", b =>
@@ -225,36 +153,9 @@ namespace GainTrack.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<string>("MessurementName1")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("UserId", "MessurementName", "Date");
 
                     b.HasIndex("MessurementName");
-
-                    b.HasIndex("MessurementName1");
-
-                    b.ToTable("UserHasMessurements");
-                });
-
-            modelBuilder.Entity("GainTrack.Data.Entities.WeighSerie", b =>
-                {
-                    b.Property<int>("SerieSerialNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("SerieConcreteExerciseOnTrainingDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("SerieConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Reps")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("Weight")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.HasKey("SerieSerialNumber", "SerieConcreteExerciseOnTrainingDate", "SerieConcreteExerciseOnTrainingTrainingHasExerciseId");
 
                     b.ToTable("User_Has_Messurement", (string)null);
                 });
@@ -268,6 +169,36 @@ namespace GainTrack.Migrations
                     b.HasKey("ExerciseId");
 
                     b.ToTable("Weight_Exercise", (string)null);
+                });
+
+            modelBuilder.Entity("Serie", b =>
+                {
+                    b.Property<int>("SerialNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("ConcreteExerciseOnTrainingDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("ConcreteExerciseOnTrainingTrainingHasExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Distance")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("Reps")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly?>("Time")
+                        .HasColumnType("time(6)");
+
+                    b.Property<decimal?>("Weight")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("SerialNumber", "ConcreteExerciseOnTrainingDate", "ConcreteExerciseOnTrainingTrainingHasExerciseId");
+
+                    b.HasIndex("ConcreteExerciseOnTrainingDate", "ConcreteExerciseOnTrainingTrainingHasExerciseId");
+
+                    b.ToTable("Series");
                 });
 
             modelBuilder.Entity("TrainingHasExercise", b =>
@@ -313,59 +244,15 @@ namespace GainTrack.Migrations
                     b.Navigation("Exercise");
                 });
 
-            modelBuilder.Entity("GainTrack.Data.Entities.CardioSerie", b =>
-                {
-                    b.HasOne("GainTrack.Data.Entities.Serie", "Serie")
-                        .WithMany()
-                        .HasForeignKey("SerieSerialNumber", "SerieConcreteExerciseOnTrainingDate", "SerieConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Serie");
-                });
-
             modelBuilder.Entity("GainTrack.Data.Entities.ConcreteExerciseOnTraining", b =>
                 {
                     b.HasOne("TrainingHasExercise", "TrainingHasExercise")
-                        .WithMany()
-                        .HasForeignKey("TrainingHasExerciseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("TrainingHasExercise", null)
                         .WithMany("ConcreteExerciseOnTrainings")
-                        .HasForeignKey("TrainingHasExerciseId1")
-                        .HasConstraintName("FK_Concrete_Exercise_on_Training_Training_has_Exercise_Trainin~1");
+                        .HasForeignKey("TrainingHasExerciseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("TrainingHasExercise");
-                });
-
-            modelBuilder.Entity("GainTrack.Data.Entities.Serie", b =>
-                {
-                    b.HasOne("GainTrack.Data.Entities.ConcreteExerciseOnTraining", "ConcreteExerciseOnTraining")
-                        .WithMany()
-                        .HasForeignKey("ConcreteExerciseOnTrainingDate", "ConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("GainTrack.Data.Entities.ConcreteExerciseOnTraining", null)
-                        .WithMany("Series")
-                        .HasForeignKey("ConcreteExerciseOnTrainingDate1", "ConcreteExerciseOnTrainingTrainingHasExerciseId1")
-                        .HasConstraintName("FK_Series_Concrete_Exercise_on_Training_ConcreteExerciseOnTrai~1");
-
-                    b.HasOne("GainTrack.Data.Entities.CardioSerie", "CardioSerie")
-                        .WithMany()
-                        .HasForeignKey("CardioSerieSerieSerialNumber", "CardioSerieSerieConcreteExerciseOnTrainingDate", "CardioSerieSerieConcreteExerciseOnTrainingTrainingHasExerciseId");
-
-                    b.HasOne("GainTrack.Data.Entities.WeighSerie", "WeighSerie")
-                        .WithMany()
-                        .HasForeignKey("WeighSerieSerieSerialNumber", "WeighSerieSerieConcreteExerciseOnTrainingDate", "WeighSerieSerieConcreteExerciseOnTrainingTrainingHasExerciseId");
-
-                    b.Navigation("CardioSerie");
-
-                    b.Navigation("ConcreteExerciseOnTraining");
-
-                    b.Navigation("WeighSerie");
                 });
 
             modelBuilder.Entity("GainTrack.Data.Entities.Training", b =>
@@ -391,15 +278,11 @@ namespace GainTrack.Migrations
 
             modelBuilder.Entity("GainTrack.Data.Entities.UserHasMessurement", b =>
                 {
-                    b.HasOne("GainTrack.Data.Entities.Messurement", "MessurementNameNavigation")
-                        .WithMany()
+                    b.HasOne("GainTrack.Data.Entities.Messurement", "Messurement")
+                        .WithMany("UserHasMessurements")
                         .HasForeignKey("MessurementName")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("GainTrack.Data.Entities.Messurement", null)
-                        .WithMany("UserHasMessurements")
-                        .HasForeignKey("MessurementName1");
 
                     b.HasOne("GainTrack.Data.Entities.User", "User")
                         .WithMany("UserHasMessurements")
@@ -407,20 +290,9 @@ namespace GainTrack.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("MessurementNameNavigation");
+                    b.Navigation("Messurement");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GainTrack.Data.Entities.WeighSerie", b =>
-                {
-                    b.HasOne("GainTrack.Data.Entities.Serie", "Serie")
-                        .WithMany()
-                        .HasForeignKey("SerieSerialNumber", "SerieConcreteExerciseOnTrainingDate", "SerieConcreteExerciseOnTrainingTrainingHasExerciseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Serie");
                 });
 
             modelBuilder.Entity("GainTrack.Data.Entities.WeightExercise", b =>
@@ -432,6 +304,17 @@ namespace GainTrack.Migrations
                         .IsRequired();
 
                     b.Navigation("Exercise");
+                });
+
+            modelBuilder.Entity("Serie", b =>
+                {
+                    b.HasOne("GainTrack.Data.Entities.ConcreteExerciseOnTraining", "ConcreteExerciseOnTraining")
+                        .WithMany("Series")
+                        .HasForeignKey("ConcreteExerciseOnTrainingDate", "ConcreteExerciseOnTrainingTrainingHasExerciseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ConcreteExerciseOnTraining");
                 });
 
             modelBuilder.Entity("TrainingHasExercise", b =>

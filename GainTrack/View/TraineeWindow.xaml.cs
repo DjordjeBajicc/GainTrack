@@ -1,5 +1,8 @@
-﻿using System;
+﻿using GainTrack.Utils;
+using GainTrack.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +22,35 @@ namespace GainTrack
     /// </summary>
     public partial class TraineeWindow : Window
     {
-        public TraineeWindow()
+        public TraineeWindow(TraineeWindowViewModel traineeWindowViewModel)
         {
             InitializeComponent();
+            DataContext = traineeWindowViewModel;
+
+            string traineeTheme = ConfigurationManager.AppSettings["TraineeTheme"];
+            string traineeLanguage = ConfigurationManager.AppSettings["TraineeLanguage"];
+
+            // Promeni temu
+            if (!string.IsNullOrWhiteSpace(traineeTheme))
+            {
+                LanguageAndThemeUtil.ChangeTheme(traineeTheme);
+            }
+
+            // Promeni jezik
+            if (!string.IsNullOrWhiteSpace(traineeLanguage))
+            {
+                LanguageAndThemeUtil.ChangeLanguage(traineeLanguage);
+            }
+        }
+
+        private void LanguageButton_Click(object sender, RoutedEventArgs e)
+        {
+            LanguagePopup.IsOpen = true;
+        }
+
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ThemePopup.IsOpen = true;
         }
     }
 }

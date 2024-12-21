@@ -59,22 +59,7 @@ namespace GainTrack
             ThemePopup.IsOpen = true;
         }
 
-        
-        private void OnTrainingDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            // Proverite da li je dvokliknut pravi ListBoxItem
-            if (sender is ListBoxItem listBoxItem && listBoxItem.DataContext is Training training)
-            {
-                // Pozovite komandu iz ViewModel-a, ako postoji
-                if (DataContext is TrainerWindowViewModel viewModel)
-                {
-                    viewModel.EditTrainingCommand.Execute(training.Id);
-                    //MessageBox.Show("1");
-                }
-                //MessageBox.Show("2");
-            }
-            
-        }
+       
 
     
 }

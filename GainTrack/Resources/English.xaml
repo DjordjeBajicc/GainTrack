@@ -44,6 +44,17 @@
     <system:String x:Key="TheExercisWasSuccessfullyCreated">The exercise was successfully created</system:String>
     <system:String x:Key="EnterTheNameOfTheExerciseAndSelectTheType">Enter the name of the exercise and select the type</system:String>
     <system:String x:Key="TheTraineeWasSaved">The trainee was saved</system:String>
+    <system:String x:Key="Set">Set</system:String>
+    <system:String x:Key="Reps">Reps</system:String>
+    <system:String x:Key="Time">Time</system:String>
+    <system:String x:Key="CreateTraining">Create Training</system:String>
+    <system:String x:Key="MyTrainings">My Trainings</system:String>
+    <system:String x:Key="Progress">Progress</system:String>
+    <system:String x:Key="EnterMessurements">Enter Messurements</system:String>
+    <system:String x:Key="PickDateAndTraining">Pick date and training</system:String>
+    <system:String x:Key="Distance">Distance</system:String>
+    <system:String x:Key="TrainingDoneOnThatDate">Training Done On That Date</system:String>
+    
     
 
 

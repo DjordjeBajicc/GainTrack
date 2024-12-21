@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="GainTrack.View.TrainingDone"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:GainTrack"
+    xmlns:converters="clr-namespace:GainTrack.Converters"
+    mc:Ignorable="d" 
+    d:DesignHeight="650" d:DesignWidth="800" Background="{DynamicResource BackgroundBrush}">
+    <UserControl.Resources>
+        <converters:DateOnlyToDateTimeConverter x:Key="DateOnlyToDateTimeConverter" />
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        </Style>
+        
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <!-- Leva traka za listu treninga -->
+            <ColumnDefinition Width="*"/>
+            <!-- Desni panel za detalje treninga -->
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Tekst za prikaz istorije treninga -->
+        <TextBlock Text="{DynamicResource Trainings}" Style="{DynamicResource BodyTextStyle}" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
+
+        <!-- Lista istorije treninga -->
+        <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0" Width="200" 
+          ItemsSource="{Binding Trainings}" 
+          SelectedItem="{Binding SelectedTraining, Mode=TwoWay}"
+          HorizontalAlignment="Stretch" 
+          VerticalAlignment="Stretch"
+          >
+            <ListView.View>
+                <GridView>
+                    <!-- Kolona za naziv treninga -->
+                    <GridViewColumn Header="{DynamicResource Training}" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{DynamicResource BodyTextStyle}" VerticalAlignment="Center" Margin="5"/>
+                                
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Kolona za dugme -->
+                    <GridViewColumn Header="{DynamicResource Delete}" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{DynamicResource Delete}" 
+                                Style="{DynamicResource DeleteButtonStyle}"
+                                Command="{Binding DataContext.DeleteTrainingCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                CommandParameter="{Binding Id}" 
+                                Margin="5" 
+                                VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        
+
+
+        <DatePicker
+            Width="140"
+            HorizontalAlignment="Left"
+            Margin="10"
+            Grid.Row="0"
+            Grid.Column="1"
+            Foreground="{DynamicResource TextBrush}"
+            Background="{DynamicResource PanelBrush}"
+            SelectedDate="{Binding Date, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"
+            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            
+        <DataGrid VerticalAlignment="Stretch" Name="ExercisesDataGrid" Style="{DynamicResource MaterialDesignDataGrid}" ItemsSource="{Binding SeriesForDataGrid}"  Grid.Column="1" AutoGenerateColumns="False" Margin="10,10,10,28"
+        HeadersVisibility="Column" Grid.Row="1" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource Exercise}" IsReadOnly="true" Binding="{Binding ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}" Width="2*"/>
+                <DataGridTextColumn Header="{DynamicResource Set}" IsReadOnly="True" Binding="{Binding SerialNumber}" Width="1*"/>
+                <DataGridTextColumn Header="{DynamicResource Reps}" Binding="{Binding Reps, Mode=TwoWay}" Width="1*"/>
+                <DataGridTextColumn Header="{DynamicResource Weight}" Binding="{Binding Weight, Mode=TwoWay}"  Width="1*"/>
+                <DataGridTextColumn Header="{DynamicResource Distance}" Binding="{Binding Distance, Mode=TwoWay}"  Width="1*"/>
+                <DataGridTextColumn Header="{DynamicResource Time}" Binding="{Binding Time, Mode=TwoWay}"  Width="1*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        
+
+        <Button Content="{DynamicResource CreateTraining}" Command="{Binding CreateTrainingCommand}" Grid.Column="0" Grid.Row="2" Style="{DynamicResource ButtonStyle}"/>
+        <Button Content="{DynamicResource Save}" Command="{Binding SaveCommand}" Grid.Column="1" Grid.Row="2" Style="{DynamicResource ButtonStyle}"/>
+        
+       
+    </Grid>
+</UserControl>

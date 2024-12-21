@@ -36,16 +36,20 @@ namespace GainTrack
                     services.AddScoped<ITrainingHasExerciseService, TrainingHasExerciseService>();
                     services.AddScoped<IExerciseService, ExerciseService>();
                     services.AddScoped<ITraningService, TrainingService>();
+                    services.AddScoped<IConcreteExerciseOnTrainingService, ConcreteExerciseOnTrainingService>();
+                    services.AddScoped<ISerieService, SerieService>();
                     // Registracija ViewModel-a
                     services.AddScoped<TrainerWindowViewModel>();
                     services.AddScoped<MainWindowViewModel>();
+                    services.AddScoped<TrainingDoneViewModel>();
                     services.AddScoped<CreateClientViewModel>();
                     services.AddScoped<TrainerWindow>();
                     services.AddScoped<MainWindow>();
                     services.AddScoped<CreateClient>();
+                    services.AddScoped<TraineeWindowViewModel>();
                     services.AddScoped<CreateTraining>();
-
                     services.AddScoped<CreateTrainingViewModel>();
+                    services.AddScoped<TrainingsViewModel>();
 
                     // Registracija prozora
                 })

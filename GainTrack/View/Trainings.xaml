@@ -5,12 +5,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:GainTrack"
     mc:Ignorable="d" 
-    d:DesignHeight="650" d:DesignWidth="800" Background="White">
+    d:DesignHeight="650" d:DesignWidth="800" Background="{DynamicResource BackgroundBrush}">
+    <UserControl.Resources>
+        
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        </Style>
 
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="200"/>
+            <!-- Leva traka za listu treninga -->
             <ColumnDefinition Width="*"/>
+            <!-- Desni panel za detalje treninga -->
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -19,43 +28,52 @@
         </Grid.RowDefinitions>
 
         <!-- Tekst za prikaz istorije treninga -->
-        <TextBlock Text="{DynamicResource TrainingHistory}" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
+        <TextBlock Text="{DynamicResource TrainingHistory}" Style="{DynamicResource BodyTextStyle}" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
 
-        <!-- Lista istorije treninga -->
-        <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0"  Width="300" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+        <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0" Width="200" 
+              ItemsSource="{Binding ExercisesWithSeries}" 
+              SelectedItem="{Binding SelectedTraining}"
+              HorizontalAlignment="Stretch" 
+              VerticalAlignment="Stretch"
+              >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="{DynamicResource Training}" DisplayMemberBinding="{Binding TrainingName}" Width="200"/>
-                    <GridViewColumn Header="{DynamicResource Date}" DisplayMemberBinding="{Binding Date}" Width="150"/>
+                    <!-- Kolona za naziv treninga -->
+                    <GridViewColumn Header="{DynamicResource Training}" Width="110">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="15" Text="{Binding TrainingHasExercise.Training.Name}" Style="{DynamicResource BodyTextStyle}" VerticalAlignment="Center" />
+
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Kolona za dugme -->
+                    <GridViewColumn Header="{DynamicResource Date}" Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Date}" 
+                                        Style="{DynamicResource BodyTextStyle}"
+                                        FontSize="12"
+                                        VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <Grid Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- ComboBox za selektovanje treninga -->
-            <TextBox Text="{DynamicResource Trainings}" VerticalAlignment="Center"  FontSize="16" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Height="40" Width="80"/>
-            <ComboBox Name="TrainingComboBox" Width="250" HorizontalAlignment="Right" VerticalAlignment="Center"
-                    DisplayMemberPath="Name" Height="40" Margin="0,0,10,0" Grid.ColumnSpan="2" Grid.Row="0"
-                    SelectedValuePath="Id">
-            </ComboBox>
-
-            <DataGrid Name="ExercisesDataGrid" Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="0,10,0,0"
-          HeadersVisibility="Column" CanUserAddRows="False" IsReadOnly="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="{DynamicResource Exercise}" Binding="{Binding ExerciseName}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
-        </Grid>
+        <!-- DataGrid za prikaz vežbi i serija -->
+        <DataGrid Name="ExercisesDataGrid" ItemsSource="{Binding SeriesForDataGrid}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"  AutoGenerateColumns="False" Margin="10"
+                  HeadersVisibility="Column" CanUserAddRows="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource Exercise}" Binding="{Binding ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}" Width="2*"/>
+                <DataGridTextColumn Header="{DynamicResource Set}"  Binding="{Binding SerialNumber}" Width="1*"/>
+                <DataGridTextColumn Header="{DynamicResource Reps}" Binding="{Binding Reps}" Width="1.3*"/>
+                <DataGridTextColumn Header="{DynamicResource Weight}" Binding="{Binding Weight}"  Width="1.5*"/>
+                <DataGridTextColumn Header="{DynamicResource Distance}" Binding="{Binding Distance}"  Width="1.5*"/>
+                <DataGridTextColumn Header="{DynamicResource Time}" Binding="{Binding Time, StringFormat=HH\\:mm\\:ss}"  Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

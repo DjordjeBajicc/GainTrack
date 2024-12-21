@@ -16,6 +16,7 @@ namespace GainTrack.ViewModel
     {
         private readonly TrainerWindowViewModel _trainedWindowViewModel;
         private readonly IServiceProvider _serviceProvider;
+        private TraineeWindowViewModel _traineeWindowViewModel;
         public ICommand TrainerWindowCommand { get; }
         public ICommand TraineeWindowCommand { get; }
 
@@ -31,6 +32,7 @@ namespace GainTrack.ViewModel
         {
            
             var trainerWindow = _serviceProvider.GetRequiredService<TrainerWindow>();
+            
             trainerWindow.Show();
 
             // Zatvaranje trenutnog prozora
@@ -45,14 +47,13 @@ namespace GainTrack.ViewModel
             
             if (obj is Window currentWindow)
             {
-                TraineeWindow traineeWindow = new TraineeWindow();
-                //TODO traineesettings
+                _traineeWindowViewModel = _serviceProvider.GetRequiredService<TraineeWindowViewModel>();
+                
+                TraineeWindow traineeWindow = new TraineeWindow(_traineeWindowViewModel);
+                
                 traineeWindow.Show();
                 currentWindow.Close(); 
             }
         }
-
-       
-
     }
 }

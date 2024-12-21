@@ -44,6 +44,16 @@
     <system:String x:Key="TheExercisWasSuccessfullyCreated">Вјеžba je uspješno kreirana</system:String>
     <system:String x:Key="EnterTheNameOfTheExerciseAndSelectTheType">Unesite naziv vježbe i izaberite tip</system:String>
     <system:String x:Key="TheTraineeWasSaved">Vježbač je uspješno sačuvan</system:String>
-
-
+    <system:String x:Key="Set">Serija</system:String>
+    <system:String x:Key="Reps">Ponavljanja</system:String>
+    <system:String x:Key="Time">Vrijeme</system:String>
+    <system:String x:Key="CreateTraining">Kreiraj Trening</system:String>
+    <system:String x:Key="MyTrainings">Moji Treninzi</system:String>
+    <system:String x:Key="Progress">Progres</system:String>
+    <system:String x:Key="EnterMessurements">Unos Mjera</system:String>
+    <system:String x:Key="PickDateAndTraining">Izaberite datum i trening</system:String>
+    <system:String x:Key="Distance">Distanca</system:String>
+    <system:String x:Key="TrainingDoneOnThatDate">Trening Odradjen Na Taj Datum</system:String>
+    
+    
 </ResourceDictionary>

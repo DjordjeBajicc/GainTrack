@@ -17,13 +17,17 @@
         <!-- Lijevi panel sa listom klijenata -->
         <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,0" Grid.Column="0">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="323*"/>
+                    <ColumnDefinition Width="9*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!-- Gornji dio sa dugmadima -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="10">
+                <StackPanel Orientation="Horizontal" Margin="10,10,1,10">
                     <Button Name="LanguageButton"  Style="{DynamicResource ButtonStyle}" Click="LanguageButton_Click" HorizontalAlignment="Right">
                         <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,5,0"/>
                     </Button>
@@ -59,7 +63,7 @@
                 </StackPanel>
 
                 <!-- Lista klijenata -->
-                <Grid Grid.Row="1" Margin="10">
+                <Grid Grid.Row="1" Margin="10,10,1,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
@@ -67,7 +71,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="{DynamicResource Clients}" Grid.Row="0" Style="{DynamicResource HeaderTextStyle}" VerticalAlignment="Top"/>
 
-                   
+
                     <ListBox Name="ClientsList" Grid.Row="1" ItemsSource="{Binding Users}" Margin="0,5,0,0"
                             SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                             Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}"
@@ -78,7 +82,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    
+
 
                     <Button Content="{DynamicResource AddClient}" Grid.Row="2" Style="{DynamicResource ButtonStyle}" Command="{Binding AddClientCommand}" Height="40" Margin="0,10" VerticalAlignment="Bottom"/>
                 </Grid>
@@ -98,7 +102,7 @@
                          Foreground="{DynamicResource TextBrush}" Height="200">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
-                            
+
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
@@ -127,7 +131,7 @@
                 <!-- Dugmadi za dodavanje treninga i brisanje -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
                     <Button Content="{DynamicResource AddTraining}" Style="{DynamicResource ButtonStyle}" Margin="10" Command="{Binding AddTrainingCommand}"/>
-                   
+
                 </StackPanel>
             </StackPanel>
         </Border>

@@ -21,8 +21,6 @@ namespace GainTrack.ViewModel
         private readonly ITrainingHasExerciseService _TrainingHasExerciseService;
         public User SelectedUser { get; set; }
 
-
-
         public event EventHandler TrainingAdded;    
 
         // Properties for binding
@@ -104,13 +102,11 @@ namespace GainTrack.ViewModel
             }
         }
 
-        // Commands
         public ICommand SaveTrainingCommand { get; }
         public ICommand RemoveExerciseCommand { get; }
         public ICommand AddExerciseCommand { get; }
         public ICommand CreateNewExerciseCommand { get; }
 
-        // Constructor
         public CreateTrainingViewModel(IExerciseService exerciseService, ITraningService traningService, IWeigthExerciseService weigthExerciseService, ICardioExerciseService cardioExerciseService, ITrainingHasExerciseService trainingHasExerciseService)
         {
             _exerciseService = exerciseService;
