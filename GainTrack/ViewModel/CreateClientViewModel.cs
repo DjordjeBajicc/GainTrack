@@ -16,8 +16,40 @@ namespace GainTrack.ViewModel
     {
         private readonly IUserService _userService;
 
-        public string Firstname {  get; set; }
-        public string Lastname { get; set; }
+        private string _firstname;
+        public string Firstname
+        {
+            get => _firstname;
+            set
+            {
+                _firstname = value;
+                OnPropertyChanged(nameof(Firstname));
+            }
+        }
+
+        private string _lastname;
+        public string Lastname
+        {
+            get => _lastname;
+            set
+            {
+                _lastname = value;
+                OnPropertyChanged(nameof(Lastname));
+            }
+        }
+
+        private string _username;
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged(nameof(Username));
+            }
+        }  
+
+        public User Trainer { get; set; }
 
         public ICommand SaveCommand { get; }
 
@@ -27,38 +59,43 @@ namespace GainTrack.ViewModel
         public CreateClientViewModel(IUserService userService)
         {
             _userService = userService;
-            SaveCommand = new RelayCommand(SaveUserAsync, CanSaveUser);
+            SaveCommand = new RelayCommand(SaveUserAsync);
         }
 
-        private bool CanSaveUser(object? obj)
-        {
-            return !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Lastname);
-        }
+       
         
 
         private async void SaveUserAsync(object? obj)
         {
-           
-            var user = new User
+            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Lastname))
             {
-                Firstname = Firstname,
-                Lastname = Lastname,
-                Trainer = int.Parse(ConfigurationManager.AppSettings["TrainerId"])
-            };
+                var user = new User
+                {
+                    Firstname = Firstname,
+                    Lastname = Lastname,
+                    Username = Username,
+                    Theme = "Dark",
+                    Language = "English"
+                };
 
-            try
-            {
-                await _userService.AddUserAsync(user);
-                UserSaved?.Invoke(this, EventArgs.Empty);
-                MessageBox.Show(App.Current.Resources["TheTraineeWasSaved"].ToString());
-                Firstname = string.Empty;
-                Lastname = string.Empty;
+                try
+                {
+                    await _userService.AddUserAndTraineeAsync(user, Trainer.Id);
+                    UserSaved?.Invoke(this, EventArgs.Empty);
+                    MessageBox.Show(App.Current.Resources["TheTraineeWasSaved"].ToString());
+                    Firstname = string.Empty;
+                    Lastname = string.Empty;
+                    Username = string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(App.Current.Resources["FillInAllTheFields"].ToString());
             }
-            
         }
     }
 }

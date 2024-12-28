@@ -1,4 +1,6 @@
 ﻿using GainTrack.Data;
+using GainTrack.Data.Entities;
+using GainTrack.Services;
 using GainTrack.Utils;
 using GainTrack.View;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,9 +21,31 @@ namespace GainTrack.ViewModel
     {
         private readonly TrainingDoneViewModel _trainingDoneViewModel;
         private readonly TrainingsViewModel _trainingingsViewModel;
+        private readonly IUserService _userService;
+        private User _trainee;
+
+        public User Trainee
+        {
+            get => _trainee;
+            set => SetProperty(ref _trainee, value);
+        }
+
+
         public ObservableCollection<LanguageTheme> AvailableLanguages { get; set; }
 
         public ObservableCollection<LanguageTheme> AvailableThemes { get; set; }
+
+        private int _selectedTabIndex;
+        public int SelectedTabIndex
+        {
+            get => _selectedTabIndex;
+            set
+            {
+                _selectedTabIndex = value;
+                OnPropertyChanged();
+                UpdateCurrentView();
+            }
+        }
         public ICommand showTrainingsCommand { get; }
         public ICommand showTrainingsHistoryCommand { get; }
         public ICommand showProgressCommand { get; }
@@ -30,21 +54,20 @@ namespace GainTrack.ViewModel
         public ICommand ChangeThemeCommand { get; }
         public ICommand ChangeLanguageCommand { get; }
 
-        private UserControl _currentView;
-        public UserControl CurrentView
+        private Page _currentView;
+        public Page CurrentView
         {
             get => _currentView;
-            set
-            {
-                _currentView = value;
-                //MessageBox.Show($"CurrentView changed to: {_currentView.GetType().Name}");
-                OnPropertyChanged(nameof(CurrentView)); // Obaveštava UI da je došlo do promene
-            }
+            set => SetProperty(ref _currentView, value);
         }
-        public TraineeWindowViewModel(IServiceProvider serviceProvider)
+        public TraineeWindowViewModel(IServiceProvider serviceProvider, User trainee)
         {
+            _userService = serviceProvider.GetRequiredService<IUserService>();
+            Trainee = trainee;
             _trainingDoneViewModel = serviceProvider.GetRequiredService<TrainingDoneViewModel>();
+            _trainingDoneViewModel.Trainee = trainee;
             _trainingingsViewModel = serviceProvider.GetRequiredService<TrainingsViewModel>();
+            _trainingingsViewModel.Trainee = trainee;
             showTrainingsCommand = new RelayCommand(ShowTrainings);
             ChangeLanguageCommand = new RelayCommand(ChangeLanguage);
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
@@ -52,6 +75,30 @@ namespace GainTrack.ViewModel
             ShowHistory(null);
             LoadAvailableLanguages();
             LoadAvailableThemes();
+        }
+
+        private void UpdateCurrentView()
+        {
+            switch (SelectedTabIndex)
+            {
+                case 0:
+                    
+                    ShowTrainings(null);
+                    //MessageBox.Show("a");
+                    
+                    break;
+                case 1:
+                    ShowHistory(null);
+                    //MessageBox.Show("ab");
+                    
+                    break;
+                //case 2:
+                //    CurrentView = new ProgressView(); // Primer: UserControl za napredak
+                //    break;
+                //case 3:
+                //    CurrentView = new MeasurementsView(); // Primer: UserControl za merenja
+                //    break;
+            }
         }
 
         private void LoadAvailableLanguages()
@@ -69,19 +116,20 @@ namespace GainTrack.ViewModel
         {
             
             _trainingDoneViewModel.loadTrainings();
-            CurrentView = new TrainingDone(_trainingDoneViewModel);
-            Application.Current.Dispatcher.Invoke(() => CurrentView.UpdateLayout());
+            Application.Current.Dispatcher.Invoke(() => CurrentView = new MyTrainings(_trainingDoneViewModel));
+
 
         }
 
         public void ShowHistory(object? obj)
         {
-            //MessageBox.Show("111");
+            
             
             _trainingingsViewModel.loadTrainigNamesAndDates();
-            CurrentView = new Trainings(_trainingingsViewModel);
-            Application.Current.Dispatcher.Invoke(() => CurrentView.UpdateLayout());
-            //MessageBox.Show("111222");
+            //CurrentView = new TrainingHistory(_trainingingsViewModel);
+            Application.Current.Dispatcher.Invoke(() => CurrentView = new TrainingHistory(_trainingingsViewModel));
+
+           
         }
 
         private void ChangeTheme(object theme)
@@ -93,13 +141,8 @@ namespace GainTrack.ViewModel
                     if (lt.Name.Equals(theme.ToString()))
                     {
                         LanguageAndThemeUtil.ChangeTheme(lt);
-                        
-                        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-                        config.AppSettings.Settings["TraineeTheme"].Value = theme.ToString();
-                        config.Save(ConfigurationSaveMode.Modified);
-                        ConfigurationManager.RefreshSection("appSettings");
-                        
+                        Trainee.Theme = lt.Name;
+                        _userService.UpdateUserThemeAndLanguageAsync(Trainee);
                         return;
                     }
                 }
@@ -115,11 +158,8 @@ namespace GainTrack.ViewModel
                     if (lt.Name.Equals(language.ToString()))
                     {
                         LanguageAndThemeUtil.ChangeLanguage(lt);
-                        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                        config.AppSettings.Settings["TraineeLanguage"].Value = language.ToString();
-                        config.Save(ConfigurationSaveMode.Modified);
-                        ConfigurationManager.RefreshSection("appSettings");
-                       
+                        Trainee.Language = lt.Name;
+                        _userService.UpdateUserThemeAndLanguageAsync(Trainee);
                         return;
                     }
                 }

@@ -16,12 +16,19 @@ namespace GainTrack.Services
         public UserService(IServiceScopeFactory scopeFactory) { 
             _scopeFactory = scopeFactory;
         }
-        public async Task AddUserAsync(User user)
+        public async Task AddUserAndTraineeAsync(User user, int trainerId)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
                 var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
                 _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                Trainee trainee = new Trainee
+                {
+                    UserId = user.Id,
+                    TrainerId = trainerId
+                };
+                await _context.Trainees.AddAsync(trainee);
                 await _context.SaveChangesAsync();
             }  
         }
@@ -61,7 +68,7 @@ namespace GainTrack.Services
             }
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserThemeAndLanguageAsync(User user)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
@@ -69,9 +76,8 @@ namespace GainTrack.Services
                 var existingUSer = await _context.Users.FindAsync(user.Id);
                 if (existingUSer != null)
                 {
-                    existingUSer.Firstname = user.Firstname;
-                    existingUSer.Lastname = user.Lastname;
-                    existingUSer.Trainer = user.Trainer;
+                    existingUSer.Theme = user.Theme;
+                    existingUSer.Language = user.Language;
 
                     await _context.SaveChangesAsync();
                 }

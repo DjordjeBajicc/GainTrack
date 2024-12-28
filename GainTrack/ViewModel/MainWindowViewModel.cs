@@ -1,10 +1,13 @@
-﻿using GainTrack.Utils;
+﻿using GainTrack.Data.Entities;
+using GainTrack.Services;
+using GainTrack.Utils;
 using GainTrack.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,28 +17,82 @@ namespace GainTrack.ViewModel
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private readonly TrainerWindowViewModel _trainedWindowViewModel;
+        private TrainerWindowViewModel _trainerWindowViewModel;
         private readonly IServiceProvider _serviceProvider;
         private TraineeWindowViewModel _traineeWindowViewModel;
-        public ICommand TrainerWindowCommand { get; }
-        public ICommand TraineeWindowCommand { get; }
+        private  ILoginService _loginService;
+        private  ITrainerService _trainerService;
+        private  ITraineeService _traineeService;
+        
+        public ICommand LoginCommand { get; }
 
-        public MainWindowViewModel(TrainerWindowViewModel trainerWindowViewModel, IServiceProvider serviceProvider)
+        private string _password;
+
+        public string Password
         {
-            _trainedWindowViewModel = trainerWindowViewModel;
+            get => _password;
+            set => SetProperty(ref _password, value);
+        }
+
+        private string _username;
+
+        public string Username
+        {
+            get => _username;
+            set => SetProperty(ref _username, value);
+        }
+
+        private User user;
+
+        public MainWindowViewModel(IServiceProvider serviceProvider)
+        {
             _serviceProvider = serviceProvider;
-            TrainerWindowCommand = new RelayCommand(OpenTrainerWindow);
-            TraineeWindowCommand = new RelayCommand(OpenTraineeWidnow);
+            LoginCommand = new RelayCommand(Login);
+        }
+
+        private async void Login(object? obj)
+        {
+            if (Username != null && Password != null)
+            {
+                _loginService = _serviceProvider.GetRequiredService<ILoginService>();
+                user = await _loginService.Login(Username, Password);
+                
+                if (user != null)
+                {
+                    _trainerService = _serviceProvider.GetRequiredService<ITrainerService>();
+                    Trainer trainer = await _trainerService.GetTrainerById(user.Id);
+                    if (trainer != null)
+                    {
+                        _trainerWindowViewModel = new TrainerWindowViewModel(_serviceProvider, user);
+
+                        TrainerWindow trainerWindow = new TrainerWindow(_trainerWindowViewModel);
+                        trainerWindow.Show();
+                    }
+                    else
+                    {
+                        _traineeWindowViewModel = new TraineeWindowViewModel(_serviceProvider, user);
+                        OpenTraineeWidnow(null);
+                    }
+                    if(obj is Window main)
+                    {
+                        main.Close();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Wrong password and/or username");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Fill in all fields");
+            }
         }
 
         private void OpenTrainerWindow(object? obj)
         {
-           
-            var trainerWindow = _serviceProvider.GetRequiredService<TrainerWindow>();
             
-            trainerWindow.Show();
 
-            // Zatvaranje trenutnog prozora
             if (obj is Window currentWindow)
             {
                 currentWindow.Close();
@@ -44,16 +101,11 @@ namespace GainTrack.ViewModel
 
         private void OpenTraineeWidnow(object? obj)
         {
+            TraineeWindow traineeWindow = new TraineeWindow(_traineeWindowViewModel);
+                
+            traineeWindow.Show();
+            //currentWindow.Close(); 
             
-            if (obj is Window currentWindow)
-            {
-                _traineeWindowViewModel = _serviceProvider.GetRequiredService<TraineeWindowViewModel>();
-                
-                TraineeWindow traineeWindow = new TraineeWindow(_traineeWindowViewModel);
-                
-                traineeWindow.Show();
-                currentWindow.Close(); 
-            }
         }
     }
 }

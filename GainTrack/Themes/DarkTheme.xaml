@@ -32,6 +32,11 @@
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
     </Style>
 
+    <Style x:Key="TabControlStyle" TargetType="TabControl">
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Margin" Value="0, 10, 0, 0"/>
+    </Style>
+
     <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>

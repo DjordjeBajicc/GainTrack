@@ -214,7 +214,7 @@ namespace GainTrack.ViewModel
                 Training training = new Training
                 {
                     Name = _trainingName,
-                    UserId = SelectedUser.Id
+                    TraineeId = SelectedUser.Id
                 };
 
                 

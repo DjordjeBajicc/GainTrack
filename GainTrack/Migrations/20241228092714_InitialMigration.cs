@@ -21,9 +21,9 @@ namespace GainTrack.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Details = table.Column<string>(type: "longtext", nullable: true)
+                    Details = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Deleted = table.Column<sbyte>(type: "tinyint", nullable: false)
                 },
@@ -38,8 +38,7 @@ namespace GainTrack.Migrations
                 columns: table => new
                 {
                     Name = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Meassure = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -53,21 +52,23 @@ namespace GainTrack.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Firstname = table.Column<string>(type: "longtext", nullable: false)
+                    Firstname = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Lastname = table.Column<string>(type: "longtext", nullable: false)
+                    Lastname = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Trainer = table.Column<int>(type: "int", nullable: true),
+                    Username = table.Column<string>(type: "varchar(50)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Password = table.Column<string>(type: "varchar(50)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Theme = table.Column<string>(type: "varchar(50)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Language = table.Column<string>(type: "varchar(50)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Deleted = table.Column<sbyte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_User_Trainer",
-                        column: x => x.Trainer,
-                        principalTable: "User",
-                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -106,24 +107,64 @@ namespace GainTrack.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Trainer",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trainer", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Trainer_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Trainee",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    TrainerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trainee", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Trainee_Trainer_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainer",
+                        principalColumn: "UserId");
+                    table.ForeignKey(
+                        name: "FK_Trainee_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Training",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    User_Id = table.Column<int>(type: "int", nullable: false),
+                    Trainee_Id = table.Column<int>(type: "int", nullable: false),
                     Deleted = table.Column<sbyte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Training", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Training_User_User_Id",
-                        column: x => x.User_Id,
-                        principalTable: "User",
-                        principalColumn: "Id");
+                        name: "FK_Training_Trainee_Trainee_Id",
+                        column: x => x.Trainee_Id,
+                        principalTable: "Trainee",
+                        principalColumn: "UserId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -131,24 +172,25 @@ namespace GainTrack.Migrations
                 name: "User_Has_Messurement",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    TraineeId = table.Column<int>(type: "int", nullable: false),
                     MessurementName = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false)
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User_Has_Messurement", x => new { x.UserId, x.MessurementName, x.Date });
+                    table.PrimaryKey("PK_User_Has_Messurement", x => new { x.TraineeId, x.MessurementName, x.Date });
                     table.ForeignKey(
                         name: "FK_User_Has_Messurement_Messurements_MessurementName",
                         column: x => x.MessurementName,
                         principalTable: "Messurements",
                         principalColumn: "Name");
                     table.ForeignKey(
-                        name: "FK_User_Has_Messurement_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id");
+                        name: "FK_User_Has_Messurement_Trainee_TraineeId",
+                        column: x => x.TraineeId,
+                        principalTable: "Trainee",
+                        principalColumn: "UserId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -210,7 +252,7 @@ namespace GainTrack.Migrations
                     Weight = table.Column<decimal>(type: "decimal(6,2)", nullable: true),
                     Reps = table.Column<int>(type: "int", nullable: true),
                     Time = table.Column<TimeOnly>(type: "time(6)", nullable: true),
-                    Distance = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
+                    Distance = table.Column<decimal>(type: "decimal(8,2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -235,9 +277,14 @@ namespace GainTrack.Migrations
                 columns: new[] { "ConcreteExerciseOnTrainingDate", "ConcreteExerciseOnTrainingTrainingHasExerciseId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Training_User_Id",
+                name: "IX_Trainee_TrainerId",
+                table: "Trainee",
+                column: "TrainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Training_Trainee_Id",
                 table: "Training",
-                column: "User_Id");
+                column: "Trainee_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Training_has_Exercise_Exercise_Id",
@@ -248,11 +295,6 @@ namespace GainTrack.Migrations
                 name: "IX_Training_has_Exercise_Training_Id",
                 table: "Training_has_Exercise",
                 column: "Training_Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_Trainer",
-                table: "User",
-                column: "Trainer");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Has_Messurement_MessurementName",
@@ -289,6 +331,12 @@ namespace GainTrack.Migrations
 
             migrationBuilder.DropTable(
                 name: "Training");
+
+            migrationBuilder.DropTable(
+                name: "Trainee");
+
+            migrationBuilder.DropTable(
+                name: "Trainer");
 
             migrationBuilder.DropTable(
                 name: "User");

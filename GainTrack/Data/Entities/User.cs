@@ -11,18 +11,17 @@ public partial class User
 
     public string Lastname { get; set; } = null!;
 
-    public int? Trainer { get; set; }
+    public string Username { get; set; }
+
+    public string Password { get; set; }
+
+    public string Theme { get; set; }
+    public string Language { get; set; }
 
     public sbyte Deleted { get; set; }
 
-    public virtual ICollection<User> InverseTrainerNavigation { get; set; } = new List<User>();
+    public Trainee Trainee { get; set; }
+    public Trainer Trainer { get; set; }
 
-    public virtual User? TrainerNavigation { get; set; }
-
-    public virtual ICollection<Training> Training { get; set; } = new List<Training>();
-
-    public virtual ICollection<UserHasMessurement> UserHasMessurements { get; set; } = new List<UserHasMessurement>();
-
-    public string FullName => $"{Firstname} {Lastname}";
-
+    public string FullName => $"{Firstname} {Lastname} ({Username})";
 }

@@ -79,13 +79,13 @@ namespace GainTrack.Services
                
         }
 
-        public async Task<IEnumerable<Training>> GetTrainingsForUserAsync(int userId)
+        public async Task<IEnumerable<Training>> GetTrainingsForUserAsync(int TraineeId)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
                 var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
                 return await _context.Trainings
-                                      .Where(t => t.UserId == userId && t.Deleted == 0)
+                                      .Where(t => t.TraineeId == TraineeId && t.Deleted == 0)
                                       .ToListAsync();
             }
               

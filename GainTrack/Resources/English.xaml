@@ -54,8 +54,10 @@
     <system:String x:Key="PickDateAndTraining">Pick date and training</system:String>
     <system:String x:Key="Distance">Distance</system:String>
     <system:String x:Key="TrainingDoneOnThatDate">Training Done On That Date</system:String>
-    
-    
-
-
+    <system:String x:Key="Value">Value</system:String>
+    <system:String x:Key="EnterNameOfNewMessurement">Enter Name Of New Messurement</system:String>
+    <system:String x:Key="ChooseMessurement">Choose Messurement</system:String>
+    <system:String x:Key="Username">Username</system:String>
+    <system:String x:Key="FillInAllTheFields">Fill In All The Fields</system:String>
+    <system:String x:Key="EnterValue">Enter Value</system:String>
 </ResourceDictionary>

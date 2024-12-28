@@ -10,13 +10,13 @@ public partial class Training
 
     public string Name { get; set; } = null!;
 
-    [Column("User_Id")]
-    public int UserId { get; set; }
+    [Column("Trainee_Id")]
+    public int TraineeId { get; set; }
 
     public sbyte Deleted { get; set; }
 
     public virtual ICollection<TrainingHasExercise> TrainingHasExercises { get; set; } = new List<TrainingHasExercise>();
 
     
-    public virtual User User { get; set; } = null!;
+    public virtual Trainee Trainee { get; set; } = null!;
 }

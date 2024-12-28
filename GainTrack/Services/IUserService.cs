@@ -9,10 +9,10 @@ namespace GainTrack.Services
 {
     public interface IUserService
     {
-        Task AddUserAsync(User user);
+        Task AddUserAndTraineeAsync(User user, int trainerId);
         Task<User> GetUserByIdAsync(int id);
         Task<IEnumerable<User>> GetAllUsersAsync();
-        Task UpdateUserAsync(User user);
+        Task UpdateUserThemeAndLanguageAsync(User user);
         Task DeleteUserAsync(int id);
 
     }

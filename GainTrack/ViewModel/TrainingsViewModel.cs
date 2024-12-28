@@ -20,6 +20,7 @@ namespace GainTrack.ViewModel
         private readonly IConcreteExerciseOnTrainingService _concreteExerciseOnTrainingService;
         private readonly ISerieService _serieService;
 
+        public User Trainee { get; set; }
         private ObservableCollection<Serie> _seriesForDataGrid;
 
         public ObservableCollection<Serie> SeriesForDataGrid
@@ -88,7 +89,7 @@ namespace GainTrack.ViewModel
         public async void loadTrainigNamesAndDates()
         {
             Trainings.Clear();
-            var trainings = await _traningService.GetTrainingsForUserAsync(int.Parse(ConfigurationManager.AppSettings["TrainerId"]));
+            var trainings = await _traningService.GetTrainingsForUserAsync(Trainee.Id);
             foreach (var training in trainings)
             {
                 Trainings.Add(training);

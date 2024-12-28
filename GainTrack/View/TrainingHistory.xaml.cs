@@ -14,14 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GainTrack
+namespace GainTrack.View
 {
     /// <summary>
-    /// Interaction logic for Trainings.xaml
+    /// Interaction logic for TrainingHistory.xaml
     /// </summary>
-    public partial class Trainings : UserControl
+    public partial class TrainingHistory : Page
     {
-        public Trainings(TrainingsViewModel trainingsViewModel)
+        public TrainingHistory(TrainingsViewModel trainingsViewModel)
         {
             InitializeComponent();
             DataContext = trainingsViewModel;

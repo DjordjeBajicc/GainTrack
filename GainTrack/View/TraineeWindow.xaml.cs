@@ -1,5 +1,6 @@
 ﻿using GainTrack.Utils;
 using GainTrack.ViewModel;
+using GainTrack.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -27,8 +28,8 @@ namespace GainTrack
             InitializeComponent();
             DataContext = traineeWindowViewModel;
 
-            string traineeTheme = ConfigurationManager.AppSettings["TraineeTheme"];
-            string traineeLanguage = ConfigurationManager.AppSettings["TraineeLanguage"];
+            string traineeTheme = traineeWindowViewModel.Trainee.Theme;
+            string traineeLanguage = traineeWindowViewModel.Trainee.Language;
 
             // Promeni temu
             if (!string.IsNullOrWhiteSpace(traineeTheme))

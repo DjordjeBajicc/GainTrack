@@ -1,5 +1,4 @@
-﻿using GainTrack.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,16 +16,13 @@ using System.Windows.Shapes;
 namespace GainTrack.View
 {
     /// <summary>
-    /// Interaction logic for TrainingDone.xaml
+    /// Interaction logic for AddMessurement.xaml
     /// </summary>
-    public partial class TrainingDone : UserControl
+    public partial class AddMessurement : Page
     {
-        public TrainingDone(TrainingDoneViewModel trainingDoneViewModel)
+        public AddMessurement()
         {
             InitializeComponent();
-            DataContext = trainingDoneViewModel;
-
-            
         }
     }
 }

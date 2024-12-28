@@ -17,9 +17,10 @@ using System.Windows.Input;
 
 namespace GainTrack.ViewModels
 {
-    public class TrainerWindowViewModel : INotifyPropertyChanged
+    public class TrainerWindowViewModel : BaseViewModel
     {
         private readonly IUserService _userService;
+        private readonly ITraineeService _traineeService;
         private readonly ITraningService _trainingService;
         private readonly IExerciseService _exerciseService;
         private readonly IWeigthExerciseService _weigthExerciseService;
@@ -30,8 +31,16 @@ namespace GainTrack.ViewModels
         private CreateTrainingViewModel _createTrainingViewModel;
         private EditTrainingWindowViewModel _editTrainingWindowViewModel;
 
-        private User _selectedUser;
-        public User SelectedUser
+        private User _trainer;
+
+        public User Trainer
+        {
+            get => _trainer;
+            set => SetProperty(ref _trainer, value);
+        }
+
+        private Trainee _selectedUser;
+        public Trainee SelectedUser
         {
             get => _selectedUser;
             set
@@ -42,14 +51,14 @@ namespace GainTrack.ViewModels
             }
         }
 
-        private ObservableCollection<User> _users;
-        public ObservableCollection<User> Users
+        private ObservableCollection<Trainee> _trainees;
+        public ObservableCollection<Trainee> Trainees
         {
-            get => _users;
+            get => _trainees;
             set
             {
-                _users = value;
-                OnPropertyChanged(nameof(Users));
+                _trainees = value;
+                OnPropertyChanged(nameof(Trainees));
             }
         }
 
@@ -76,19 +85,20 @@ namespace GainTrack.ViewModels
 
         public ICommand EditTrainingCommand { get; }
 
-        public TrainerWindowViewModel(IUserService userService, ITraningService trainingService, IServiceProvider serviceProvider, ITrainingHasExerciseService trainingHasExerciseService, IExerciseService exerciseService, IWeigthExerciseService weigthExerciseService, ICardioExerciseService cardioExerciseService)
+        public TrainerWindowViewModel(IServiceProvider serviceProvider, User user)
         {
-            _userService = userService;
-            _trainingService = trainingService;
             _serviceProvider = serviceProvider;
-            _trainingHasExerciseService = trainingHasExerciseService;
-            _exerciseService = exerciseService;
-            _weigthExerciseService = weigthExerciseService;
-            _cardioExerciseService = cardioExerciseService;
+            _userService = serviceProvider.GetRequiredService<IUserService>() ;
+            _traineeService = serviceProvider.GetRequiredService<ITraineeService>();
+            _trainingService = serviceProvider.GetRequiredService<ITraningService>();
+            
+            _trainingHasExerciseService = serviceProvider.GetRequiredService<ITrainingHasExerciseService>();
+            _exerciseService = serviceProvider.GetRequiredService<IExerciseService>();
+            _weigthExerciseService = serviceProvider.GetRequiredService<IWeigthExerciseService>();
+            _cardioExerciseService = serviceProvider.GetRequiredService<ICardioExerciseService>();
 
-            Users = new ObservableCollection<User>();
             Trainings = new ObservableCollection<Training>();
-
+            Trainees = new ObservableCollection<Trainee>();
             AddClientCommand = new RelayCommand(AddClient);
             AddTrainingCommand = new RelayCommand(AddTraining, CanExecuteAddTraining);
             DeleteTrainingCommand = new RelayCommand(DeleteTraining, CanExecuteDeleteTraining);
@@ -96,7 +106,7 @@ namespace GainTrack.ViewModels
             ChangeLanguageCommand = new RelayCommand(ChangeLanguage);
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
             EditTrainingCommand = new RelayCommand(EditTraining);
-
+            Trainer = user;
             LoadUsers();
             LoadAvailableLanguages();
             LoadAvailableThemes();
@@ -143,7 +153,7 @@ namespace GainTrack.ViewModels
             AvailableThemes = LanguageAndThemeUtil.loadLanguagesOrThemes("Themes");
         }
 
-        private void ChangeTheme(object theme)
+        private async void ChangeTheme(object theme)
         {
             if (theme is string && !string.IsNullOrWhiteSpace(theme.ToString()))
             {
@@ -152,19 +162,15 @@ namespace GainTrack.ViewModels
                     if (lt.Name.Equals(theme.ToString()))
                     {
                         LanguageAndThemeUtil.ChangeTheme(lt);
-                        //MessageBox.Show(ConfigurationManager.AppSettings["TrainerLanguage"]);
-                        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-                        config.AppSettings.Settings["TrainerTheme"].Value = theme.ToString();
-                        config.Save(ConfigurationSaveMode.Modified);
-                        ConfigurationManager.RefreshSection("appSettings");
+                        Trainer.Theme = lt.Name;
+                        await _userService.UpdateUserThemeAndLanguageAsync(Trainer);
                         return;
                     }
                 }
             }
         }
 
-        private void ChangeLanguage(object language)
+        private async void ChangeLanguage(object language)
         {
             if (language is string  && !string.IsNullOrWhiteSpace(language.ToString()))
             {
@@ -173,10 +179,8 @@ namespace GainTrack.ViewModels
                     if (lt.Name.Equals(language.ToString()))
                     {
                         LanguageAndThemeUtil.ChangeLanguage(lt);
-                        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                        config.AppSettings.Settings["TrainerLanguage"].Value = language.ToString();
-                        config.Save(ConfigurationSaveMode.Modified);
-                        ConfigurationManager.RefreshSection("appSettings");
+                        Trainer.Language = lt.Name;
+                        await _userService.UpdateUserThemeAndLanguageAsync(Trainer);
                         return;
                     }
                 }
@@ -189,18 +193,28 @@ namespace GainTrack.ViewModels
             LoadTrainingsForUser();
         }
 
-        private async void LoadUsers()
+        public async void LoadUsers()
         {
-            var usersFromDb = await _userService.GetAllUsersAsync();
-            Users = new ObservableCollection<User>(usersFromDb);
+            var usersFromDb = await _traineeService.GetTraineeByTrainerId(Trainer.Id);
+            Trainees.Clear();  
+            foreach (var trainee in usersFromDb)
+            {
+                Trainees.Add(trainee);  
+            }
+
         }
+
 
         private async void LoadTrainingsForUser()
         {
             if (SelectedUser != null)
             {
-                var trainingsFromDb = await _trainingService.GetTrainingsForUserAsync(SelectedUser.Id);
-                Trainings = new ObservableCollection<Training>(trainingsFromDb);
+                var trainingsFromDb = await _trainingService.GetTrainingsForUserAsync(SelectedUser.UserId);
+                Trainings.Clear();
+                foreach(Training tr in trainingsFromDb)
+                {
+                    Trainings.Add(tr);
+                }
             }
             else
             {
@@ -210,6 +224,7 @@ namespace GainTrack.ViewModels
 
         private void AddClient(object? obj)
         {
+            _createClientViewModel.Trainer = Trainer;
             var createClient = new CreateClient(_createClientViewModel);
             
             createClient.Show();
@@ -219,7 +234,7 @@ namespace GainTrack.ViewModels
 
         private void AddTraining(object? obj)
         {
-            _createTrainingViewModel.SelectedUser = SelectedUser;
+            _createTrainingViewModel.SelectedUser = SelectedUser.User;
             CreateTraining createTraining = new CreateTraining(_createTrainingViewModel);
             createTraining.Show();
             

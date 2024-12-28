@@ -54,6 +54,10 @@
     <system:String x:Key="PickDateAndTraining">Izaberite datum i trening</system:String>
     <system:String x:Key="Distance">Distanca</system:String>
     <system:String x:Key="TrainingDoneOnThatDate">Trening Odradjen Na Taj Datum</system:String>
-    
-    
+    <system:String x:Key="Value">Vrijednost</system:String>
+    <system:String x:Key="EnterNameOfNewMessurement">Unesite Naziv Novog Mjerenja</system:String>
+    <system:String x:Key="ChooseMessurement">Izaberite Mjerenje</system:String>
+    <system:String x:Key="Username">Username</system:String>
+    <system:String x:Key="FillInAllTheFields">Popunite Sva Polja</system:String>
+    <system:String x:Key="EnterValue">Unesite vrijednost</system:String>
 </ResourceDictionary>

@@ -23,24 +23,45 @@
             public DbSet<UserHasMessurement> UserHasMessurements { get; set; }
             public DbSet<WeightExercise> WeightExercises { get; set; }
             public DbSet<CardioExercise> CardioExercises { get; set; }
+            public DbSet<Trainee> Trainees { get; set; }
+            public DbSet<Trainer> Trainers { get; set; }
 
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
+                modelBuilder.Entity<Trainee>().HasKey(t => t.UserId);
+                modelBuilder.Entity<Trainer>().HasKey(t => t.UserId);
                 // Konfiguracija za tabelu User
-                modelBuilder.Entity<User>()
-                    .HasOne(u => u.TrainerNavigation) // Navigacija prema trenerskom korisniku
-                    .WithMany(u => u.InverseTrainerNavigation) // Trener može imati više korisnika
-                    .HasForeignKey(u => u.Trainer) // Strani ključ
+                modelBuilder.Entity<Trainee>()
+                    .HasOne(u => u.Trainer) // Navigacija prema trenerskom korisniku
+                    .WithMany(u => u.Trainees) // Trener može imati više korisnika
+                    .HasForeignKey(u => u.TrainerId) // Strani ključ
                     .OnDelete(DeleteBehavior.NoAction);
-                modelBuilder.Entity<User>().ToTable("User");
+                modelBuilder.Entity<Trainee>()
+                    .HasOne(t => t.User) // Navigacija ka User entitetu
+                    .WithOne(u => u.Trainee) // Nema povratne navigacije u User entitetu
+                    .HasForeignKey<Trainee>(t => t.UserId) // Strani ključ
+                    .OnDelete(DeleteBehavior.NoAction)
+                    .IsRequired(false);
+
+                modelBuilder.Entity<Trainer>()
+                    .HasOne(t => t.User)
+                    .WithOne(u => u.Trainer)
+                    .HasForeignKey<Trainer>(t => t.UserId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Trainer>().ToTable("Trainer");
+            modelBuilder.Entity<Trainee>().ToTable("Trainee");
+
+            modelBuilder.Entity<User>().ToTable("User");
 
                 modelBuilder.Entity<Exercise>().ToTable("Exercise");
 
             // Konfiguracija za tabelu Training
                 modelBuilder.Entity<Training>()
-                    .HasOne(t => t.User)
-                    .WithMany(u => u.Training)
-                    .HasForeignKey(t => t.UserId)
+                    .HasOne(t => t.Trainee)
+                    .WithMany(u => u.Trainings)
+                    .HasForeignKey(t => t.TraineeId)
                     .OnDelete(DeleteBehavior.NoAction);
                 modelBuilder.Entity<Training>().ToTable("Training");
 
@@ -104,12 +125,12 @@
             
             // Konfiguracija za tabelu User_has_Messurement
             modelBuilder.Entity<UserHasMessurement>()
-                    .HasKey(uhm => new { uhm.UserId, uhm.MessurementName, uhm.Date }); // Definisanje primarnog ključa
+                    .HasKey(uhm => new { uhm.TraineeId, uhm.MessurementName, uhm.Date }); // Definisanje primarnog ključa
 
                 modelBuilder.Entity<UserHasMessurement>()
-                    .HasOne(uhm => uhm.User) // Navigacija prema User entitetu
+                    .HasOne(uhm => uhm.Trainee) // Navigacija prema User entitetu
                     .WithMany(u => u.UserHasMessurements) // Jedan User može imati više UserHasMessurements
-                    .HasForeignKey(uhm => uhm.UserId) // Strani ključ za User
+                    .HasForeignKey(uhm => uhm.TraineeId) // Strani ključ za User
                     .OnDelete(DeleteBehavior.NoAction);
 
                 modelBuilder.Entity<UserHasMessurement>()

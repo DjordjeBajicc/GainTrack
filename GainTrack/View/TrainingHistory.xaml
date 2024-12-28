@@ -1,19 +1,19 @@
-﻿<UserControl x:Class="GainTrack.Trainings"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:GainTrack"
-    mc:Ignorable="d" 
-    d:DesignHeight="650" d:DesignWidth="800" Background="{DynamicResource BackgroundBrush}">
-    <UserControl.Resources>
-        
+﻿<Page x:Class="GainTrack.View.TrainingHistory"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+xmlns:local="clr-namespace:GainTrack"
+mc:Ignorable="d" 
+d:DesignHeight="650" d:DesignWidth="800" Background="{DynamicResource BackgroundBrush}">
+    <Page.Resources>
+
         <Style TargetType="GridViewColumnHeader">
             <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         </Style>
 
-    </UserControl.Resources>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -31,11 +31,11 @@
         <TextBlock Text="{DynamicResource TrainingHistory}" Style="{DynamicResource BodyTextStyle}" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
 
         <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0" Width="200" 
-              ItemsSource="{Binding ExercisesWithSeries}" 
-              SelectedItem="{Binding SelectedTraining}"
-              HorizontalAlignment="Stretch" 
-              VerticalAlignment="Stretch"
-              >
+          ItemsSource="{Binding ExercisesWithSeries}" 
+          SelectedItem="{Binding SelectedTraining}"
+          HorizontalAlignment="Stretch" 
+          VerticalAlignment="Stretch"
+          >
             <ListView.View>
                 <GridView>
                     <!-- Kolona za naziv treninga -->
@@ -53,9 +53,9 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Date}" 
-                                        Style="{DynamicResource BodyTextStyle}"
-                                        FontSize="12"
-                                        VerticalAlignment="Center"/>
+                                    Style="{DynamicResource BodyTextStyle}"
+                                    FontSize="12"
+                                    VerticalAlignment="Center"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -65,7 +65,7 @@
 
         <!-- DataGrid za prikaz vežbi i serija -->
         <DataGrid Name="ExercisesDataGrid" ItemsSource="{Binding SeriesForDataGrid}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"  AutoGenerateColumns="False" Margin="10"
-                  HeadersVisibility="Column" CanUserAddRows="False" IsReadOnly="True">
+              HeadersVisibility="Column" CanUserAddRows="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource Exercise}" Binding="{Binding ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}" Width="2*"/>
                 <DataGridTextColumn Header="{DynamicResource Set}"  Binding="{Binding SerialNumber}" Width="1*"/>
@@ -76,4 +76,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
-</UserControl>
+</Page>

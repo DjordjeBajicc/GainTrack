@@ -3,28 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:GainTrack"
         mc:Ignorable="d"
         Title="TraineeWindow" Height="650" Width="1000"
         Background="{DynamicResource BackgroundBrush}">
 
+    
+
     <Grid>
-        <!-- Leva traka sa opcijama -->
+        <!-- Definicije kolona -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <!-- Leva traka, fiksna širina -->
+            <!-- Leva kolona sa fiksnom širinom -->
             <ColumnDefinition Width="*"/>
-            <!-- Desni prostor, fleksibilan -->
+            <!-- Desna kolona koja treba da popuni preostali prostor -->
         </Grid.ColumnDefinitions>
 
-        <!-- Meni (leva traka) -->
-        <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,10,10,10" Grid.Column="0">
-            <StackPanel Grid.Column="0"  Margin="10">
+        <!-- Leva traka sa opcijama -->
+        <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10" Grid.Column="0">
+            <Grid Margin="10">
+                <!-- Dugmići za Language i Theme -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Red za dugmadi -->
+                    <RowDefinition Height="*"/>
+                    <!-- Red za TabControl -->
+                </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,10">
-                    <Button Name="LanguageButton" Click="LanguageButton_Click"  Style="{DynamicResource ButtonStyle}" Command="{Binding ChangeLanguageCommand}" HorizontalAlignment="Right">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Margin="0,0,0,10">
+                    <Button Name="LanguageButton" Click="LanguageButton_Click" Style="{DynamicResource ButtonStyle}" Command="{Binding ChangeLanguageCommand}" HorizontalAlignment="Left">
                         <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,5,0"/>
                     </Button>
                     <Popup x:Name="LanguagePopup" PlacementTarget="{Binding ElementName=LanguageButton}" StaysOpen="False">
@@ -33,7 +39,7 @@
                                 <ItemsControl ItemsSource="{Binding AvailableLanguages}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Button Content="{Binding Name}"  Command="{Binding DataContext.ChangeLanguageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Name}" Style="{DynamicResource ButtonStyle}"/>
+                                            <Button Content="{Binding Name}" Command="{Binding DataContext.ChangeLanguageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Name}" Style="{DynamicResource ButtonStyle}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -49,33 +55,28 @@
                                 <ItemsControl ItemsSource="{Binding AvailableThemes}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Button Content="{Binding Name}"  Command="{Binding DataContext.ChangeThemeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Name}" Style="{DynamicResource ButtonStyle}"/>
+                                            <Button Content="{Binding Name}" Command="{Binding DataContext.ChangeThemeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Name}" Style="{DynamicResource ButtonStyle}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </StackPanel>
                         </Border>
                     </Popup>
-                </StackPanel>
+                </Grid>
 
-                <Button Content="{DynamicResource MyTrainings}" Margin="0,10" Command="{Binding showTrainingsCommand}" Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Stretch"/>
-
-                <Button Content="{DynamicResource TrainingHistory}" Command="{Binding showTrainingsHistoryCommand}" Margin="0,10" Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Stretch"/>
-
-                <!-- Dugme za prikaz rekorda -->
-                <Button Content="{DynamicResource Progress}" Margin="0,10" Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Stretch"/>
-
-                <!-- Dugme za unos mjera -->
-                <Button Content="{DynamicResource EnterMessurements}" Margin="0,10" Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Stretch"/>
-            </StackPanel>
+                <!-- Vertikalni TabControl -->
+                <TabControl Margin="0,10,0,0" VerticalAlignment="Stretch" TabStripPlacement="Left" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Grid.Row="1">
+                    <TabItem Header="My Trainings" Margin="5"/>
+                    <TabItem Header="Training History" Margin="5"/>
+                    <TabItem Header="Progress" Margin="5"/>
+                    <TabItem Header="Enter Measurements" Margin="5"/>
+                </TabControl>
+            </Grid>
         </Border>
 
-        <!-- Razdelnik između leve trake i desnog panela -->
-        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
-
-        <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,10,10,10" Grid.Column="1">
-            <!-- Desni prostor za prikaz panela -->
-            <ContentControl Name="ContentDisplay" Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+        <!-- Glavni sadržaj -->
+        <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10" Grid.Column="1">
+            <Frame Name="ContentDisplay" Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
         </Border>
     </Grid>
 </Window>

@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace GainTrack.Converters
 {
-    internal class DateOnlyToDateTimeConverter : IValueConverter
+    public class DateOnlyToDateTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

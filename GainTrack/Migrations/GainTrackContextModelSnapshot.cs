@@ -84,6 +84,31 @@ namespace GainTrack.Migrations
                     b.ToTable("Messurements");
                 });
 
+            modelBuilder.Entity("GainTrack.Data.Entities.Trainee", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("TrainerId");
+
+                    b.ToTable("Trainee", (string)null);
+                });
+
+            modelBuilder.Entity("GainTrack.Data.Entities.Trainer", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Trainer", (string)null);
+                });
+
             modelBuilder.Entity("GainTrack.Data.Entities.Training", b =>
                 {
                     b.Property<int>("Id")
@@ -99,13 +124,13 @@ namespace GainTrack.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("TraineeId")
                         .HasColumnType("int")
-                        .HasColumnName("User_Id");
+                        .HasColumnName("Trainee_Id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TraineeId");
 
                     b.ToTable("Training", (string)null);
                 });
@@ -125,23 +150,34 @@ namespace GainTrack.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("Trainer")
-                        .HasColumnType("int");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Theme")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Trainer");
 
                     b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("GainTrack.Data.Entities.UserHasMessurement", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("TraineeId")
                         .HasColumnType("int");
 
                     b.Property<string>("MessurementName")
@@ -150,7 +186,10 @@ namespace GainTrack.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.HasKey("UserId", "MessurementName", "Date");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("TraineeId", "MessurementName", "Date");
 
                     b.HasIndex("MessurementName");
 
@@ -252,25 +291,44 @@ namespace GainTrack.Migrations
                     b.Navigation("TrainingHasExercise");
                 });
 
-            modelBuilder.Entity("GainTrack.Data.Entities.Training", b =>
+            modelBuilder.Entity("GainTrack.Data.Entities.Trainee", b =>
+                {
+                    b.HasOne("GainTrack.Data.Entities.Trainer", "Trainer")
+                        .WithMany("Trainees")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GainTrack.Data.Entities.User", "User")
+                        .WithOne("Trainee")
+                        .HasForeignKey("GainTrack.Data.Entities.Trainee", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Trainer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GainTrack.Data.Entities.Trainer", b =>
                 {
                     b.HasOne("GainTrack.Data.Entities.User", "User")
-                        .WithMany("Training")
-                        .HasForeignKey("UserId")
+                        .WithOne("Trainer")
+                        .HasForeignKey("GainTrack.Data.Entities.Trainer", "UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GainTrack.Data.Entities.User", b =>
+            modelBuilder.Entity("GainTrack.Data.Entities.Training", b =>
                 {
-                    b.HasOne("GainTrack.Data.Entities.User", "TrainerNavigation")
-                        .WithMany("InverseTrainerNavigation")
-                        .HasForeignKey("Trainer")
-                        .OnDelete(DeleteBehavior.NoAction);
+                    b.HasOne("GainTrack.Data.Entities.Trainee", "Trainee")
+                        .WithMany("Trainings")
+                        .HasForeignKey("TraineeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("TrainerNavigation");
+                    b.Navigation("Trainee");
                 });
 
             modelBuilder.Entity("GainTrack.Data.Entities.UserHasMessurement", b =>
@@ -281,15 +339,15 @@ namespace GainTrack.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("GainTrack.Data.Entities.User", "User")
+                    b.HasOne("GainTrack.Data.Entities.Trainee", "Trainee")
                         .WithMany("UserHasMessurements")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TraineeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Messurement");
 
-                    b.Navigation("User");
+                    b.Navigation("Trainee");
                 });
 
             modelBuilder.Entity("GainTrack.Data.Entities.WeightExercise", b =>
@@ -352,6 +410,18 @@ namespace GainTrack.Migrations
                     b.Navigation("UserHasMessurements");
                 });
 
+            modelBuilder.Entity("GainTrack.Data.Entities.Trainee", b =>
+                {
+                    b.Navigation("Trainings");
+
+                    b.Navigation("UserHasMessurements");
+                });
+
+            modelBuilder.Entity("GainTrack.Data.Entities.Trainer", b =>
+                {
+                    b.Navigation("Trainees");
+                });
+
             modelBuilder.Entity("GainTrack.Data.Entities.Training", b =>
                 {
                     b.Navigation("TrainingHasExercises");
@@ -359,11 +429,11 @@ namespace GainTrack.Migrations
 
             modelBuilder.Entity("GainTrack.Data.Entities.User", b =>
                 {
-                    b.Navigation("InverseTrainerNavigation");
+                    b.Navigation("Trainee")
+                        .IsRequired();
 
-                    b.Navigation("Training");
-
-                    b.Navigation("UserHasMessurements");
+                    b.Navigation("Trainer")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TrainingHasExercise", b =>

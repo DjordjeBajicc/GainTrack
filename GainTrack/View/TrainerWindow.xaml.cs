@@ -3,6 +3,7 @@ using GainTrack.Services;
 using GainTrack.Utils;
 using GainTrack.ViewModel;
 using GainTrack.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,8 +31,8 @@ namespace GainTrack
         {
             InitializeComponent();
             DataContext = trainerWindowViewModel;
-            string trainerTheme = ConfigurationManager.AppSettings["TrainerTheme"];
-            string trainerLanguage = ConfigurationManager.AppSettings["TrainerLanguage"];
+            string trainerTheme = trainerWindowViewModel.Trainer.Theme;
+            string trainerLanguage = trainerWindowViewModel.Trainer.Language;
 
             // Promeni temu
             if (!string.IsNullOrWhiteSpace(trainerTheme))

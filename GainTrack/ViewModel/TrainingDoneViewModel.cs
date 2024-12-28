@@ -24,6 +24,7 @@ namespace GainTrack.ViewModel
         private readonly CreateTrainingViewModel _createTrainingViewModel;
         private ObservableCollection<Training> _trainings;
 
+        public User Trainee { get; set; }
         public ObservableCollection<Training> Trainings
         {
             get => _trainings;
@@ -117,7 +118,7 @@ namespace GainTrack.ViewModel
         public async void loadTrainings()
         {
             Trainings.Clear();
-            var trainings = await _traningService.GetTrainingsForUserAsync(int.Parse(ConfigurationManager.AppSettings["TrainerId"]));
+            var trainings = await _traningService.GetTrainingsForUserAsync(Trainee.Id);
             foreach (var training in trainings)
             {
                 Trainings.Add(training);
@@ -125,10 +126,10 @@ namespace GainTrack.ViewModel
         }
 
 
-        private async void createTraining(object? obj)
+        private void createTraining(object? obj)
         {
-            User user = await _userService.GetUserByIdAsync(int.Parse(ConfigurationManager.AppSettings["TrainerId"]));
-            _createTrainingViewModel.SelectedUser = user;
+            
+            _createTrainingViewModel.SelectedUser = Trainee;
             CreateTraining createTraining = new CreateTraining(_createTrainingViewModel);
 
             createTraining.Show();
