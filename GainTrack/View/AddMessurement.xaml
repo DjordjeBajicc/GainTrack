@@ -22,8 +22,8 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock HorizontalAlignment="Center" Grid.Row="0" Text="{DynamicResource EnterNameOfNewMessurement}" Margin="0, 20, 0,0" Style="{DynamicResource BodyTextStyle}"/>
-                <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Margin="15, 20, 15,0"/>
-                <Button Content="{DynamicResource Save}" Style="{DynamicResource ButtonStyle}" Grid.Row="2" Margin="15, 20, 15,0"/>
+                <TextBox HorizontalAlignment="Stretch" Text="{Binding Name, Mode=TwoWay}" Grid.Row="1" Style="{DynamicResource TextBoxStyle}" Margin="15, 20, 15,0"/>
+                <Button Content="{DynamicResource Create}" Command="{Binding CreateCommand}" Style="{DynamicResource ButtonStyle}" Grid.Row="2" Margin="15, 20, 15,0"/>
             </Grid>
         </Border>
 
@@ -45,7 +45,13 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{DynamicResource ChooseMessurement}" Style="{DynamicResource BodyTextStyle}"/>
-                    <ComboBox Grid.Column="1" Style="{DynamicResource ComboBoxStyle}" HorizontalAlignment="Stretch"/>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding Messurements}" SelectedItem="{Binding ChoosenMessurement, Mode=TwoWay}" Style="{DynamicResource ComboBoxStyle}" HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate >
+                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" Style="{DynamicResource ComboBoxItemStyle}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </Grid>
                 <Grid Grid.Row="2" Margin="15">
                     <Grid.ColumnDefinitions>
@@ -53,17 +59,16 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{DynamicResource EnterValue}" Style="{DynamicResource BodyTextStyle}"/>
-                    <TextBox Grid.Column="1" Style="{DynamicResource TextBoxStyle}"/>
+                    <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay}" Style="{DynamicResource TextBoxStyle}"/>
                 </Grid>
                 <Grid Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="{DynamicResource Save}" Style="{DynamicResource ButtonStyle}" Grid.Column="1"/>
-                    <Button Content="{DynamicResource Cancel}" Style="{DynamicResource ButtonStyle}" Grid.Column="2"/>
+                    <Button Content="{DynamicResource Save}" Command="{Binding SaveCommand}" Style="{DynamicResource ButtonStyle}" Grid.Column="1"/>
+                    
                 </Grid>
                 
             </Grid>

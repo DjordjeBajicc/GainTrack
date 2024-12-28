@@ -60,4 +60,11 @@
     <system:String x:Key="Username">Username</system:String>
     <system:String x:Key="FillInAllTheFields">Popunite Sva Polja</system:String>
     <system:String x:Key="EnterValue">Unesite vrijednost</system:String>
+    <system:String x:Key="Create">Kreiraj</system:String>
+    <system:String x:Key="MessurementAlreadyExists">Mjera Vec Postoji</system:String>
+    <system:String x:Key="EnterTheNameOfMessurement">Unesite Naziv Mjere</system:String>
+    <system:String x:Key="ChooseMessurementAndEnterTheValue">Izaberite Mjeru I Unesite Vrijednost</system:String>
+    <system:String x:Key="MessurementCreated">Mjera Kreirana</system:String>
+    <system:String x:Key="MessureRecorded">Mjerenje Zabiljezeno</system:String>
+    <system:String x:Key="MessureAlreadyExistsForThisDate">Mjerenje Vec Postoji Za Ovaj Datum</system:String>
 </ResourceDictionary>

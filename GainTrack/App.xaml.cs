@@ -41,6 +41,7 @@ namespace GainTrack
                     services.AddScoped<ILoginService, LoginService>();
                     services.AddScoped<ITraineeService, TraineeService>();
                     services.AddScoped<ITrainerService, TrainerService>();
+                    services.AddScoped<IMessurementService, MessurementService>();
                     // Registracija ViewModel-a
                     services.AddSingleton<MainWindowViewModel>();
                     services.AddScoped<TrainingDoneViewModel>();

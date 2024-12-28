@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GainTrack.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GainTrack
+namespace GainTrack.View
 {
     /// <summary>
-    /// Interaction logic for MeasurementProgressPanel.xaml
+    /// Interaction logic for MessureProgress.xaml
     /// </summary>
-    public partial class MeasurementProgressPanel : UserControl
+    public partial class MessureProgress : Page
     {
-        public MeasurementProgressPanel()
+        public MessureProgress(MessureProgressViewModel messureProgressViewModel)
         {
             InitializeComponent();
+            DataContext = messureProgressViewModel;
         }
     }
 }

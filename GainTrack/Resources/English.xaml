@@ -60,4 +60,11 @@
     <system:String x:Key="Username">Username</system:String>
     <system:String x:Key="FillInAllTheFields">Fill In All The Fields</system:String>
     <system:String x:Key="EnterValue">Enter Value</system:String>
+    <system:String x:Key="Create">Create</system:String>
+    <system:String x:Key="MessurementAlreadyExists">Messurement Already Exists</system:String>
+    <system:String x:Key="EnterTheNameOfMessurement">Enter The Name Of Messurement</system:String>
+    <system:String x:Key="ChooseMessurementAndEnterTheValue">Choose Messurement And Enter The Value</system:String>
+    <system:String x:Key="MessurementCreated">Messurement Created</system:String>
+    <system:String x:Key="MessureRecorded">Messure Recorded</system:String>
+    <system:String x:Key="MessureAlreadyExistsForThisDate">MessureAlreadyExistsForThisDate</system:String>
 </ResourceDictionary>
