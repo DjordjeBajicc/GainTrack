@@ -9,9 +9,9 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="1*"/>
             
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
             
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -20,19 +20,19 @@
         </Grid.RowDefinitions>
 
 
-        <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Messurements}" Width="200" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+        <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Messurements}" SelectedItem="{Binding SelectedMeasurement, Mode=TwoWay}" Width="auto" HorizontalAlignment="Left" VerticalAlignment="Stretch">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="{DynamicResource Measurements}" DisplayMemberBinding="{Binding Name}" Width="200"/>
+                    <GridViewColumn Header="{DynamicResource Measurements}" DisplayMemberBinding="{Binding Name}" />
                 </GridView>
             </ListView.View>
         </ListView>
 
         <Grid Grid.Column="1" Grid.RowSpan="2" Margin="10">
-            <TextBlock Text="{DynamicResource MeasurementProgress}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-            <lvc:CartesianChart Series="{Binding ChartSeries}" Name="ExerciseChart" LegendLocation="Right" Margin="20">
+            <TextBlock Text="{DynamicResource MeasurementProgress}" Style="{DynamicResource BodyTextStyle}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <lvc:CartesianChart  Series="{Binding ChartSeries}" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource TextBrush}" Name="ExerciseChart" LegendLocation="Right" Margin="20">
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Labels="{Binding ChartLabels}" />
+                    <lvc:Axis Foreground="{DynamicResource TextBrush}"  Labels="{Binding ChartLabels}" />
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
         </Grid>

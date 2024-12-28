@@ -22,6 +22,7 @@ namespace GainTrack.ViewModel
         private readonly TrainingDoneViewModel _trainingDoneViewModel;
         private readonly TrainingsViewModel _trainingingsViewModel;
         private AddMessurementViewModel _addMessurementViewModel;
+        private MessureProgressViewModel _messureProgressViewModel;
         private readonly IUserService _userService;
         private User _trainee;
 
@@ -71,11 +72,15 @@ namespace GainTrack.ViewModel
             _trainingingsViewModel.Trainee = trainee;
 
             _addMessurementViewModel = new AddMessurementViewModel(serviceProvider, trainee);
+            _messureProgressViewModel = new MessureProgressViewModel(serviceProvider, Trainee);
             showTrainingsCommand = new RelayCommand(ShowTrainings);
             ChangeLanguageCommand = new RelayCommand(ChangeLanguage);
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
             showTrainingsHistoryCommand = new RelayCommand(ShowHistory);
-            ShowAddMessurements(null);
+            //ShowAddMessurements(null);
+            //ShowHistory(null);
+            //ShowTrainings(null);
+            ShowMessurementProgress(null);
             LoadAvailableLanguages();
             LoadAvailableThemes();
         }
@@ -117,27 +122,25 @@ namespace GainTrack.ViewModel
         }
         public void ShowTrainings(object? obj)
         {
-            
             _trainingDoneViewModel.loadTrainings();
             Application.Current.Dispatcher.Invoke(() => CurrentView = new MyTrainings(_trainingDoneViewModel));
-
-
         }
 
         public void ShowHistory(object? obj)
         {
-            
-            
             _trainingingsViewModel.loadTrainigNamesAndDates();
             //CurrentView = new TrainingHistory(_trainingingsViewModel);
             Application.Current.Dispatcher.Invoke(() => CurrentView = new TrainingHistory(_trainingingsViewModel));
-
-           
         }
 
         public void ShowAddMessurements(object? obj)
         {
             Application.Current.Dispatcher.Invoke(() => CurrentView = new AddMessurement(_addMessurementViewModel));
+        }
+
+        public void ShowMessurementProgress(object? obj)
+        {
+            Application.Current.Dispatcher.Invoke(() => CurrentView = new MessureProgress(_messureProgressViewModel));
         }
 
         private void ChangeTheme(object theme)

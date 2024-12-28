@@ -17,5 +17,6 @@ namespace GainTrack.Services
 
         public Task AddNewMessure(UserHasMessurement userHasMessurement);
         public Task<bool> ExistsByNameAndDateAndUser(UserHasMessurement userHasMessurement);
+        public Task<IEnumerable<UserHasMessurement>> GetUserHasMessurementsByTraineeAndMessurement(User Trainee, Messurement messurement);
     }
 }

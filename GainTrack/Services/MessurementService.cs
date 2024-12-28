@@ -65,5 +65,14 @@ namespace GainTrack.Services
                 return await _context.Messurements.ToListAsync();
             }
         }
+
+        public async Task<IEnumerable<UserHasMessurement>> GetUserHasMessurementsByTraineeAndMessurement(User Trainee, Messurement messurement)
+        {
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await _context.UserHasMessurements.Where(uhm => uhm.TraineeId == Trainee.Id && uhm.MessurementName.Equals(messurement.Name)).ToListAsync();
+            }
+        }
     }
 }

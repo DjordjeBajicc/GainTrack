@@ -10,7 +10,9 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GainTrack.ViewModel
 {
@@ -56,9 +58,10 @@ namespace GainTrack.ViewModel
             set => SetProperty(ref _chartLabels, value);
         }
 
+        private User Trainee {  get; set; }
         public ICommand LoadMeasurementsCommand { get; }
 
-        public MessureProgressViewModel(IServiceProvider serviceProvider)
+        public MessureProgressViewModel(IServiceProvider serviceProvider, User trainee)
         {
             _messurementService = serviceProvider.GetRequiredService<IMessurementService>();
             Messurements = new ObservableCollection<Messurement>();
@@ -67,6 +70,7 @@ namespace GainTrack.ViewModel
 
             // Inicijalno učitavanje podataka
             LoadMessurements(null);
+            Trainee = trainee;
         }
 
         private async void LoadMessurements(object? obj)
@@ -79,22 +83,47 @@ namespace GainTrack.ViewModel
             }
         }
 
-        private void UpdateChart()
+        private async void UpdateChart()
         {
-            if (SelectedMeasurement == null) return;
-
-            // Ažuriranje podataka za grafikon
-            ChartSeries.Clear();
-            ChartSeries.Add(new LineSeries
+            if (SelectedMeasurement != null)
             {
-                Title = SelectedMeasurement.Name,
-                Values = new ChartValues<double>(SelectedMeasurement.Values)
-            });
+                ChartSeries.Clear();
+                var uhms = await _messurementService.GetUserHasMessurementsByTraineeAndMessurement(Trainee, SelectedMeasurement);
+                ObservableCollection<decimal> values = new ObservableCollection<decimal>();
+                ObservableCollection<UserHasMessurement> userHasMessurements = new ObservableCollection<UserHasMessurement>(uhms);
+                foreach(var tmp in uhms)
+                {
+                    values.Add(tmp.Value);
+                }
+                ChartSeries.Add( new ColumnSeries{
+                                Title = SelectedMeasurement.Name,
+                                Values = new ChartValues<decimal>(values),
+                                DataLabels = true, // Formatiranje etikete
+                                Foreground = new SolidColorBrush(Colors.LightBlue)});
+                ChartLabels = userHasMessurements
+                            .Where((_, index) => index % 5 != 0) // Prikazuje svaki peti datum
+                            .Select(m => m.Date.ToString("dd.MM"))
+                            .ToArray();
+            }
+            else
+            {
 
-            // Ažuriranje oznaka za x-osu
-            ChartLabels = Enumerable.Range(1, SelectedMeasurement.Values.Length)
-                                     .Select(i => $"Dan {i}")
-                                     .ToArray();
+                MessageBox.Show("");
+            }
+
+
+            //// Ažuriranje podataka za grafikon
+            //ChartSeries.Clear();
+            //ChartSeries.Add(new LineSeries
+            //{
+            //    Title = SelectedMeasurement.Name,
+            //    Values = new ChartValues<double>(SelectedMeasurement.Values)
+            //});
+
+            //// Ažuriranje oznaka za x-osu
+            //ChartLabels = Enumerable.Range(1, SelectedMeasurement.Values.Length)
+            //                         .Select(i => $"Dan {i}")
+            //                         .ToArray();
         }
 
     }
