@@ -65,11 +65,13 @@
                 </Grid>
 
                 <!-- Vertikalni TabControl -->
-                <TabControl Margin="0,10,0,0" VerticalAlignment="Stretch" TabStripPlacement="Left" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Grid.Row="1">
-                    <TabItem Header="My Trainings" Margin="5"/>
-                    <TabItem Header="Training History" Margin="5"/>
-                    <TabItem Header="Progress" Margin="5"/>
-                    <TabItem Header="Enter Measurements" Margin="5"/>
+                <TabControl Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"  TabStripPlacement="Left" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Grid.Row="1">
+                    
+                    <TabItem Header="My Trainings" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
+                    <TabItem Header="Training History" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
+                    <TabItem Header="Exercises Progress" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
+                    <TabItem Header="Messurement Progress" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
+                    <TabItem Header="Enter Measurements" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
                 </TabControl>
             </Grid>
         </Border>

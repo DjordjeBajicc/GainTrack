@@ -18,8 +18,8 @@
     <system:String x:Key="Details">Detalji</system:String>
     <system:String x:Key="TrainingName">Naziv Treninga</system:String>
     <system:String x:Key="TrainingDescription">Opis Treninga</system:String>
-    <system:String x:Key="ChooseExerciseType">Odabri tip vježbe</system:String>
-    <system:String x:Key="ChooseExercise">odaberi vejžbu</system:String>
+    <system:String x:Key="ChooseExerciseType">Odaberi tip vježbe</system:String>
+    <system:String x:Key="ChooseExercise">Odaberi vježbu</system:String>
     <system:String x:Key="Weight">Težinska</system:String>
     <system:String x:Key="Cardio">Kardio</system:String>
     <system:String x:Key="NumberOfSeries">Broj serija</system:String>
@@ -41,7 +41,7 @@
     <system:String x:Key="Update">Uredi</system:String>
     <system:String x:Key="FillAllFields">Popunite sva polja</system:String>
     <system:String x:Key="TheTrainingWasSuccessfullySaved">Trening je uspješno sačuvan</system:String>
-    <system:String x:Key="TheExercisWasSuccessfullyCreated">Вјеžba je uspješno kreirana</system:String>
+    <system:String x:Key="TheExercisWasSuccessfullyCreated">Vјеžba je uspješno kreirana</system:String>
     <system:String x:Key="EnterTheNameOfTheExerciseAndSelectTheType">Unesite naziv vježbe i izaberite tip</system:String>
     <system:String x:Key="TheTraineeWasSaved">Vježbač je uspješno sačuvan</system:String>
     <system:String x:Key="Set">Serija</system:String>
@@ -53,11 +53,11 @@
     <system:String x:Key="EnterMessurements">Unos Mjera</system:String>
     <system:String x:Key="PickDateAndTraining">Izaberite datum i trening</system:String>
     <system:String x:Key="Distance">Distanca</system:String>
-    <system:String x:Key="TrainingDoneOnThatDate">Trening Odradjen Na Taj Datum</system:String>
+    <system:String x:Key="TrainingDoneOnThatDate">Trening Odrađen Na Taj Datum</system:String>
     <system:String x:Key="Value">Vrijednost</system:String>
     <system:String x:Key="EnterNameOfNewMessurement">Unesite Naziv Novog Mjerenja</system:String>
     <system:String x:Key="ChooseMessurement">Izaberite Mjerenje</system:String>
-    <system:String x:Key="Username">Username</system:String>
+    <system:String x:Key="Username">Korisničko ime</system:String>
     <system:String x:Key="FillInAllTheFields">Popunite Sva Polja</system:String>
     <system:String x:Key="EnterValue">Unesite vrijednost</system:String>
     <system:String x:Key="Create">Kreiraj</system:String>
@@ -65,6 +65,7 @@
     <system:String x:Key="EnterTheNameOfMessurement">Unesite Naziv Mjere</system:String>
     <system:String x:Key="ChooseMessurementAndEnterTheValue">Izaberite Mjeru I Unesite Vrijednost</system:String>
     <system:String x:Key="MessurementCreated">Mjera Kreirana</system:String>
-    <system:String x:Key="MessureRecorded">Mjerenje Zabiljezeno</system:String>
+    <system:String x:Key="MessureRecorded">Mjerenje Zabilježeno</system:String>
     <system:String x:Key="MessureAlreadyExistsForThisDate">Mjerenje Vec Postoji Za Ovaj Datum</system:String>
+    <system:String x:Key="NumberOfMonths">Broj Mjeseci</system:String>
 </ResourceDictionary>

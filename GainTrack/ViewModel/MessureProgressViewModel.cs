@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace GainTrack.ViewModel
     public class MessureProgressViewModel : BaseViewModel
     {
         private readonly IMessurementService _messurementService;
+
 
         private ObservableCollection<Messurement> _messurements;
 
@@ -39,24 +41,23 @@ namespace GainTrack.ViewModel
             set
             {
                 SetProperty(ref _selectedMeasurement, value);
-                UpdateChart();
+                LoadTraineeMessurements();
             }
         }
 
-        // Podaci za grafikon
-        private SeriesCollection _chartSeries;
-        public SeriesCollection ChartSeries
+        private ObservableCollection<UserHasMessurement> _userHasMessurements;
+
+        public ObservableCollection<UserHasMessurement> UserHasMessurements
         {
-            get => _chartSeries;
-            set => SetProperty(ref _chartSeries, value);
+            get => _userHasMessurements;
+            set
+            {
+                _userHasMessurements = value;
+                OnPropertyChanged(nameof(UserHasMessurements));
+            }
         }
 
-        private string[] _chartLabels;
-        public string[] ChartLabels
-        {
-            get => _chartLabels;
-            set => SetProperty(ref _chartLabels, value);
-        }
+        
 
         private User Trainee {  get; set; }
         public ICommand LoadMeasurementsCommand { get; }
@@ -65,10 +66,10 @@ namespace GainTrack.ViewModel
         {
             _messurementService = serviceProvider.GetRequiredService<IMessurementService>();
             Messurements = new ObservableCollection<Messurement>();
-            ChartSeries = new SeriesCollection();
+            
             LoadMeasurementsCommand = new RelayCommand(LoadMessurements);
-
-            // Inicijalno učitavanje podataka
+            UserHasMessurements = new ObservableCollection<UserHasMessurement>();
+            
             LoadMessurements(null);
             Trainee = trainee;
         }
@@ -83,48 +84,20 @@ namespace GainTrack.ViewModel
             }
         }
 
-        private async void UpdateChart()
+        private async void LoadTraineeMessurements()
         {
             if (SelectedMeasurement != null)
             {
-                ChartSeries.Clear();
+                UserHasMessurements.Clear();
                 var uhms = await _messurementService.GetUserHasMessurementsByTraineeAndMessurement(Trainee, SelectedMeasurement);
-                ObservableCollection<decimal> values = new ObservableCollection<decimal>();
-                ObservableCollection<UserHasMessurement> userHasMessurements = new ObservableCollection<UserHasMessurement>(uhms);
-                foreach(var tmp in uhms)
+
+                foreach (var m in uhms)
                 {
-                    values.Add(tmp.Value);
+                    UserHasMessurements.Add(m);
                 }
-                ChartSeries.Add( new ColumnSeries{
-                                Title = SelectedMeasurement.Name,
-                                Values = new ChartValues<decimal>(values),
-                                DataLabels = true, // Formatiranje etikete
-                                Foreground = new SolidColorBrush(Colors.LightBlue)});
-                ChartLabels = userHasMessurements
-                            .Where((_, index) => index % 5 != 0) // Prikazuje svaki peti datum
-                            .Select(m => m.Date.ToString("dd.MM"))
-                            .ToArray();
             }
-            else
-            {
-
-                MessageBox.Show("");
-            }
-
-
-            //// Ažuriranje podataka za grafikon
-            //ChartSeries.Clear();
-            //ChartSeries.Add(new LineSeries
-            //{
-            //    Title = SelectedMeasurement.Name,
-            //    Values = new ChartValues<double>(SelectedMeasurement.Values)
-            //});
-
-            //// Ažuriranje oznaka za x-osu
-            //ChartLabels = Enumerable.Range(1, SelectedMeasurement.Values.Length)
-            //                         .Select(i => $"Dan {i}")
-            //                         .ToArray();
         }
+
 
     }
 }

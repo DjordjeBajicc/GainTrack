@@ -56,5 +56,24 @@ namespace GainTrack.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Serie>> GetSeriesByTraineeAndExerciseAsync(int traineeId, int exerciseId)
+        {
+            using( var scope = _scopeFactory.CreateScope())
+            {
+                var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await _context.Series
+                    .Include(s => s.ConcreteExerciseOnTraining)
+                        .ThenInclude(ce => ce.TrainingHasExercise)
+                            .ThenInclude(eot => eot.Exercise)
+                    .Include(s => s.ConcreteExerciseOnTraining)
+                        .ThenInclude(ce => ce.TrainingHasExercise)
+                            .ThenInclude(eot => eot.Training)
+                    .Where(s =>
+                        s.ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Id == exerciseId &&
+                        s.ConcreteExerciseOnTraining.TrainingHasExercise.Training.TraineeId == traineeId)
+                    .ToListAsync();
+            }
+        }
     }
 }

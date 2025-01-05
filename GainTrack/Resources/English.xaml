@@ -67,4 +67,5 @@
     <system:String x:Key="MessurementCreated">Messurement Created</system:String>
     <system:String x:Key="MessureRecorded">Messure Recorded</system:String>
     <system:String x:Key="MessureAlreadyExistsForThisDate">MessureAlreadyExistsForThisDate</system:String>
+    <system:String x:Key="NumberOfMonths">Number Of Months</system:String>
 </ResourceDictionary>

@@ -13,5 +13,6 @@ namespace GainTrack.Services
         Task<Serie> GetSerieByConcreteExerciseOnTrainingTrainingHasExerciseIdAsync(int id);
         Task<IEnumerable<Serie>> GetSerieByConcreteExerciseOnTrainingTrainingHasExerciseIdAndDateAsync(int id, DateOnly date);
         Task<IEnumerable<Serie>> GetAllSeriesOnTrainingsAsync();
+        Task<IEnumerable<Serie>> GetSeriesByTraineeAndExerciseAsync(int traineeId, int exerciseId);
     }
 }

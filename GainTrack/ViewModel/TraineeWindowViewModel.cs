@@ -21,6 +21,7 @@ namespace GainTrack.ViewModel
     {
         private readonly TrainingDoneViewModel _trainingDoneViewModel;
         private readonly TrainingsViewModel _trainingingsViewModel;
+        private ExerciseProgressViewModel _exerciseProgressViewModel;
         private AddMessurementViewModel _addMessurementViewModel;
         private MessureProgressViewModel _messureProgressViewModel;
         private readonly IUserService _userService;
@@ -71,8 +72,10 @@ namespace GainTrack.ViewModel
             _trainingingsViewModel = serviceProvider.GetRequiredService<TrainingsViewModel>();
             _trainingingsViewModel.Trainee = trainee;
 
+
             _addMessurementViewModel = new AddMessurementViewModel(serviceProvider, trainee);
             _messureProgressViewModel = new MessureProgressViewModel(serviceProvider, Trainee);
+            _exerciseProgressViewModel = new ExerciseProgressViewModel(serviceProvider, Trainee);
             showTrainingsCommand = new RelayCommand(ShowTrainings);
             ChangeLanguageCommand = new RelayCommand(ChangeLanguage);
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
@@ -80,7 +83,8 @@ namespace GainTrack.ViewModel
             //ShowAddMessurements(null);
             //ShowHistory(null);
             //ShowTrainings(null);
-            ShowMessurementProgress(null);
+            //ShowMessurementProgress(null);
+            ShowExerciseProgress(null);
             LoadAvailableLanguages();
             LoadAvailableThemes();
         }
@@ -90,22 +94,20 @@ namespace GainTrack.ViewModel
             switch (SelectedTabIndex)
             {
                 case 0:
-                    
                     ShowTrainings(null);
-                    //MessageBox.Show("a");
-                    
                     break;
                 case 1:
                     ShowHistory(null);
-                    //MessageBox.Show("ab");
-                    
                     break;
                 case 2:
+                    ShowExerciseProgress(null);
+                    break;
+                case 3:
                    ShowAddMessurements(null); 
                     break;
-                    //case 3:
-                    //    CurrentView = new MeasurementsView(); // Primer: UserControl za merenja
-                    //    break;
+                case 4:
+                    ShowMessurementProgress(null); 
+                    break;
             }
         }
 
@@ -141,6 +143,11 @@ namespace GainTrack.ViewModel
         public void ShowMessurementProgress(object? obj)
         {
             Application.Current.Dispatcher.Invoke(() => CurrentView = new MessureProgress(_messureProgressViewModel));
+        }
+
+        public void ShowExerciseProgress(object? obj)
+        {
+            Application.Current.Dispatcher.Invoke(() => CurrentView = new ExerciseProgress(_exerciseProgressViewModel));
         }
 
         private void ChangeTheme(object theme)
