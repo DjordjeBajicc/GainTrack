@@ -24,6 +24,7 @@ namespace GainTrack.ViewModel
         private ExerciseProgressViewModel _exerciseProgressViewModel;
         private AddMessurementViewModel _addMessurementViewModel;
         private MessureProgressViewModel _messureProgressViewModel;
+        private MainWindowViewModel _mainWindowViewModel;
         private readonly IUserService _userService;
         private User _trainee;
 
@@ -45,68 +46,72 @@ namespace GainTrack.ViewModel
             set
             {
                 _selectedTabIndex = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedTabIndex));
                 UpdateCurrentView();
             }
         }
-        public ICommand showTrainingsCommand { get; }
-        public ICommand showTrainingsHistoryCommand { get; }
-        public ICommand showProgressCommand { get; }
-        public ICommand enterMessurementsCommand { get; }
 
+        public Page MyTrainingsPage { get; set; }
+        public Page TrainingHistoryPage { get; set; }
+        public Page EnterMessurementsPage { get; set; }
+        public Page MessurementProgressPage { get; set; }
+        public Page ExerciseProgressPage { get; set; }
         public ICommand ChangeThemeCommand { get; }
         public ICommand ChangeLanguageCommand { get; }
 
-        private Page _currentView;
-        public Page CurrentView
-        {
-            get => _currentView;
-            set => SetProperty(ref _currentView, value);
-        }
+        public ICommand LogoutCommand { get; }
         public TraineeWindowViewModel(IServiceProvider serviceProvider, User trainee)
         {
             _userService = serviceProvider.GetRequiredService<IUserService>();
             Trainee = trainee;
-            _trainingDoneViewModel = serviceProvider.GetRequiredService<TrainingDoneViewModel>();
-            _trainingDoneViewModel.Trainee = trainee;
-            _trainingingsViewModel = serviceProvider.GetRequiredService<TrainingsViewModel>();
-            _trainingingsViewModel.Trainee = trainee;
-
 
             _addMessurementViewModel = new AddMessurementViewModel(serviceProvider, trainee);
             _messureProgressViewModel = new MessureProgressViewModel(serviceProvider, Trainee);
             _exerciseProgressViewModel = new ExerciseProgressViewModel(serviceProvider, Trainee);
-            showTrainingsCommand = new RelayCommand(ShowTrainings);
+            _trainingDoneViewModel = new TrainingDoneViewModel(serviceProvider, Trainee);
+            _trainingingsViewModel = new TrainingsViewModel(serviceProvider, Trainee);
+            _mainWindowViewModel = new MainWindowViewModel(serviceProvider);
             ChangeLanguageCommand = new RelayCommand(ChangeLanguage);
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
-            showTrainingsHistoryCommand = new RelayCommand(ShowHistory);
-            //ShowAddMessurements(null);
-            //ShowHistory(null);
-            //ShowTrainings(null);
-            //ShowMessurementProgress(null);
-            ShowExerciseProgress(null);
+            LogoutCommand = new RelayCommand(Logout);
+            MyTrainingsPage = new MyTrainings(_trainingDoneViewModel);
+            TrainingHistoryPage = new TrainingHistory(_trainingingsViewModel);
+            EnterMessurementsPage = new AddMessurement(_addMessurementViewModel);
+            MessurementProgressPage = new MessureProgress(_messureProgressViewModel);
+            ExerciseProgressPage = new ExerciseProgress(_exerciseProgressViewModel);
             LoadAvailableLanguages();
             LoadAvailableThemes();
         }
 
+        private void Logout(object? obj)
+        {
+            if (obj is Window window)
+            {
+
+                MainWindow mainWindow = new MainWindow(_mainWindowViewModel);
+                mainWindow.Show();
+                window.Close();
+            }
+        }
+        
         private void UpdateCurrentView()
         {
             switch (SelectedTabIndex)
             {
                 case 0:
-                    ShowTrainings(null);
+                    _trainingDoneViewModel.loadTrainings();
                     break;
                 case 1:
-                    ShowHistory(null);
+                    _trainingingsViewModel.loadTrainigNamesAndDates();
                     break;
                 case 2:
-                    ShowExerciseProgress(null);
+                    
                     break;
                 case 3:
-                   ShowAddMessurements(null); 
+                    _messureProgressViewModel.LoadMeasurementsCommand.Execute(null);
                     break;
                 case 4:
-                    ShowMessurementProgress(null); 
+                    _exerciseProgressViewModel.FilterExercises();
                     break;
             }
         }
@@ -121,33 +126,6 @@ namespace GainTrack.ViewModel
         {
 
             AvailableThemes = LanguageAndThemeUtil.loadLanguagesOrThemes("Themes");
-        }
-        public void ShowTrainings(object? obj)
-        {
-            _trainingDoneViewModel.loadTrainings();
-            Application.Current.Dispatcher.Invoke(() => CurrentView = new MyTrainings(_trainingDoneViewModel));
-        }
-
-        public void ShowHistory(object? obj)
-        {
-            _trainingingsViewModel.loadTrainigNamesAndDates();
-            //CurrentView = new TrainingHistory(_trainingingsViewModel);
-            Application.Current.Dispatcher.Invoke(() => CurrentView = new TrainingHistory(_trainingingsViewModel));
-        }
-
-        public void ShowAddMessurements(object? obj)
-        {
-            Application.Current.Dispatcher.Invoke(() => CurrentView = new AddMessurement(_addMessurementViewModel));
-        }
-
-        public void ShowMessurementProgress(object? obj)
-        {
-            Application.Current.Dispatcher.Invoke(() => CurrentView = new MessureProgress(_messureProgressViewModel));
-        }
-
-        public void ShowExerciseProgress(object? obj)
-        {
-            Application.Current.Dispatcher.Invoke(() => CurrentView = new ExerciseProgress(_exerciseProgressViewModel));
         }
 
         private void ChangeTheme(object theme)

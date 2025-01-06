@@ -4,34 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="TraineeWindow" Height="650" Width="1000"
+        Title="TraineeWindow" Height="710" Width="1100"
         Background="{DynamicResource BackgroundBrush}">
 
     
 
     <Grid>
-        <!-- Definicije kolona -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <!-- Leva kolona sa fiksnom širinom -->
-            <ColumnDefinition Width="*"/>
-            <!-- Desna kolona koja treba da popuni preostali prostor -->
-        </Grid.ColumnDefinitions>
-
-        <!-- Leva traka sa opcijama -->
+        
         <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10" Grid.Column="0">
-            <Grid Margin="10">
-                <!-- Dugmići za Language i Theme -->
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <!-- Red za dugmadi -->
-                    <RowDefinition Height="*"/>
-                    <!-- Red za TabControl -->
-                </Grid.RowDefinitions>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
 
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Margin="0,0,0,10">
-                    <Button Name="LanguageButton" Click="LanguageButton_Click" Style="{DynamicResource ButtonStyle}" Command="{Binding ChangeLanguageCommand}" HorizontalAlignment="Left">
-                        <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,5,0"/>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button Name="LanguageButton" Click="LanguageButton_Click" Style="{DynamicResource ButtonStyle}" Command="{Binding ChangeLanguageCommand}" Grid.Row="0">
+                        <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,0,5"/>
                     </Button>
                     <Popup x:Name="LanguagePopup" PlacementTarget="{Binding ElementName=LanguageButton}" StaysOpen="False">
                         <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="5">
@@ -46,7 +40,7 @@
                             </StackPanel>
                         </Border>
                     </Popup>
-                    <Button Style="{DynamicResource ButtonStyle}" Click="ThemeButton_Click" Command="{Binding ChangeThemeCommand}" Name="ThemeButton" HorizontalAlignment="Right">
+                    <Button Style="{DynamicResource ButtonStyle}" Click="ThemeButton_Click" Command="{Binding ChangeThemeCommand}" Name="ThemeButton" Grid.Row="1">
                         <Image Source="Assets/theme.png" Width="26" Height="26" Margin="0,0,5,0"/>
                     </Button>
                     <Popup x:Name="ThemePopup" PlacementTarget="{Binding ElementName=ThemeButton}" StaysOpen="False">
@@ -62,23 +56,45 @@
                             </StackPanel>
                         </Border>
                     </Popup>
+                    <Button Style="{DynamicResource ButtonStyle}" Grid.Row="2" VerticalAlignment="Bottom" Command="{Binding LogoutCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                        <Image Source="Assets/logout.png" Width="26" Height="26" Margin="5"/>
+                    </Button>
                 </Grid>
 
-                <!-- Vertikalni TabControl -->
-                <TabControl Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"  TabStripPlacement="Left" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Grid.Row="1">
-                    
-                    <TabItem Header="My Trainings" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
-                    <TabItem Header="Training History" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
-                    <TabItem Header="Exercises Progress" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
-                    <TabItem Header="Messurement Progress" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
-                    <TabItem Header="Enter Measurements" VerticalAlignment="Center" Padding="10, 5"  HorizontalAlignment="Center"/>
+                <TabControl VerticalAlignment="Stretch" HorizontalAlignment="Left" TabStripPlacement="Left" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Grid.Column="0">
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource MyTrainings}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                        </TabItem.Header>
+                        <Frame Content="{Binding MyTrainingsPage}" NavigationUIVisibility="Automatic"/>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource TrainingHistory}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                        </TabItem.Header>
+                        <Frame Content="{Binding TrainingHistoryPage}" NavigationUIVisibility="Automatic"/>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource EnterMessurements}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                        </TabItem.Header>
+                        <Frame Content="{Binding EnterMessurementsPage}" NavigationUIVisibility="Automatic"/>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource MeasurementProgress}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                        </TabItem.Header>
+                        <Frame Content="{Binding MessurementProgressPage}" NavigationUIVisibility="Automatic"/>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource ExerciseProgress}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                        </TabItem.Header>
+                        <Frame Content="{Binding ExerciseProgressPage}" NavigationUIVisibility="Automatic"/>
+                    </TabItem>
                 </TabControl>
             </Grid>
         </Border>
 
-        <!-- Glavni sadržaj -->
-        <Border Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10" Grid.Column="1">
-            <Frame Name="ContentDisplay" Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-        </Border>
     </Grid>
 </Window>

@@ -16,6 +16,7 @@ namespace GainTrack
     {
         private IHost _host;
         public static GainTrackContext DbContext { get; private set; }
+        public static object ServiceProvider { get; internal set; }
 
         public App()
         {

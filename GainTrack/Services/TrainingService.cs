@@ -62,6 +62,17 @@ namespace GainTrack.Services
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<Training>> GetAllTrainingsIncludeDeletedAsync(int TraineeId)
+        {
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await _context.Trainings
+                                      .Where(t => t.TraineeId == TraineeId)
+                                      .ToListAsync();
+            }
+        }
+
         public async Task<Training> GetTrainingByIdAsync(int id)
         {
             using (var scope = _scopeFactory.CreateScope())

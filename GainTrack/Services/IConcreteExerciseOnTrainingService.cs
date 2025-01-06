@@ -11,6 +11,7 @@ namespace GainTrack.Services
     {
         Task AddConcreteExerciseOnTrainingAsync(ConcreteExerciseOnTraining concreteExerciseOnTraining);
         Task<ConcreteExerciseOnTraining> GetConcreteExerciseOnTrainingByTrainingHasExerciseIdAsync(int id);
+        Task<IEnumerable<ConcreteExerciseOnTraining>> GetConcreteExercisesOnTrainingsByTrainingHasExerciseIdAsync(int id);
         Task<IEnumerable<ConcreteExerciseOnTraining>> GetAllConcreteExercisesOnTrainingsAsync();
         
     }

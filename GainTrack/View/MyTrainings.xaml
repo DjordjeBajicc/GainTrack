@@ -31,15 +31,15 @@
         </Grid.RowDefinitions>
 
         <!-- Tekst za prikaz istorije treninga -->
-        <TextBlock Text="{DynamicResource Trainings}" Style="{DynamicResource BodyTextStyle}" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
+        <TextBlock Text="{DynamicResource Trainings}" Style="{DynamicResource BodyTextStyle}" Grid.Row="0" Grid.Column="0" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5"/>
 
         <!-- Lista istorije treninga -->
         <ListView Name="HistoryListView" Grid.Row="1" Grid.Column="0" Width="200" 
-      ItemsSource="{Binding Trainings}" 
-      SelectedItem="{Binding SelectedTraining, Mode=TwoWay}"
-      HorizontalAlignment="Stretch" 
-      VerticalAlignment="Stretch"
-      >
+            ItemsSource="{Binding Trainings}" 
+            SelectedItem="{Binding SelectedTraining, Mode=TwoWay}"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListView.View>
                 <GridView>
                     <!-- Kolona za naziv treninga -->
@@ -53,14 +53,14 @@
                     </GridViewColumn>
 
                     <!-- Kolona za dugme -->
-                    <GridViewColumn Header="{DynamicResource Delete}" Width="100">
+                    <GridViewColumn Header="{DynamicResource Delete}" Width="105">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="{DynamicResource Delete}" 
                             Style="{DynamicResource DeleteButtonStyle}"
                             Command="{Binding DataContext.DeleteTrainingCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
                             CommandParameter="{Binding Id}" 
-                            Margin="5" 
+                            
                             VerticalAlignment="Center"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -75,7 +75,7 @@
         <DatePicker
         Width="140"
         HorizontalAlignment="Left"
-        Margin="10"
+        Margin="15,5"
         Grid.Row="0"
         Grid.Column="1"
         Foreground="{DynamicResource TextBrush}"
@@ -84,21 +84,69 @@
         Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
         <DataGrid VerticalAlignment="Stretch" Name="ExercisesDataGrid" Style="{DynamicResource MaterialDesignDataGrid}" ItemsSource="{Binding SeriesForDataGrid}"  Grid.Column="1" AutoGenerateColumns="False" Margin="10,10,10,28"
-    HeadersVisibility="Column" Grid.Row="1" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
+            HeadersVisibility="Column" Grid.Row="1" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource Exercise}" IsReadOnly="true" Binding="{Binding ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}" Width="2*"/>
                 <DataGridTextColumn Header="{DynamicResource Set}" IsReadOnly="True" Binding="{Binding SerialNumber}" Width="1*"/>
-                <DataGridTextColumn Header="{DynamicResource Reps}" Binding="{Binding Reps, Mode=TwoWay}" Width="1*"/>
-                <DataGridTextColumn Header="{DynamicResource Weight}" Binding="{Binding Weight, Mode=TwoWay}"  Width="1*"/>
-                <DataGridTextColumn Header="{DynamicResource Distance}" Binding="{Binding Distance, Mode=TwoWay}"  Width="1*"/>
-                <DataGridTextColumn Header="{DynamicResource Time}" Binding="{Binding Time, Mode=TwoWay}"  Width="1*"/>
+                <DataGridTemplateColumn Header="{DynamicResource Reps}" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Reps}" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Reps, Mode=TwoWay}" PreviewTextInput="NumberOnly_PreviewTextInput" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="{DynamicResource Weight}" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Weight}" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Weight, Mode=TwoWay}" PreviewTextInput="Decimal_PreviewTextInput" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="{DynamicResource Distance}" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Distance}" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Distance, Mode=TwoWay}" PreviewTextInput="Decimal_PreviewTextInput" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="{DynamicResource Time}" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Time, StringFormat='HH:mm:ss'}" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Time, Mode=TwoWay, StringFormat='HH:mm:ss'}" LostFocus="TimeOnly_LostFocus" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 
 
 
         <Button Content="{DynamicResource CreateTraining}" Command="{Binding CreateTrainingCommand}" Grid.Column="0" Grid.Row="2" Style="{DynamicResource ButtonStyle}"/>
-        <Button Content="{DynamicResource Save}" Command="{Binding SaveCommand}" Grid.Column="1" Grid.Row="2" Style="{DynamicResource ButtonStyle}"/>
+        <Button Name="SaveButton" Content="{DynamicResource Save}" Command="{Binding SaveCommand}" Grid.Column="1" Grid.Row="2" Style="{DynamicResource ButtonStyle}"/>
 
 
     </Grid>

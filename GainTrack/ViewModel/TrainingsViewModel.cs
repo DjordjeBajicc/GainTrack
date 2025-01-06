@@ -1,5 +1,6 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GainTrack.ViewModel
@@ -42,7 +44,6 @@ namespace GainTrack.ViewModel
             {
                 _selectedTraining = value;
                 OnPropertyChanged(nameof(SelectedTraining));
-
                 loadSeries();
 
 
@@ -73,27 +74,31 @@ namespace GainTrack.ViewModel
             }
         }
 
-        public TrainingsViewModel(ITraningService traningService, ISerieService serieService, IUserService userService, IConcreteExerciseOnTrainingService concreteExerciseOnTrainingService, ITrainingHasExerciseService trainingHasExerciseService, IServiceProvider serviceProvider)
+        public TrainingsViewModel(IServiceProvider serviceProvider, User trainee)
         {
-            _traningService = traningService;
-            _trainingHasExerciseService = trainingHasExerciseService;
-            _userService = userService;
-            _concreteExerciseOnTrainingService = concreteExerciseOnTrainingService;
-            _serieService = serieService;
+            _traningService = serviceProvider.GetRequiredService<ITraningService>();
+            _trainingHasExerciseService = serviceProvider.GetRequiredService<ITrainingHasExerciseService>();
+            _userService = serviceProvider.GetRequiredService<IUserService>();
+            _concreteExerciseOnTrainingService = serviceProvider.GetRequiredService<IConcreteExerciseOnTrainingService>();
+            _serieService = serviceProvider.GetRequiredService<ISerieService>();
+            Trainee = trainee;
 
             Trainings = new ObservableCollection<Training>();
             ExercisesWithSeries = new ObservableCollection<ConcreteExerciseOnTraining>();
             SeriesForDataGrid = new ObservableCollection<Serie>();
+            loadTrainigNamesAndDates();
         }
 
         public async void loadTrainigNamesAndDates()
         {
             Trainings.Clear();
-            var trainings = await _traningService.GetTrainingsForUserAsync(Trainee.Id);
+            ExercisesWithSeries.Clear();
+            var trainings = await _traningService.GetAllTrainingsIncludeDeletedAsync(Trainee.Id);
             foreach (var training in trainings)
             {
                 Trainings.Add(training);
             }
+            
             ObservableCollection<TrainingHasExercise> trainingHasExercises = new ObservableCollection<TrainingHasExercise>();
             foreach(Training t in Trainings)
             {
@@ -104,46 +109,33 @@ namespace GainTrack.ViewModel
                     trainingHasExercises.Add(the);
                 }
             }
-
+            
             foreach(TrainingHasExercise trainingHasExercise in trainingHasExercises)
             {
-                ConcreteExerciseOnTraining concrete = await _concreteExerciseOnTrainingService.GetConcreteExerciseOnTrainingByTrainingHasExerciseIdAsync(trainingHasExercise.Id);
-                concrete.TrainingHasExercise = trainingHasExercise;
-                bool flag = true;
-                if(concrete != null)
+                var concretes = await _concreteExerciseOnTrainingService.GetConcreteExercisesOnTrainingsByTrainingHasExerciseIdAsync(trainingHasExercise.Id);
+                //MessageBox.Show(concretes.Count() + "");
+                foreach (var concrete in concretes)
                 {
-                    foreach(ConcreteExerciseOnTraining c in ExercisesWithSeries)
-                    {
-                        if (c.Date.Equals(concrete.Date) && c.TrainingHasExercise.Training.Name.Equals(concrete.TrainingHasExercise.Training.Name))
-                        {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag)
+                    concrete.TrainingHasExercise = trainingHasExercise;
+                    if (!ExercisesWithSeries.Contains(concrete))
                     {
                         ExercisesWithSeries.Add(concrete);
                     }
-                    
                 }
             }
         }
 
         private async void loadSeries()
         {
-            SeriesForDataGrid.Clear();
-            var trainigHasExercisesForTraining = await _trainingHasExerciseService.GetTrainingHasExerciseByTrainingIdAsync(SelectedTraining.TrainingHasExercise.Training.Id);
-            ObservableCollection<TrainingHasExercise> trainingHasExercises = new ObservableCollection<TrainingHasExercise>(trainigHasExercisesForTraining);
-            foreach(TrainingHasExercise the in trainingHasExercises)
+            if (SelectedTraining != null)
             {
-                the.Training = SelectedTraining.TrainingHasExercise.Training;
-                ConcreteExerciseOnTraining concrete = await _concreteExerciseOnTrainingService.GetConcreteExerciseOnTrainingByTrainingHasExerciseIdAsync(the.Id);
-                concrete.TrainingHasExercise = the;
-                var series = await _serieService.GetSerieByConcreteExerciseOnTrainingTrainingHasExerciseIdAndDateAsync(concrete.TrainingHasExerciseId, concrete.Date);
-                
-                foreach(Serie serie in series)
+                SeriesForDataGrid.Clear();
+
+                var series = await _serieService.GetSerieByConcreteExerciseOnTrainingTrainingHasExerciseIdAndDateAsync(SelectedTraining.TrainingHasExerciseId, SelectedTraining.Date);
+
+                foreach (Serie serie in series)
                 {
-                    serie.ConcreteExerciseOnTraining = concrete;
+                    serie.ConcreteExerciseOnTraining = SelectedTraining;
                     SeriesForDataGrid.Add(serie);
                 }
             }

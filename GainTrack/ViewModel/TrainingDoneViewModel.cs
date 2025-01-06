@@ -94,13 +94,14 @@ namespace GainTrack.ViewModel
         public ICommand DeleteTrainingCommand { get; }
 
 
-        public TrainingDoneViewModel(ITraningService traningService, ISerieService serieService, IUserService userService, IConcreteExerciseOnTrainingService concreteExerciseOnTrainingService, ITrainingHasExerciseService trainingHasExerciseService, IServiceProvider serviceProvider)
+        public TrainingDoneViewModel(IServiceProvider serviceProvider, User trainee)
         {
-            _traningService = traningService;
-            _trainingHasExerciseService = trainingHasExerciseService;
-            _userService = userService;
-            _concreteExerciseOnTrainingService = concreteExerciseOnTrainingService;
-            _serieService = serieService;
+            _traningService = serviceProvider.GetRequiredService<ITraningService>();
+            _trainingHasExerciseService = serviceProvider.GetRequiredService<ITrainingHasExerciseService>();
+            _userService = serviceProvider.GetRequiredService<IUserService>() ;
+            _concreteExerciseOnTrainingService = serviceProvider.GetRequiredService<IConcreteExerciseOnTrainingService>();
+            _serieService = serviceProvider.GetRequiredService<ISerieService>();
+            Trainee = trainee;
 
             CreateTrainingCommand = new RelayCommand(createTraining);
             DeleteTrainingCommand = new RelayCommand(DeleteTraining);
@@ -112,6 +113,7 @@ namespace GainTrack.ViewModel
             SeriesForDataGrid = new ObservableCollection<Serie>();
 
             _createTrainingViewModel.TrainingAdded += OnTrainingAdded;
+            loadTrainings();
 
         }
 
@@ -221,10 +223,10 @@ namespace GainTrack.ViewModel
         {
             if (SelectedTraining != null && Date.HasValue)
             {
+                
                 bool flag = await checkAvailability();
                 if (!flag)
                 {
-                    
                     return;
                 }
 
@@ -247,7 +249,7 @@ namespace GainTrack.ViewModel
                     }
                 }
                 loadExercisesForTraining();
-                SelectedTraining = null;
+                
             }
             else
             {
@@ -261,6 +263,7 @@ namespace GainTrack.ViewModel
         {
             if(SelectedTraining != null && Date.HasValue)
             {
+                
                 ObservableCollection<ConcreteExerciseOnTraining> listForChecking = new ObservableCollection<ConcreteExerciseOnTraining>();
                 var exercisesAndSeries = await _trainingHasExerciseService.GetTrainingHasExerciseByTrainingIdAsync(SelectedTraining.Id);
                 ObservableCollection<TrainingHasExercise> trainingHasExercises = new ObservableCollection<TrainingHasExercise>(exercisesAndSeries);
@@ -278,10 +281,8 @@ namespace GainTrack.ViewModel
                 //MessageBox.Show(listForChecking.Count() +"");
                 foreach (ConcreteExerciseOnTraining concreteExerciseOnTraining in listForChecking)
                 {
-                    //MessageBox.Show(concreteExerciseOnTraining.TrainingHasExerciseId + "  " + SelectedTraining.Id + " - " + concreteExerciseOnTraining.Date + "  " + Date.Value);
-                    if(concreteExerciseOnTraining.TrainingHasExerciseId == SelectedTraining.Id && concreteExerciseOnTraining.Date.Equals(Date.Value))
+                    if(concreteExerciseOnTraining.TrainingHasExercise.TrainingId == SelectedTraining.Id && concreteExerciseOnTraining.Date.Equals(Date.Value))
                     {
-
                         MessageBox.Show(App.Current.Resources["TrainingDoneOnThatDate"].ToString());
                         return false;
                     }

@@ -27,8 +27,13 @@
                 </Grid.RowDefinitions>
 
                 <!-- Gornji dio sa dugmadima -->
-                <StackPanel Orientation="Horizontal" Margin="10,10,1,10">
-                    <Button Name="LanguageButton"  Style="{DynamicResource ButtonStyle}" Click="LanguageButton_Click" HorizontalAlignment="Right">
+                <Grid Margin="10,10,1,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="LanguageButton" Grid.Row="0"  Style="{DynamicResource ButtonStyle}" Click="LanguageButton_Click" HorizontalAlignment="Right">
                         <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,5,0"/>
                     </Button>
                     <Popup x:Name="LanguagePopup" PlacementTarget="{Binding ElementName=LanguageButton}" StaysOpen="False">
@@ -44,7 +49,7 @@
                             </StackPanel>
                         </Border>
                     </Popup>
-                    <Button Style="{DynamicResource ButtonStyle}" Click="ThemeButton_Click" Name="ThemeButton" HorizontalAlignment="Right">
+                    <Button Style="{DynamicResource ButtonStyle}" Grid.Column="1" Click="ThemeButton_Click" Name="ThemeButton" HorizontalAlignment="Right">
                         <Image Source="Assets/theme.png" Width="26" Height="26" Margin="0,0,5,0"/>
                     </Button>
                     <Popup x:Name="ThemePopup" PlacementTarget="{Binding ElementName=ThemeButton}" StaysOpen="False">
@@ -60,7 +65,10 @@
                             </StackPanel>
                         </Border>
                     </Popup>
-                </StackPanel>
+                    <Button Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Command="{Binding LogoutCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                        <Image Source="Assets/logout.png" Width="26" Height="26" Margin="5"/>
+                    </Button>
+                </Grid>
 
                 <!-- Lista klijenata -->
                 <Grid Grid.Row="1" Margin="10,10,1,10">

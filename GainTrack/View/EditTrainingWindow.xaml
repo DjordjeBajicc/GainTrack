@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:GainTrack.View"
         xmlns:converters="clr-namespace:GainTrack.Converters" 
         mc:Ignorable="d"
-        Title="EditTrainingWindow" Height="480" Width="475"
+        Title="EditTrainingWindow" Height="480" Width="275"
         Background="{DynamicResource BackgroundBrush}">
 
     <Window.Resources>
@@ -21,61 +21,24 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Naslov -->
         <TextBlock Grid.Row="0" Text="{DynamicResource Exercises}" 
                    Style="{DynamicResource BodyTextStyle}" FontSize="16" Margin="15"/>
 
-        <!-- Zaglavlje kolona -->
-        <Grid Grid.Row="1" Background="{DynamicResource BackgroundBrush}" 
-              Margin="5,5,10,0" Height="30">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{DynamicResource Name}" 
-                       FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" 
-                       VerticalAlignment="Center" Margin="15,0,0,0" Grid.Column="0"/>
-            <TextBlock Text="{DynamicResource NumberOfSeries}" 
-                       FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" 
-                       VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1"/>
-        </Grid>
+        <DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Center" Name="ExercisesDataGrid" Style="{DynamicResource MaterialDesignDataGrid}" ItemsSource="{Binding ExercisesOnTraining}"  Grid.Column="1" AutoGenerateColumns="False" Margin="10,10,10,28"
+            HeadersVisibility="Column" Grid.Row="1" Grid.RowSpan="2" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource Exercise}"  IsReadOnly="true" Binding="{Binding Exercise.Name}" Width="*"/>
 
-        <!-- ListBox sa podacima -->
-        <ListBox Grid.Row="2" Background="{DynamicResource SurfaceBrush}" 
-         BorderBrush="{DynamicResource PrimaryBrush}" 
-         Foreground="{DynamicResource TextBrush}"
-         ItemsSource="{Binding ExercisesOnTraining}" Margin="15,5,5,15"
-         HorizontalAlignment="Stretch"
-                 Width="auto">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <!-- Definicija kolona -->
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="350"/>
-                            <!-- Kolona za naziv vežbe -->
-                            <ColumnDefinition Width="2*"/>
-                            <!-- Kolona za broj serija -->
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Naziv vežbe -->
-                        <TextBlock Text="{Binding Exercise.Name}" 
-                           VerticalAlignment="Center" 
-                           Grid.Column="0" 
-                           Margin="5,0,0,0" 
-                           TextAlignment="Left"/>
-
-                        <!-- Broj serija -->
-                        <TextBlock Text="{Binding NumberOfSeries}" 
-                           VerticalAlignment="Center" 
-                           Grid.Column="1" 
-                           Margin="5,0,0,0" 
-                           TextAlignment="Right"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
+                <DataGridTextColumn Header="{DynamicResource NumberOfSeries}" IsReadOnly="True" Binding="{Binding NumberOfSeries}" Width="1.4*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

@@ -38,7 +38,20 @@ namespace GainTrack.Services
             using( var scope = _scopeFactory.CreateScope())
             {
                 var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
-                return await _context.ConcreteExercisesOnTraining.FirstOrDefaultAsync(e => e.TrainingHasExerciseId == id);
+                return await _context.ConcreteExercisesOnTraining
+                    .Include(e => e.TrainingHasExercise) 
+                    .FirstOrDefaultAsync(e => e.TrainingHasExerciseId == id);
+            }
+        }
+
+        public async Task<IEnumerable<ConcreteExerciseOnTraining>> GetConcreteExercisesOnTrainingsByTrainingHasExerciseIdAsync(int id)
+        {
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await _context.ConcreteExercisesOnTraining
+                                .Include(c => c.TrainingHasExercise)
+                                .Where(c => c.TrainingHasExerciseId == id).ToListAsync();
             }
         }
     }

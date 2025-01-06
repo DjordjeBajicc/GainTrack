@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GainTrack.Data.Entities;
 
-public partial class ConcreteExerciseOnTraining
+public partial class ConcreteExerciseOnTraining : IEquatable<ConcreteExerciseOnTraining>
 {
     public DateOnly Date { get; set; }
 
@@ -12,4 +12,14 @@ public partial class ConcreteExerciseOnTraining
     public virtual ICollection<Serie> Series { get; set; } = new List<Serie>();
 
     public virtual TrainingHasExercise TrainingHasExercise { get; set; } = null!;
+
+    public bool Equals(ConcreteExerciseOnTraining? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+
+        return Date.Equals(other.Date) && TrainingHasExerciseId == other.TrainingHasExerciseId;
+    }
 }

@@ -30,7 +30,7 @@ namespace GainTrack.ViewModels
         private CreateClientViewModel _createClientViewModel;
         private CreateTrainingViewModel _createTrainingViewModel;
         private EditTrainingWindowViewModel _editTrainingWindowViewModel;
-
+        private MainWindowViewModel _mainWindowViewModel;
         private User _trainer;
 
         public User Trainer
@@ -85,6 +85,8 @@ namespace GainTrack.ViewModels
 
         public ICommand EditTrainingCommand { get; }
 
+        public ICommand LogoutCommand { get; }
+
         public TrainerWindowViewModel(IServiceProvider serviceProvider, User user)
         {
             _serviceProvider = serviceProvider;
@@ -106,6 +108,7 @@ namespace GainTrack.ViewModels
             ChangeLanguageCommand = new RelayCommand(ChangeLanguage);
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
             EditTrainingCommand = new RelayCommand(EditTraining);
+            LogoutCommand = new RelayCommand(Logout);
             Trainer = user;
             LoadUsers();
             LoadAvailableLanguages();
@@ -117,10 +120,20 @@ namespace GainTrack.ViewModels
             _createTrainingViewModel = _serviceProvider.GetRequiredService<CreateTrainingViewModel>();
             _createTrainingViewModel.TrainingAdded += (sender, e) => LoadTrainingsForUser();
 
-
+            _mainWindowViewModel = new MainWindowViewModel(serviceProvider);
 
         }
 
+        private void Logout(object? obj)
+        {
+            if (obj is Window window)
+            {
+
+                MainWindow mainWindow = new MainWindow(_mainWindowViewModel);
+                mainWindow.Show();
+                window.Close();
+            }
+        }
         private async void EditTraining(object? obj)
         {
             if (obj is int id)
@@ -129,14 +142,9 @@ namespace GainTrack.ViewModels
                 EditTrainingWindowViewModel viewModel = new EditTrainingWindowViewModel(_trainingHasExerciseService, _exerciseService, _trainingService, _weigthExerciseService, _cardioExerciseService, id );
 
                 await viewModel.LoadExercisesForTraining();
-                // Kreiranje prozora preko DI
                 var editTrainingWindow = new EditTrainingWindow(viewModel);
 
-                // Učitavanje podataka pre prikazivanja prozora
-                
-                //await viewModel.LoadExercises();
                 Thread.Sleep(100);
-                // Prikaz prozora
                 editTrainingWindow.Show();
             }
         }
@@ -189,7 +197,6 @@ namespace GainTrack.ViewModels
 
         private void SelectUser(object? obj)
         {
-           
             LoadTrainingsForUser();
         }
 
@@ -252,6 +259,7 @@ namespace GainTrack.ViewModels
                     training.Deleted = 1;
                     await _trainingService.UpdateTrainingAsync(training);
                     Trainings.Remove(training);
+                    LoadTrainingsForUser();
                     
                 }
             }

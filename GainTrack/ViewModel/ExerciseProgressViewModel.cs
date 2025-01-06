@@ -33,7 +33,11 @@ namespace GainTrack.ViewModel
         public Exercise SelectedExercise
         {
             get => _selectedExercise;
-            set => SetProperty(ref _selectedExercise, value);
+            set
+            {
+                SetProperty(ref _selectedExercise, value);
+                LoadSeriesForSelectedExercise();
+            }
         }
 
         private ObservableCollection<Exercise> _filteredExercises;
@@ -47,12 +51,12 @@ namespace GainTrack.ViewModel
             }
         }
 
-        private ObservableCollection<Serie> _series;
+        private ObservableCollection<Serie> _loadedSeries;
 
-        public ObservableCollection<Serie> Series
+        public ObservableCollection<Serie> LoadedSeries
         {
-            get => _series;
-            set => SetProperty(ref _series, value);
+            get => _loadedSeries;
+            set => SetProperty(ref _loadedSeries, value);
         }
         private string _selectedExerciseType;
         public string SelectedExerciseType
@@ -76,20 +80,23 @@ namespace GainTrack.ViewModel
             _cardioExerciseService = serviceProvider.GetRequiredService<ICardioExerciseService>();
             _serieService = serviceProvider.GetRequiredService<ISerieService>();
             FilteredExercises = new ObservableCollection<Exercise>();
-            SelectedExerciseType = "Weight";
+            LoadedSeries = new ObservableCollection<Serie>();
+            FilterExercises();
+            
         }
 
         public async Task LoadExercisesAsync()
         {
             var exercisesFromDb = await _exerciseService.GetAllExercisesAsync();
             Exercises = new ObservableCollection<Exercise>(exercisesFromDb);
-            //MessageBox.Show(Exercises.Count() + "");
         }
 
-        private async void FilterExercises()
+        public async void FilterExercises()
         {
             FilteredExercises.Clear();
             await LoadExercisesAsync();
+            if (SelectedExerciseType == null)
+                SelectedExerciseType = "Weight";
             if (SelectedExerciseType.Equals("Weight"))
             {
                 var weightExercises = await _weigthExerciseService.GetAllWeightExercisesAsync();
@@ -115,7 +122,17 @@ namespace GainTrack.ViewModel
 
         private async void LoadSeriesForSelectedExercise()
         {
+            if(SelectedExercise != null)
+            {
+                LoadedSeries.Clear();
 
+                var series = await _serieService.GetSeriesByTraineeAndExerciseAsync(Trainee.Id, SelectedExercise.Id);
+                foreach(var s in series)
+                {
+                    LoadedSeries.Add(s);
+                }
+                MessageBox.Show(LoadedSeries.Count() + "");
+            }
         }
     }
 }

@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
 
 
-        <ListView Name="HistoryListView" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource PanelBrush}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Messurements}" SelectedItem="{Binding SelectedMeasurement, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10,10, 10, 10">
+        <ListView Name="HistoryListView" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Foreground="{DynamicResource TextBrush}" Background="{DynamicResource PanelBrush}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Messurements}" SelectedItem="{Binding SelectedMeasurement, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10,10, 10, 10">
             <ListView.Resources>
                 <!-- Stil za zaglavlja kolona -->
                 <Style TargetType="GridViewColumnHeader">
@@ -41,7 +41,7 @@
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="{DynamicResource Measurements}" Width="300" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="{DynamicResource Measurements}" Width="320" DisplayMemberBinding="{Binding Name}" />
                 </GridView>
             </ListView.View>
         </ListView>
