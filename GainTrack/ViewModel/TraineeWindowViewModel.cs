@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace GainTrack.ViewModel
 {
@@ -25,6 +26,7 @@ namespace GainTrack.ViewModel
         private AddMessurementViewModel _addMessurementViewModel;
         private MessureProgressViewModel _messureProgressViewModel;
         private MainWindowViewModel _mainWindowViewModel;
+        private ChangeUsernameAndPasswordViewModel _changeUsernameAndPasswordViewModel;
         private readonly IUserService _userService;
         private User _trainee;
 
@@ -58,8 +60,8 @@ namespace GainTrack.ViewModel
         public Page ExerciseProgressPage { get; set; }
         public ICommand ChangeThemeCommand { get; }
         public ICommand ChangeLanguageCommand { get; }
-
         public ICommand LogoutCommand { get; }
+        public ICommand UpdateCommand { get; }
         public TraineeWindowViewModel(IServiceProvider serviceProvider, User trainee)
         {
             _userService = serviceProvider.GetRequiredService<IUserService>();
@@ -71,9 +73,11 @@ namespace GainTrack.ViewModel
             _trainingDoneViewModel = new TrainingDoneViewModel(serviceProvider, Trainee);
             _trainingingsViewModel = new TrainingsViewModel(serviceProvider, Trainee);
             _mainWindowViewModel = new MainWindowViewModel(serviceProvider);
+            _changeUsernameAndPasswordViewModel = new ChangeUsernameAndPasswordViewModel(serviceProvider, Trainee);
             ChangeLanguageCommand = new RelayCommand(ChangeLanguage);
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
             LogoutCommand = new RelayCommand(Logout);
+            UpdateCommand = new RelayCommand(Update);
             MyTrainingsPage = new MyTrainings(_trainingDoneViewModel);
             TrainingHistoryPage = new TrainingHistory(_trainingingsViewModel);
             EnterMessurementsPage = new AddMessurement(_addMessurementViewModel);
@@ -83,6 +87,11 @@ namespace GainTrack.ViewModel
             LoadAvailableThemes();
         }
 
+        private void Update(object? obj)
+        {
+            ChangeUsernameAndPassword changeUsernameAndPassword = new ChangeUsernameAndPassword(_changeUsernameAndPasswordViewModel);
+            changeUsernameAndPassword.ShowDialog();
+        }
         private void Logout(object? obj)
         {
             if (obj is Window window)

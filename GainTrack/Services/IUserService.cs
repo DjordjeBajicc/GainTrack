@@ -14,7 +14,7 @@ namespace GainTrack.Services
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task UpdateUserThemeAndLanguageAsync(User user);
         Task DeleteUserAsync(int id);
-
+        Task UpdateUser(User user);
         Task<bool> CheckAvailabilityOfusername(string username);
 
     }

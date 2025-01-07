@@ -70,4 +70,9 @@
     <system:String x:Key="NumberOfMonths">Broj Mjeseci</system:String>
     <system:String x:Key="UsernameAlreadyInUse">Korisničko Ime Je Zauzeto</system:String>
     <system:String x:Key="Action">Akcija</system:String>
+    <system:String x:Key="Password">Lozinka</system:String>
+    <system:String x:Key="RePassword">Ponovi Lozinku</system:String>
+    <system:String x:Key="FillInNewUsernameOrNewPassword">Unesite Novo Korisničko Ime Ili Novu Lozinku</system:String>
+    <system:String x:Key="MakeSureYouReenterThePasseordCorrectly">Pobrinite Se Da Unesete Ponovljenu Lozinku Ispravno</system:String>
+    <system:String x:Key="SuccessifulUpdate">Uspješno Ažurirano</system:String>
 </ResourceDictionary>

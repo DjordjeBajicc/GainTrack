@@ -28,6 +28,7 @@ namespace GainTrack.ViewModels
         private readonly ICardioExerciseService _cardioExerciseService;
         private readonly IServiceProvider _serviceProvider;
         private readonly ITrainingHasExerciseService _trainingHasExerciseService;
+        private ChangeUsernameAndPasswordViewModel _changeUsernameAndPasswordViewModel;
         private CreateClientViewModel _createClientViewModel;
         private CreateTrainingViewModel _createTrainingViewModel;
         private EditTrainingWindowViewModel _editTrainingWindowViewModel;
@@ -89,6 +90,8 @@ namespace GainTrack.ViewModels
         public ICommand LogoutCommand { get; }
 
         public ICommand DeleteUserCommand { get; }
+
+        public ICommand UpdateCommand { get; }
         public TrainerWindowViewModel(IServiceProvider serviceProvider, User user)
         {
             _serviceProvider = serviceProvider;
@@ -112,6 +115,7 @@ namespace GainTrack.ViewModels
             EditTrainingCommand = new RelayCommand(EditTraining);
             LogoutCommand = new RelayCommand(Logout);
             DeleteUserCommand = new RelayCommand(DeleteUser);
+            UpdateCommand = new RelayCommand(Update);
 
             Trainer = user;
             LoadUsers();
@@ -125,7 +129,13 @@ namespace GainTrack.ViewModels
             _createTrainingViewModel.TrainingAdded += (sender, e) => LoadTrainingsForUser();
 
             _mainWindowViewModel = new MainWindowViewModel(serviceProvider);
+            _changeUsernameAndPasswordViewModel = new ChangeUsernameAndPasswordViewModel(serviceProvider, Trainer);
+        }
 
+        private void Update(object? obj)
+        {
+            ChangeUsernameAndPassword changeUsernameAndPassword = new ChangeUsernameAndPassword(_changeUsernameAndPasswordViewModel);
+            changeUsernameAndPassword.ShowDialog();
         }
 
         private async void DeleteUser(object? obj)

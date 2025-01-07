@@ -32,6 +32,8 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        
                     </Grid.ColumnDefinitions>
                     <Button Name="LanguageButton" Grid.Row="0"  Style="{DynamicResource ButtonStyle}" Click="LanguageButton_Click" HorizontalAlignment="Right">
                         <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,5,0"/>
@@ -65,8 +67,11 @@
                             </StackPanel>
                         </Border>
                     </Popup>
-                    <Button Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Command="{Binding LogoutCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <Button Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Right" Grid.Column="3" VerticalAlignment="Bottom" Command="{Binding LogoutCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                         <Image Source="Assets/logout.png" Width="26" Height="26" Margin="5"/>
+                    </Button>
+                    <Button Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Command="{Binding UpdateCommand}">
+                        <Image Source="Assets/settings.png" Width="26" Height="26" Margin="5"/>
                     </Button>
                 </Grid>
 
@@ -80,10 +85,10 @@
 
 
                     <ListView Name="ClientsList" Grid.Row="1" ItemsSource="{Binding Trainees}" Margin="0,5,0,0"
-          SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-          Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}"
-          Foreground="{DynamicResource TextBrush}"
-          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                          SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                          Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}"
+                          Foreground="{DynamicResource TextBrush}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.View>
                             <GridView>
                                 <!-- Kolona za ime korisnika -->

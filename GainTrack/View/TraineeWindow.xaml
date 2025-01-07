@@ -23,6 +23,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Button Name="LanguageButton" Click="LanguageButton_Click" Style="{DynamicResource ButtonStyle}" Command="{Binding ChangeLanguageCommand}" Grid.Row="0">
                         <Image Source="Assets/language.png" Width="26" Height="26" Margin="0,0,0,5"/>
@@ -56,7 +57,10 @@
                             </StackPanel>
                         </Border>
                     </Popup>
-                    <Button Style="{DynamicResource ButtonStyle}" Grid.Row="2" VerticalAlignment="Bottom" Command="{Binding LogoutCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <Button Style="{DynamicResource ButtonStyle}" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Bottom" Command="{Binding UpdateCommand}">
+                        <Image Source="Assets/settings.png" Width="26" Height="26" Margin="5"/>
+                    </Button>
+                    <Button Style="{DynamicResource ButtonStyle}" Grid.Row="3" VerticalAlignment="Bottom" Command="{Binding LogoutCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                         <Image Source="Assets/logout.png" Width="26" Height="26" Margin="5"/>
                     </Button>
                 </Grid>

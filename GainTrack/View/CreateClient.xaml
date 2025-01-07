@@ -4,22 +4,30 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:GainTrack"
+    xmlns:converters="clr-namespace:GainTrack.Converters"
     mc:Ignorable="d"
-    Title="CreateClient" Height="340" Width="500"
+    Title="CreateClient" Height="480" Width="500"
     Background="{DynamicResource BackgroundBrush}">
+    <Window.Resources>
+        <converters:PasswordHelper x:Key="PasswordHelper"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
        
-        <TextBlock Text="{DynamicResource FirstName}" Style="{DynamicResource BodyTextStyle}" FontSize="16" Margin="10,10,10,5"/>
+        <TextBlock Text="{DynamicResource FirstName}" Style="{DynamicResource BodyTextStyle}" FontSize="16" Grid.Row="0" Margin="10,10,10,5"/>
         <TextBox Name="FirstnameTextBox" Text="{Binding Firstname}" Style="{DynamicResource TextBoxStyle}" Grid.Row="1" Margin="10,0,10,10"/>
 
         
@@ -30,8 +38,13 @@
         <TextBlock Text="{DynamicResource Username}" Style="{DynamicResource BodyTextStyle}" FontSize="16" Grid.Row="4" Margin="10,10,10,5"/>
         <TextBox Name="UsernameTxtBox" Text="{Binding Username}" Style="{DynamicResource TextBoxStyle}" Grid.Row="5" Margin="10,0,10,10"/>
 
+        <TextBlock Text="{DynamicResource Password}" Style="{DynamicResource BodyTextStyle}" FontSize="16" Grid.Row="6" Margin="10,10,10,5"/>
+        <PasswordBox  converters:PasswordHelper.BindPassword="True" Foreground="{DynamicResource TextBrush}" converters:PasswordHelper.BoundPassword="{Binding Password, Mode=TwoWay}"  Grid.Row="7" Margin="10,0,10,10"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="6" HorizontalAlignment="Center" Margin="0,20">
+        <TextBlock Text="{DynamicResource RePassword}" Style="{DynamicResource BodyTextStyle}" FontSize="16" Grid.Row="8" Margin="10,10,10,5"/>
+        <PasswordBox converters:PasswordHelper.BindPassword="True" Foreground="{DynamicResource TextBrush}" converters:PasswordHelper.BoundPassword="{Binding RePassword, Mode=TwoWay}" Grid.Row="9" Margin="10,0,10,10"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="10" HorizontalAlignment="Center" Margin="0,20">
             <Button Content="{DynamicResource Save}" Style="{DynamicResource ButtonStyle}"  Margin="10" Command="{Binding SaveCommand}"/>
             <Button Content="{DynamicResource Cancel}"  Style="{DynamicResource ButtonStyle}"  Margin="10" Click="CancelButton_Click"/>
         </StackPanel>

@@ -70,4 +70,9 @@
     <system:String x:Key="NumberOfMonths">Number Of Months</system:String>
     <system:String x:Key="UsernameAlreadyInUse">Username Already In Use</system:String>
     <system:String x:Key="Action">Action</system:String>
+    <system:String x:Key="Password">Password</system:String>
+    <system:String x:Key="RePassword">Repeat Password</system:String>
+    <system:String x:Key="FillInNewUsernameOrNewPassword">Fill In New Username Or New Password</system:String>
+    <system:String x:Key="MakeSureYouReenterThePasseordCorrectly">Make Sure You Reenter The Passeord Correctly</system:String>
+    <system:String x:Key="SuccessifulUpdate">Successiful Update</system:String>
 </ResourceDictionary>

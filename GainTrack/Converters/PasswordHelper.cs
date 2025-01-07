@@ -40,9 +40,12 @@ namespace GainTrack.Converters
 
         private static void OnBoundPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PasswordBox passwordBox && !passwordBox.Password.Equals(e.NewValue))
+            if (d is PasswordBox passwordBox)
             {
-                passwordBox.Password = (string)e.NewValue;
+                if (e.NewValue is string newValue && !passwordBox.Password.Equals(newValue))
+                {
+                    passwordBox.Password = newValue;
+                }
             }
         }
 

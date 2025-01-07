@@ -79,6 +79,17 @@ namespace GainTrack.Services
             }
         }
 
+        public async Task UpdateUser(User user)
+        {
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                _context.Users.Update(user);
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task UpdateUserThemeAndLanguageAsync(User user)
         {
             using (var scope = _scopeFactory.CreateScope())

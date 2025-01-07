@@ -48,8 +48,23 @@ namespace GainTrack.ViewModel
                 _username = value;
                 OnPropertyChanged(nameof(Username));
             }
-        }  
+        }
 
+        private string _password;
+
+        public string Password
+        {
+            get => _password;
+            set => SetProperty(ref _password, value);
+        }
+
+        private string _rePassword;
+
+        public string RePassword
+        {
+            get => _rePassword;
+            set => SetProperty(ref _rePassword, value);
+        }
         public User Trainer { get; set; }
 
         public ICommand SaveCommand { get; }
@@ -68,8 +83,13 @@ namespace GainTrack.ViewModel
 
         private async void SaveUserAsync(object? obj)
         {
-            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Lastname))
+            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Lastname) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(RePassword))
             {
+                if (!Password.Equals(RePassword))
+                {
+                    CustomMessageBox.Show(App.Current.Resources["MakeSureYouReenterThePasseordCorrectly"].ToString());
+                    return;
+                }
                 bool flag = await _userService.CheckAvailabilityOfusername(Username);
                 if (!flag)
                 {
@@ -78,6 +98,7 @@ namespace GainTrack.ViewModel
                         Firstname = Firstname,
                         Lastname = Lastname,
                         Username = Username,
+                        Password = Password,
                         Theme = "Dark",
                         Language = "English"
                     };
@@ -87,9 +108,11 @@ namespace GainTrack.ViewModel
                         await _userService.AddUserAndTraineeAsync(user, Trainer.Id);
                         UserSaved?.Invoke(this, EventArgs.Empty);
                         CustomMessageBox.Show(App.Current.Resources["TheTraineeWasSaved"].ToString());
-                        Firstname = string.Empty;
-                        Lastname = string.Empty;
-                        Username = string.Empty;
+                        Firstname = "";
+                        Lastname = "";
+                        Username = "";
+                        Password = "";
+                        RePassword = "";
                     }
                     catch (Exception ex)
                     {
