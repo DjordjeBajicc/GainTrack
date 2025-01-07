@@ -1,6 +1,7 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
 using GainTrack.Utils;
+using GainTrack.View.CustomView;
 using GainTrack.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -80,12 +81,12 @@ namespace GainTrack.ViewModel
                 }
                 else
                 {
-                    MessageBox.Show("Wrong password and/or username");
+                    CustomMessageBox.Show("Wrong password and/or username");
                 }
             }
             else
             {
-                MessageBox.Show("Fill in all fields");
+                CustomMessageBox.Show("Fill in all fields");
             }
         }
 

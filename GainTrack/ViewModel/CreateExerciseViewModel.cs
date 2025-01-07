@@ -1,5 +1,6 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
+using GainTrack.View.CustomView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,11 +96,11 @@ namespace GainTrack.ViewModel
                     await _cardioExerciseService.AddCardioExerciseAsync(cardio);
                 }
 
-                MessageBox.Show(App.Current.Resources["TheExercisWasSuccessfullyCreated"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["TheExercisWasSuccessfullyCreated"].ToString());
             }
             else
             {
-                MessageBox.Show(App.Current.Resources["EnterTheNameOfTheExerciseAndSelectTheType"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["EnterTheNameOfTheExerciseAndSelectTheType"].ToString());
             }
         }
     }

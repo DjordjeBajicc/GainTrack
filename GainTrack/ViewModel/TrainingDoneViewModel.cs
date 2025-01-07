@@ -1,5 +1,6 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
+using GainTrack.View.CustomView;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -253,7 +254,7 @@ namespace GainTrack.ViewModel
             }
             else
             {
-                MessageBox.Show(App.Current.Resources["PickDateAndTraining"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["PickDateAndTraining"].ToString());
             }
         }
 
@@ -283,7 +284,7 @@ namespace GainTrack.ViewModel
                 {
                     if(concreteExerciseOnTraining.TrainingHasExercise.TrainingId == SelectedTraining.Id && concreteExerciseOnTraining.Date.Equals(Date.Value))
                     {
-                        MessageBox.Show(App.Current.Resources["TrainingDoneOnThatDate"].ToString());
+                        CustomMessageBox.Show(App.Current.Resources["TrainingDoneOnThatDate"].ToString());
                         return false;
                     }
                 }

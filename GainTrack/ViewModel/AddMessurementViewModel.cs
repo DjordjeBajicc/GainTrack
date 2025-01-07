@@ -1,5 +1,6 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
+using GainTrack.View.CustomView;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -91,16 +92,16 @@ namespace GainTrack.ViewModel
                     };
                     await _messurementService.CreateMessurement(messurement);
                     LoadMessurements();
-                    MessageBox.Show(App.Current.Resources["MessurementCreated"].ToString());
+                    CustomMessageBox.Show(App.Current.Resources["MessurementCreated"].ToString());
                 }
                 else
                 {
-                    MessageBox.Show(App.Current.Resources["MessurementAlreadyExists"].ToString());
+                    CustomMessageBox.Show(App.Current.Resources["MessurementAlreadyExists"].ToString());
                 }
             }
             else
             {
-                MessageBox.Show(App.Current.Resources["EnterTheNameOfMessurement"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["EnterTheNameOfMessurement"].ToString());
             }
         }
 
@@ -119,16 +120,16 @@ namespace GainTrack.ViewModel
                 if (!flag)
                 {
                     await _messurementService.AddNewMessure(userHasMessurement);
-                    MessageBox.Show(App.Current.Resources["MessureRecorded"].ToString());
+                    CustomMessageBox.Show(App.Current.Resources["MessureRecorded"].ToString());
                 }
                 else
                 {
-                    MessageBox.Show(App.Current.Resources["MessureAlreadyExistsForThisDate"].ToString());
+                    CustomMessageBox.Show(App.Current.Resources["MessureAlreadyExistsForThisDate"].ToString());
                 }
             }
             else
             {
-                MessageBox.Show(App.Current.Resources["ChooseMessurementAndEnterTheValue"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["ChooseMessurementAndEnterTheValue"].ToString());
             }
         }
 

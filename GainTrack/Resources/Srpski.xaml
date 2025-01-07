@@ -68,4 +68,6 @@
     <system:String x:Key="MessureRecorded">Mjerenje Zabilježeno</system:String>
     <system:String x:Key="MessureAlreadyExistsForThisDate">Mjerenje Vec Postoji Za Ovaj Datum</system:String>
     <system:String x:Key="NumberOfMonths">Broj Mjeseci</system:String>
+    <system:String x:Key="UsernameAlreadyInUse">Korisničko Ime Je Zauzeto</system:String>
+    <system:String x:Key="Action">Akcija</system:String>
 </ResourceDictionary>

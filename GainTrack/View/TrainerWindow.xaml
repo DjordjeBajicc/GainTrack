@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GainTrack"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="TrainerWindow" Height="520" Width="900"
+        Title="TrainerWindow" Height="520" Width="920"
         Background="{DynamicResource BackgroundBrush}">
-
+    
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -70,7 +70,6 @@
                     </Button>
                 </Grid>
 
-                <!-- Lista klijenata -->
                 <Grid Grid.Row="1" Margin="10,10,1,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -80,16 +79,48 @@
                     <TextBlock Text="{DynamicResource Clients}" Grid.Row="0" Style="{DynamicResource HeaderTextStyle}" VerticalAlignment="Top"/>
 
 
-                    <ListBox Name="ClientsList" Grid.Row="1" ItemsSource="{Binding Trainees}" Margin="0,5,0,0"
-                            SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-                            Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}"
-                            Foreground="{DynamicResource TextBrush}" Height="253">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding User.FullName}" Style="{DynamicResource BodyTextStyle}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    <ListView Name="ClientsList" Grid.Row="1" ItemsSource="{Binding Trainees}" Margin="0,5,0,0"
+          SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+          Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}"
+          Foreground="{DynamicResource TextBrush}"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.View>
+                            <GridView>
+                                <!-- Kolona za ime korisnika -->
+                                <GridViewColumn Width="200">
+                                    <GridViewColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{DynamicResource Name}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.HeaderTemplate>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding User.FullName}" Style="{DynamicResource BodyTextStyle}" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <!-- Kolona za dugme -->
+                                <GridViewColumn Width="110">
+                                    <GridViewColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{DynamicResource Action}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.HeaderTemplate>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{DynamicResource Delete}" Style="{DynamicResource DeleteButtonStyle}" 
+                                                Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                CommandParameter="{Binding User.Id}" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+
+
 
 
                     <Button Content="{DynamicResource AddClient}" Grid.Row="2" Style="{DynamicResource ButtonStyle}" Command="{Binding AddClientCommand}" Height="40" Margin="0,10" VerticalAlignment="Bottom"/>
@@ -101,9 +132,9 @@
         <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Grid.Column="1">
             <StackPanel Margin="10">
                 <TextBlock Text="{DynamicResource ClientDetails}" Style="{DynamicResource HeaderTextStyle}"/>
-                <TextBlock Text="{Binding SelectedUser.FullName}" Style="{DynamicResource BodyTextStyle}" Margin="10"/>
+                <TextBlock Text="{Binding SelectedUser.User.FullName}" Style="{DynamicResource BodyTextStyle}" Margin="10"/>
 
-                <!-- Lista treninga -->
+                
                 <TextBlock Text="{DynamicResource Trainings}" Style="{DynamicResource HeaderTextStyle}" Margin="10,20,0,10"/>
                 <ListBox x:Name="TrainingsList" ItemsSource="{Binding Trainings}"
                          Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource PrimaryBrush}" 

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GainTrack.Services
 {
@@ -33,7 +34,15 @@ namespace GainTrack.Services
             }  
         }
 
-      
+        public async Task<bool> CheckAvailabilityOfusername(string username)
+        {
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
+                return await _context.Users.AnyAsync(u => u.Username == username);
+
+            }
+        }
 
         public async Task DeleteUserAsync(int id)
         {
@@ -41,9 +50,11 @@ namespace GainTrack.Services
             {
                 var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
                 var existingUser = await _context.Users.FindAsync(id);
+
                 if (existingUser != null)
                 {
-                    _context.Users.Remove(existingUser);
+                    existingUser.Deleted = 1;
+                    _context.Users.Update(existingUser);
                     await _context.SaveChangesAsync();
                 }
             }

@@ -15,5 +15,7 @@ namespace GainTrack.Services
         Task UpdateUserThemeAndLanguageAsync(User user);
         Task DeleteUserAsync(int id);
 
+        Task<bool> CheckAvailabilityOfusername(string username);
+
     }
 }

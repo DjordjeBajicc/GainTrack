@@ -68,4 +68,6 @@
     <system:String x:Key="MessureRecorded">Messure Recorded</system:String>
     <system:String x:Key="MessureAlreadyExistsForThisDate">MessureAlreadyExistsForThisDate</system:String>
     <system:String x:Key="NumberOfMonths">Number Of Months</system:String>
+    <system:String x:Key="UsernameAlreadyInUse">Username Already In Use</system:String>
+    <system:String x:Key="Action">Action</system:String>
 </ResourceDictionary>

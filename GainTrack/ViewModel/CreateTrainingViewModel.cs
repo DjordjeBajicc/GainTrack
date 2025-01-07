@@ -1,5 +1,6 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
+using GainTrack.View.CustomView;
 using GainTrack.ViewModel;
 using System;
 using System.Collections.ObjectModel;
@@ -207,7 +208,7 @@ namespace GainTrack.ViewModel
         {
             if(string.IsNullOrEmpty(_trainingName))
             {
-                MessageBox.Show(App.Current.Resources["FillAllFields"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["FillAllFields"].ToString());
             }
             else
             {
@@ -232,7 +233,7 @@ namespace GainTrack.ViewModel
                 SelectedExercises.Clear();
 
                 // Opcionalno, možeš da obavestiš korisnika o uspehu ili grešci
-                MessageBox.Show(App.Current.Resources["TheTrainingWasSuccessfullySaved"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["TheTrainingWasSuccessfullySaved"].ToString());
                 TrainingAdded?.Invoke(this, EventArgs.Empty);
             }
         }

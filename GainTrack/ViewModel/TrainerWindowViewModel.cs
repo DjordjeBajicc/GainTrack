@@ -3,6 +3,7 @@ using GainTrack.Data.Entities;
 using GainTrack.Services;
 using GainTrack.Utils;
 using GainTrack.View;
+using GainTrack.View.CustomView;
 using GainTrack.ViewModel;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
@@ -87,6 +88,7 @@ namespace GainTrack.ViewModels
 
         public ICommand LogoutCommand { get; }
 
+        public ICommand DeleteUserCommand { get; }
         public TrainerWindowViewModel(IServiceProvider serviceProvider, User user)
         {
             _serviceProvider = serviceProvider;
@@ -109,6 +111,8 @@ namespace GainTrack.ViewModels
             ChangeThemeCommand = new RelayCommand(ChangeTheme);
             EditTrainingCommand = new RelayCommand(EditTraining);
             LogoutCommand = new RelayCommand(Logout);
+            DeleteUserCommand = new RelayCommand(DeleteUser);
+
             Trainer = user;
             LoadUsers();
             LoadAvailableLanguages();
@@ -122,6 +126,15 @@ namespace GainTrack.ViewModels
 
             _mainWindowViewModel = new MainWindowViewModel(serviceProvider);
 
+        }
+
+        private async void DeleteUser(object? obj)
+        {
+            if(obj is int id)
+            {
+                await _userService.DeleteUserAsync(id);
+                LoadUsers();
+            }
         }
 
         private void Logout(object? obj)
@@ -265,7 +278,7 @@ namespace GainTrack.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                CustomMessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
 

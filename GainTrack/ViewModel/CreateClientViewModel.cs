@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Configuration;
 using System.Windows.Input;
+using GainTrack.View.CustomView;
 
 namespace GainTrack.ViewModel
 {
@@ -69,32 +70,40 @@ namespace GainTrack.ViewModel
         {
             if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Firstname) && !string.IsNullOrEmpty(Lastname))
             {
-                var user = new User
+                bool flag = await _userService.CheckAvailabilityOfusername(Username);
+                if (!flag)
                 {
-                    Firstname = Firstname,
-                    Lastname = Lastname,
-                    Username = Username,
-                    Theme = "Dark",
-                    Language = "English"
-                };
+                    var user = new User
+                    {
+                        Firstname = Firstname,
+                        Lastname = Lastname,
+                        Username = Username,
+                        Theme = "Dark",
+                        Language = "English"
+                    };
 
-                try
-                {
-                    await _userService.AddUserAndTraineeAsync(user, Trainer.Id);
-                    UserSaved?.Invoke(this, EventArgs.Empty);
-                    MessageBox.Show(App.Current.Resources["TheTraineeWasSaved"].ToString());
-                    Firstname = string.Empty;
-                    Lastname = string.Empty;
-                    Username = string.Empty;
+                    try
+                    {
+                        await _userService.AddUserAndTraineeAsync(user, Trainer.Id);
+                        UserSaved?.Invoke(this, EventArgs.Empty);
+                        CustomMessageBox.Show(App.Current.Resources["TheTraineeWasSaved"].ToString());
+                        Firstname = string.Empty;
+                        Lastname = string.Empty;
+                        Username = string.Empty;
+                    }
+                    catch (Exception ex)
+                    {
+                        CustomMessageBox.Show(ex.Message);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
+                    CustomMessageBox.Show(App.Current.Resources["UsernameAlreadyInUse"].ToString());
                 }
             }
             else
             {
-                MessageBox.Show(App.Current.Resources["FillInAllTheFields"].ToString());
+                CustomMessageBox.Show(App.Current.Resources["FillInAllTheFields"].ToString());
             }
         }
     }

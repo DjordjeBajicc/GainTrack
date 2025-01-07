@@ -1,5 +1,6 @@
 ﻿using GainTrack.Data.Entities;
 using GainTrack.Services;
+using GainTrack.View.CustomView;
 using LiveCharts;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -131,7 +132,7 @@ namespace GainTrack.ViewModel
                 {
                     LoadedSeries.Add(s);
                 }
-                MessageBox.Show(LoadedSeries.Count() + "");
+                CustomMessageBox.Show(LoadedSeries.Count() + "");
             }
         }
     }

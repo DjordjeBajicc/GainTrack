@@ -32,7 +32,7 @@ namespace GainTrack.Services
             using( var scope = _scopeFactory.CreateScope())
             {
                 var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
-                var trainees = await _context.Trainees.Where(t => t.TrainerId == id).Include(t => t.User).ToListAsync();
+                var trainees = await _context.Trainees.Include(t => t.User).Where(t => t.TrainerId == id && t.User.Deleted == 0).ToListAsync();
                 return trainees;
             }
         }

@@ -13,7 +13,7 @@ public partial class User
 
     public string Username { get; set; }
 
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     public string Theme { get; set; }
     public string Language { get; set; }
