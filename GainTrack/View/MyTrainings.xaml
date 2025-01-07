@@ -84,19 +84,30 @@
         Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
         <DataGrid VerticalAlignment="Stretch" Name="ExercisesDataGrid" Style="{DynamicResource MaterialDesignDataGrid}" ItemsSource="{Binding SeriesForDataGrid}"  Grid.Column="1" AutoGenerateColumns="False" Margin="10,10,10,28"
-            HeadersVisibility="Column" Grid.Row="1" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
+            HeadersVisibility="Column" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource TextBrush}" Grid.Row="1" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="10,5" />
+                </Style>
+
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource Exercise}" IsReadOnly="true" Binding="{Binding ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}" Width="2*"/>
-                <DataGridTextColumn Header="{DynamicResource Set}" IsReadOnly="True" Binding="{Binding SerialNumber}" Width="1*"/>
+
+                <DataGridTextColumn Header="{DynamicResource Exercise}" Foreground="{DynamicResource TextBrush}" IsReadOnly="true" Binding="{Binding ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}" Width="2*"/>
+                <DataGridTextColumn Header="{DynamicResource Set}" Foreground="{DynamicResource TextBrush}" IsReadOnly="True" Binding="{Binding SerialNumber}" Width="1*"/>
                 <DataGridTemplateColumn Header="{DynamicResource Reps}" Width="1*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Reps}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Reps}" Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Reps, Mode=TwoWay}" PreviewTextInput="NumberOnly_PreviewTextInput" />
+                            <TextBox Text="{Binding Reps, Mode=TwoWay}" Foreground="{DynamicResource TextBrush}" PreviewTextInput="NumberOnly_PreviewTextInput" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -104,12 +115,12 @@
                 <DataGridTemplateColumn Header="{DynamicResource Weight}" Width="1*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Weight}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Weight}" Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Weight, Mode=TwoWay}" PreviewTextInput="Decimal_PreviewTextInput" />
+                            <TextBox Text="{Binding Weight, Mode=TwoWay}" Foreground="{DynamicResource TextBrush}" PreviewTextInput="Decimal_PreviewTextInput" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -117,12 +128,12 @@
                 <DataGridTemplateColumn Header="{DynamicResource Distance}" Width="1*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Distance}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Distance}" Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Distance, Mode=TwoWay}" PreviewTextInput="Decimal_PreviewTextInput" />
+                            <TextBox Text="{Binding Distance, Mode=TwoWay}" Foreground="{DynamicResource TextBrush}" PreviewTextInput="Decimal_PreviewTextInput" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -130,12 +141,12 @@
                 <DataGridTemplateColumn Header="{DynamicResource Time}" Width="1*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Time, StringFormat='HH:mm:ss'}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Time, StringFormat='HH:mm:ss'}" Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Time, Mode=TwoWay, StringFormat='HH:mm:ss'}" LostFocus="TimeOnly_LostFocus" />
+                            <TextBox Text="{Binding Time, Mode=TwoWay, StringFormat='HH:mm:ss'}" Foreground="{DynamicResource TextBrush}" LostFocus="TimeOnly_LostFocus" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>

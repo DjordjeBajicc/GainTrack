@@ -31,6 +31,14 @@ namespace GainTrack.ViewModel
             set => SetProperty(ref _rePassword, value);
         }
 
+        private string _oldPassword;
+
+        public string OldPassword
+        {
+            get => _oldPassword;
+            set => SetProperty(ref _oldPassword, value);
+        }
+
         private string _password;
 
         public string Password
@@ -51,7 +59,7 @@ namespace GainTrack.ViewModel
 
         private void Save(object? obj)
         {
-            if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(RePassword))
+            if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(RePassword) && string.IsNullOrEmpty(OldPassword))
             {
                 CustomMessageBox.Show(App.Current.Resources["FillInNewUsernameOrNewPassword"].ToString());
             }
@@ -67,14 +75,21 @@ namespace GainTrack.ViewModel
 
                 if (!string.IsNullOrEmpty(Password))
                 {
-                    if (!string.IsNullOrEmpty(RePassword) && !string.IsNullOrEmpty(RePassword) && RePassword.Equals(Password))
+                    if (string.IsNullOrEmpty(OldPassword) || !_user.Password.Equals(OldPassword))
                     {
-                        _user.Password = Password;
-                        flag2 = true;
+                        CustomMessageBox.Show(App.Current.Resources["EnterCorrectOldPassword"].ToString());
                     }
                     else
                     {
-                        CustomMessageBox.Show(App.Current.Resources["MakeSureYouReenterThePasseordCorrectly"].ToString());
+                        if (!string.IsNullOrEmpty(RePassword) && !string.IsNullOrEmpty(RePassword) && RePassword.Equals(Password))
+                        {
+                            _user.Password = Password;
+                            flag2 = true;
+                        }
+                        else
+                        {
+                            CustomMessageBox.Show(App.Current.Resources["MakeSureYouReenterThePasseordCorrectly"].ToString());
+                        }
                     }
                 }
 

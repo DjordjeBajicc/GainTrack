@@ -75,4 +75,6 @@
     <system:String x:Key="FillInNewUsernameOrNewPassword">Fill In New Username Or New Password</system:String>
     <system:String x:Key="MakeSureYouReenterThePasseordCorrectly">Make Sure You Reenter The Passeord Correctly</system:String>
     <system:String x:Key="SuccessifulUpdate">Successiful Update</system:String>
+    <system:String x:Key="OldPassword">Old Password</system:String>
+    <system:String x:Key="EnterCorrectOldPassword">Enter Correct Old Password</system:String>
 </ResourceDictionary>

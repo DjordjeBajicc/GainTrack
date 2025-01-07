@@ -44,12 +44,7 @@ namespace GainTrack.View
 
             if (!System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, @"^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9]):([0-5]?[0-9])$"))
             {
-                textBox.Text = string.Empty;
-                SaveButton.IsEnabled = false;
-            }
-            else
-            {
-                SaveButton.IsEnabled = true;
+                textBox.Text = null;
             }
         }
 

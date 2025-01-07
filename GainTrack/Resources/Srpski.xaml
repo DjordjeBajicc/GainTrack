@@ -75,4 +75,6 @@
     <system:String x:Key="FillInNewUsernameOrNewPassword">Unesite Novo Korisničko Ime Ili Novu Lozinku</system:String>
     <system:String x:Key="MakeSureYouReenterThePasseordCorrectly">Pobrinite Se Da Unesete Ponovljenu Lozinku Ispravno</system:String>
     <system:String x:Key="SuccessifulUpdate">Uspješno Ažurirano</system:String>
+    <system:String x:Key="OldPassword">Trenutna Lozinka</system:String>
+    <system:String x:Key="EnterCorrectOldPassword">Unesite ispravnu Trenutnu Lozinku</system:String>
 </ResourceDictionary>
