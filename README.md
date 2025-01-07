@@ -17,10 +17,22 @@ GainTrack aplikacija je osmišljena tako da podržava 2 tipa korisničkih naloga
 ### Prijava na aplikaciju
 
 Prilikom otvaranja aplikacije, korisniku se prikayuje početni ekran za prijavu u samu aplikaciju. Prijava je ista za oba tipa korisnika.
+
 ![image](https://github.com/user-attachments/assets/41bbd025-e7f5-4bd1-ae47-0c3930a21201)
+
 Da bi korisnici mogli da koriste funkcionalnosti same aplikacije, potrebno je da se prvo autentifikuju na sistem upotrebom svojih kredencijala(korisničko ime i lozinka). Nakon unosa kredencijala potrebno je kliknuti na dugme "Login" pri čemu se vrši provjera ispravnosti kredencijala a pri ispravno unesenim kredencijalima se vrši provjera kojoj grupi korisnika pripada dati korisnik sa unesenim keredencijalima te se potom otvara dio aplikacije namijenjen toj grupi korisnika o čemu će biti riječi u narednim poglavljima. Pri unesenim pogrešnim kredencijalima se korisniku prikazuje poruka o pogrešno unesenim kredencijalima i korisnik ima mogućnost ponovnog unosa kredencijala.
 
 ![image](https://github.com/user-attachments/assets/5871e085-30e1-4809-b8c1-f69cf20614b0)
+
+U slučaju da korisnik nije unio trenutno lozinku ili da je unio netačnu trenutnu lozinku prikazuje mu se poruka o neispravnosti trenutne lozinke:
+
+![image](https://github.com/user-attachments/assets/61a6e4cb-fc34-4346-9edb-44f9129c489c)
+
+Ukoliko korisnik ne unese ponovljenu lozinku ili unese ponovljenu lozinku koja se ne poklapa sa lozinkom ispisuje mu se poruka o grešci:
+
+![image](https://github.com/user-attachments/assets/3872e41a-3ea7-45b5-bcb9-fcb062addf16)
+
+
 
 ### Ažuriranje korisničkog imena i/ili lozinke
 
