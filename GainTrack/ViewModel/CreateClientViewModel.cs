@@ -108,11 +108,7 @@ namespace GainTrack.ViewModel
                         await _userService.AddUserAndTraineeAsync(user, Trainer.Id);
                         UserSaved?.Invoke(this, EventArgs.Empty);
                         CustomMessageBox.Show(App.Current.Resources["TheTraineeWasSaved"].ToString());
-                        Firstname = "";
-                        Lastname = "";
-                        Username = "";
-                        Password = "";
-                        RePassword = "";
+                        
                     }
                     catch (Exception ex)
                     {
