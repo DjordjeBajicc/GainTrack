@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +49,19 @@ namespace GainTrack.Services
             using(var scope = _scopeFactory.CreateScope())
             {
                 var _context = scope.ServiceProvider.GetRequiredService<GainTrackContext>();
-                return await _context.Series.Where(s => s.ConcreteExerciseOnTrainingDate.Equals(date) && s.ConcreteExerciseOnTrainingTrainingHasExerciseId == id).ToListAsync();
+                var series = await _context.Series.Include(s => s.ConcreteExerciseOnTraining)
+                                  .ThenInclude(cot => cot.TrainingHasExercise)
+                                  .ThenInclude(the => the.Exercise)
+                                  .Where(s => s.ConcreteExerciseOnTrainingDate.Equals(date)
+                                              && s.ConcreteExerciseOnTraining.TrainingHasExercise.Training.Id == id)
+                                  .ToListAsync();
+
+                //foreach (var serie in series)
+                //{
+                //    MessageBox.Show($"Serie: {serie.SerialNumber}, Exercise Name: {serie.ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}");
+                //}
+
+                return series;
             }
         }
 

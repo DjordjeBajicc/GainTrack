@@ -131,11 +131,10 @@ namespace GainTrack.ViewModel
             {
                 SeriesForDataGrid.Clear();
 
-                var series = await _serieService.GetSerieByConcreteExerciseOnTrainingTrainingHasExerciseIdAndDateAsync(SelectedTraining.TrainingHasExerciseId, SelectedTraining.Date);
+                var series = await _serieService.GetSerieByConcreteExerciseOnTrainingTrainingHasExerciseIdAndDateAsync(SelectedTraining.TrainingHasExercise.Training.Id, SelectedTraining.Date);
 
                 foreach (Serie serie in series)
                 {
-                    serie.ConcreteExerciseOnTraining = SelectedTraining;
                     SeriesForDataGrid.Add(serie);
                 }
             }

@@ -20,6 +20,6 @@ public partial class ConcreteExerciseOnTraining : IEquatable<ConcreteExerciseOnT
             return false;
         }
 
-        return Date.Equals(other.Date) && TrainingHasExerciseId == other.TrainingHasExerciseId;
+        return Date.Equals(other.Date) && TrainingHasExercise.Training.Id == other.TrainingHasExercise.Training.Id ;
     }
 }
