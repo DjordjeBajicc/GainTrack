@@ -126,6 +126,53 @@ Klikom na "Exercise Progress" korisniku se prikazuje prozor u kom iz liste može
 
 ![image](https://github.com/user-attachments/assets/2aac2bbd-0ec9-4965-8fa3-68c4f53771e6)
 
+## Nalog trenera
+
+### Podešavanja naloga trenera
+
+Ova funckionalnost je prethodno opisana u sekciji "Ažuriranje korisničkog imena i/ili lozinke".
+
+### Pregled klijenata
+
+Po prijavi na sistem trener vidi listu svojih klijenata uz mogućnost brisanja i dodavanja svakog klijenta.
+
+![image](https://github.com/user-attachments/assets/a1032623-a7d7-4923-b620-1c6562a1a776)
+
+Dodavanje klijenata se vrši klikom na dugme "Add Client" pri čemu se otvara jednostavan prozor u kom je potrebno popuniti podatke o klijentu i kliknuti na dugme "Save".
+
+![image](https://github.com/user-attachments/assets/7c0106f0-8693-4f5f-8eea-769dfac7ac90)
+
+Pri uspješnom kreiranju klijenta, treneru se ispisuje poruka:
+
+![image](https://github.com/user-attachments/assets/85f51c0f-7f55-4b04-bbb2-2b77cd170138)
+
+Ukoliko trener nije popunio sva polja prikazuje mu se poruka:
+
+![image](https://github.com/user-attachments/assets/c3a7ecc8-eae7-4206-86aa-25e7944c72d0)
+
+Ukoliko je korisničko ime već zauzeto, treneru se prikazuje poruka:
+
+![image](https://github.com/user-attachments/assets/8c839698-f58b-42bc-9142-90fbbe302b4a)
+
+Ukoliko trener ne unese ispravnu ponovljenu lozinku za klijenta ispisuje mu se poruka:
+
+![image](https://github.com/user-attachments/assets/0c7d456a-e0d9-443b-b098-dbf3e0e2b2f0)
+
+Posljednje 3 poruke označavaju da klijent nije uspješno kreiran.
+
+### Pregled detalja klijenta
+
+Klikom na klijenta treneru se prikazuju u desnom dijelu ekrana njegovo ime, prezime i korisničko ime te lista treninga koje je trener kreiarao za tog klijenta uz mogućnost brisanja treninga, pregleda detalja treninga te dodavanja novog treninga.
+
+![image](https://github.com/user-attachments/assets/e34ed576-97b2-442c-9702-22b851e88fd2)
+
+Klikom na dugme "Details" se treneru prikazuje prozor sa svim vježbama i brojem serija za svaku vježbu na odabranom treningu odabranog klijenta.
+
+![image](https://github.com/user-attachments/assets/d07129f6-29eb-48b4-a121-d79f558c8b96)
+
+Klikom na dugme "Delete" se briše trening za datog klijenta i lista treninga se automatski ažurira. Kreiranje treninga je istovjetno kreiranju treninga opisanom u sekciji "Pregled treninga vježbača".
+
+
 
 
 
