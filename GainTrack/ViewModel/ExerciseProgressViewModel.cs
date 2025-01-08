@@ -132,7 +132,7 @@ namespace GainTrack.ViewModel
                 {
                     LoadedSeries.Add(s);
                 }
-                CustomMessageBox.Show(LoadedSeries.Count() + "");
+                
             }
         }
     }
