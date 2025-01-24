@@ -26,7 +26,17 @@
 
 
         <DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Center" Name="ExercisesDataGrid" Style="{DynamicResource MaterialDesignDataGrid}" ItemsSource="{Binding ExercisesOnTraining}"  Grid.Column="1" AutoGenerateColumns="False" Margin="10,10,10,28"
-            HeadersVisibility="Column" Grid.Row="1" Grid.RowSpan="2" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
+            HeadersVisibility="Column" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource TextBrush}" Grid.Row="1" Grid.RowSpan="2" HorizontalScrollBarVisibility="Hidden" CanUserSortColumns="False" CanUserAddRows="False">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="10,5" />
+                </Style>
+
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource Exercise}"  IsReadOnly="true" Binding="{Binding Exercise.Name}" Width="*"/>
 

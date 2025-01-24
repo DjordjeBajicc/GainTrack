@@ -66,7 +66,17 @@ d:DesignHeight="650" d:DesignWidth="800" Background="{DynamicResource Background
 
         <!-- DataGrid za prikaz vežbi i serija -->
         <DataGrid Name="ExercisesDataGrid" ItemsSource="{Binding SeriesForDataGrid}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"  AutoGenerateColumns="False" Margin="10"
-              HeadersVisibility="Column" CanUserAddRows="False" IsReadOnly="True">
+              HeadersVisibility="Column" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource TextBrush}" CanUserAddRows="False" IsReadOnly="True">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="10,5" />
+                </Style>
+
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource Exercise}" Binding="{Binding ConcreteExerciseOnTraining.TrainingHasExercise.Exercise.Name}" Width="2*"/>
                 <DataGridTextColumn Header="{DynamicResource Set}"  Binding="{Binding SerialNumber}" Width="1*"/>

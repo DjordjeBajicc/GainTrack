@@ -26,6 +26,7 @@ namespace GainTrack.ViewModel
         private AddMessurementViewModel _addMessurementViewModel;
         private MessureProgressViewModel _messureProgressViewModel;
         private MainWindowViewModel _mainWindowViewModel;
+        private IServiceProvider _serviceProvider;
         private ChangeUsernameAndPasswordViewModel _changeUsernameAndPasswordViewModel;
         private readonly IUserService _userService;
         private User _trainee;
@@ -64,6 +65,7 @@ namespace GainTrack.ViewModel
         public ICommand UpdateCommand { get; }
         public TraineeWindowViewModel(IServiceProvider serviceProvider, User trainee)
         {
+            _serviceProvider = serviceProvider;
             _userService = serviceProvider.GetRequiredService<IUserService>();
             Trainee = trainee;
 
@@ -89,6 +91,7 @@ namespace GainTrack.ViewModel
 
         private void Update(object? obj)
         {
+            _changeUsernameAndPasswordViewModel = new ChangeUsernameAndPasswordViewModel(_serviceProvider, Trainee);
             ChangeUsernameAndPassword changeUsernameAndPassword = new ChangeUsernameAndPassword(_changeUsernameAndPasswordViewModel);
             changeUsernameAndPassword.ShowDialog();
         }

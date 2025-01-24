@@ -53,11 +53,12 @@ namespace GainTrack.ViewModel
         {
             _userService = serviceProvider.GetRequiredService<IUserService>();
             _user = user;
+            Username = user.Username;
 
             SaveCommand = new RelayCommand(Save);
         }
 
-        private void Save(object? obj)
+        private async void Save(object? obj)
         {
             if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(RePassword) && string.IsNullOrEmpty(OldPassword))
             {
@@ -69,6 +70,12 @@ namespace GainTrack.ViewModel
                 bool flag2 = false;
                 if (!string.IsNullOrEmpty(Username))
                 {
+                    bool flag = await _userService.CheckAvailabilityOfusername(Username);
+                    if (flag)
+                    {
+                        CustomMessageBox.Show(App.Current.Resources["UsernameAlreadyInUse"].ToString());
+                        return;
+                    }
                     _user.Username = Username;
                     flag1 = true;
                 }
